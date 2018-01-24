@@ -1,0 +1,52 @@
+
+<div *ngIf="guardCondition">
+    <h2><span>Guard Condition</span> {{guardCondition.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Measure Instance</span></dt>
+        <dd>
+            <span>{{guardCondition.measureInstance}}</span>
+        </dd>
+        <dt><span>Operator</span></dt>
+        <dd>
+            <span>{{guardCondition.operator}}</span>
+        </dd>
+        <dt><span>Error Value</span></dt>
+        <dd>
+            <span>{{guardCondition.errorValue}}</span>
+        </dd>
+        <dt><span>Warning Value</span></dt>
+        <dd>
+            <span>{{guardCondition.warningValue}}</span>
+        </dd>
+        <dt><span>Measure Field</span></dt>
+        <dd>
+            <span>{{guardCondition.measureField}}</span>
+        </dd>
+        <dt><span>Interval Agregation</span></dt>
+        <dd>
+            <span>{{guardCondition.intervalAgregation}}</span>
+        </dd>
+        <dt><span>Quality Guard</span></dt>
+        <dd>
+            <div *ngIf="guardCondition.qualityGuard">
+                <a [routerLink]="['/quality-guard', guardCondition.qualityGuard?.id]">{{guardCondition.qualityGuard?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'guard-condition/'+ guardCondition.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

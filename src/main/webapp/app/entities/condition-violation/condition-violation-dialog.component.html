@@ -1,0 +1,52 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myConditionViolationLabel">Create or edit a Condition Violation</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!conditionViolation.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="conditionViolation.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_conditionValue">Condition Value</label>
+            <input type="text" class="form-control" name="conditionValue" id="field_conditionValue"
+                [(ngModel)]="conditionViolation.conditionValue" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_conditionStatus">Condition Status</label>
+            <select class="form-control" name="conditionStatus" [(ngModel)]="conditionViolation.conditionStatus" id="field_conditionStatus" >
+                <option value="SUCCESS">SUCCESS</option>
+                <option value="WARNING">WARNING</option>
+                <option value="ERROR">ERROR</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" for="field_violation">Violation</label>
+            <select class="form-control" id="field_violation" name="violation" [(ngModel)]="conditionViolation.violation" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="violationOption.id === conditionViolation.violation?.id ? conditionViolation.violation : violationOption" *ngFor="let violationOption of violations; trackBy: trackViolationById">{{violationOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_guardCondition">Guard Condition</label>
+            <select class="form-control" id="field_guardCondition" name="guardCondition" [(ngModel)]="conditionViolation.guardCondition">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="guardConditionOption.id === conditionViolation.guardCondition?.id ? conditionViolation.guardCondition : guardConditionOption" *ngFor="let guardConditionOption of guardconditions; trackBy: trackGuardConditionById">{{guardConditionOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

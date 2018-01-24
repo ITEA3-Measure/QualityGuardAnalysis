@@ -1,0 +1,72 @@
+<div>
+    <h2>
+        <span>Quality Guards</span>
+        <button class="btn btn-primary float-right jh-create-entity create-quality-guard" [routerLink]="['/', { outlets: { popup: ['quality-guard-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new Quality Guard
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="qualityGuards">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Quality Guard Name</span></th>
+            <th><span>Description</span></th>
+            <th><span>Combination Mode</span></th>
+            <th><span>Measure Project Id</span></th>
+            <th><span>Guard Status</span></th>
+            <th><span>Violation</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let qualityGuard of qualityGuards ;trackBy: trackId">
+                <td><a [routerLink]="['../quality-guard', qualityGuard.id ]">{{qualityGuard.id}}</a></td>
+                <td>{{qualityGuard.qualityGuardName}}</td>
+                <td>{{qualityGuard.description}}</td>
+                <td>{{qualityGuard.combinationMode}}</td>
+                <td>{{qualityGuard.measureProjectId}}</td>
+                <td>{{qualityGuard.guardStatus}}</td>
+                <td>
+                    <div *ngIf="qualityGuard.violation">
+                        <a [routerLink]="['../violation', qualityGuard.violation?.id ]" >{{qualityGuard.violation?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../quality-guard', qualityGuard.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'quality-guard/'+ qualityGuard.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'quality-guard/'+ qualityGuard.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

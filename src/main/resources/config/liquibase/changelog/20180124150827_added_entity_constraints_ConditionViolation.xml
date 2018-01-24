@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity ConditionViolation.
+    -->
+    <changeSet id="20180124150827-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="violation_id"
+                                 baseTableName="condition_violation"
+                                 constraintName="fk_condition_violation_violation_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="violation"/>
+
+        <addForeignKeyConstraint baseColumnNames="guard_condition_id"
+                                 baseTableName="condition_violation"
+                                 constraintName="fk_condition_violation_guard_condition_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="guard_condition"/>
+
+    </changeSet>
+</databaseChangeLog>

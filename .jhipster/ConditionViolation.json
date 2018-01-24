@@ -1,0 +1,36 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "violation",
+            "otherEntityName": "violation",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "guardCondition",
+            "otherEntityName": "guardCondition",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "conditionViolation"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "conditionValue",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "conditionStatus",
+            "fieldType": "GuardStatus",
+            "fieldValues": "SUCCESS,WARNING,ERROR"
+        }
+    ],
+    "changelogDate": "20180124150827",
+    "entityTableName": "condition_violation",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

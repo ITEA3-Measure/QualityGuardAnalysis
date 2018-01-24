@@ -1,0 +1,42 @@
+
+<div *ngIf="conditionViolation">
+    <h2><span>Condition Violation</span> {{conditionViolation.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Condition Value</span></dt>
+        <dd>
+            <span>{{conditionViolation.conditionValue}}</span>
+        </dd>
+        <dt><span>Condition Status</span></dt>
+        <dd>
+            <span>{{conditionViolation.conditionStatus}}</span>
+        </dd>
+        <dt><span>Violation</span></dt>
+        <dd>
+            <div *ngIf="conditionViolation.violation">
+                <a [routerLink]="['/violation', conditionViolation.violation?.id]">{{conditionViolation.violation?.id}}</a>
+            </div>
+        </dd>
+        <dt><span>Guard Condition</span></dt>
+        <dd>
+            <div *ngIf="conditionViolation.guardCondition">
+                <a [routerLink]="['/guard-condition', conditionViolation.guardCondition?.id]">{{conditionViolation.guardCondition?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'condition-violation/'+ conditionViolation.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

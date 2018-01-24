@@ -1,0 +1,48 @@
+
+<div *ngIf="qualityGuard">
+    <h2><span>Quality Guard</span> {{qualityGuard.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Quality Guard Name</span></dt>
+        <dd>
+            <span>{{qualityGuard.qualityGuardName}}</span>
+        </dd>
+        <dt><span>Description</span></dt>
+        <dd>
+            <span>{{qualityGuard.description}}</span>
+        </dd>
+        <dt><span>Combination Mode</span></dt>
+        <dd>
+            <span>{{qualityGuard.combinationMode}}</span>
+        </dd>
+        <dt><span>Measure Project Id</span></dt>
+        <dd>
+            <span>{{qualityGuard.measureProjectId}}</span>
+        </dd>
+        <dt><span>Guard Status</span></dt>
+        <dd>
+            <span>{{qualityGuard.guardStatus}}</span>
+        </dd>
+        <dt><span>Violation</span></dt>
+        <dd>
+            <div *ngIf="qualityGuard.violation">
+                <a [routerLink]="['/violation', qualityGuard.violation?.id]">{{qualityGuard.violation?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'quality-guard/'+ qualityGuard.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

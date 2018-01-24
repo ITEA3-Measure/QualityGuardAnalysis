@@ -1,0 +1,45 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "qualityGuard",
+            "otherEntityName": "qualityGuard",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "measureInstance",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "operator",
+            "fieldType": "GuardOperator",
+            "fieldValues": "SUPERIOR,INFERIOR,EQUAL"
+        },
+        {
+            "fieldName": "errorValue",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "warningValue",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "measureField",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "intervalAgregation",
+            "fieldType": "AnalysisAgregation",
+            "fieldValues": "STRICT,MOY_MIN,MOY_HH,MOY_DD,MOY_WW,MOY_MM"
+        }
+    ],
+    "changelogDate": "20180124150825",
+    "entityTableName": "guard_condition",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

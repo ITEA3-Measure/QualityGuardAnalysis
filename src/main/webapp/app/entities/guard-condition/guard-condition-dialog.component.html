@@ -1,0 +1,71 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myGuardConditionLabel">Create or edit a Guard Condition</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!guardCondition.id">
+            <label for="id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="guardCondition.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_measureInstance">Measure Instance</label>
+            <input type="text" class="form-control" name="measureInstance" id="field_measureInstance"
+                [(ngModel)]="guardCondition.measureInstance" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_operator">Operator</label>
+            <select class="form-control" name="operator" [(ngModel)]="guardCondition.operator" id="field_operator" >
+                <option value="SUPERIOR">SUPERIOR</option>
+                <option value="INFERIOR">INFERIOR</option>
+                <option value="EQUAL">EQUAL</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_errorValue">Error Value</label>
+            <input type="number" class="form-control" name="errorValue" id="field_errorValue"
+                [(ngModel)]="guardCondition.errorValue" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_warningValue">Warning Value</label>
+            <input type="number" class="form-control" name="warningValue" id="field_warningValue"
+                [(ngModel)]="guardCondition.warningValue" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_measureField">Measure Field</label>
+            <input type="text" class="form-control" name="measureField" id="field_measureField"
+                [(ngModel)]="guardCondition.measureField" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" for="field_intervalAgregation">Interval Agregation</label>
+            <select class="form-control" name="intervalAgregation" [(ngModel)]="guardCondition.intervalAgregation" id="field_intervalAgregation" >
+                <option value="STRICT">STRICT</option>
+                <option value="MOY_MIN">MOY_MIN</option>
+                <option value="MOY_HH">MOY_HH</option>
+                <option value="MOY_DD">MOY_DD</option>
+                <option value="MOY_WW">MOY_WW</option>
+                <option value="MOY_MM">MOY_MM</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" for="field_qualityGuard">Quality Guard</label>
+            <select class="form-control" id="field_qualityGuard" name="qualityGuard" [(ngModel)]="guardCondition.qualityGuard" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="qualityGuardOption.id === guardCondition.qualityGuard?.id ? guardCondition.qualityGuard : qualityGuardOption" *ngFor="let qualityGuardOption of qualityguards; trackBy: trackQualityGuardById">{{qualityGuardOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

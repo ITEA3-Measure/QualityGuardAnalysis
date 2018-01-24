@@ -1,0 +1,68 @@
+<div>
+    <h2>
+        <span>Violations</span>
+        <button class="btn btn-primary float-right jh-create-entity create-violation" [routerLink]="['/', { outlets: { popup: ['violation-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new Violation
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="violations">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Incident Start Date</span></th>
+            <th><span>Incident End Date</span></th>
+            <th><span>Violation Status</span></th>
+            <th><span>Quality Guard</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let violation of violations ;trackBy: trackId">
+                <td><a [routerLink]="['../violation', violation.id ]">{{violation.id}}</a></td>
+                <td>{{violation.incidentStartDate}}</td>
+                <td>{{violation.incidentEndDate}}</td>
+                <td>{{violation.violationStatus}}</td>
+                <td>
+                    <div *ngIf="violation.qualityGuard">
+                        <a [routerLink]="['../quality-guard', violation.qualityGuard?.id ]" >{{violation.qualityGuard?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../violation', violation.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'violation/'+ violation.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'violation/'+ violation.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

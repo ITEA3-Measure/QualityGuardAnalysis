@@ -1,0 +1,72 @@
+<div>
+    <h2>
+        <span>Condition Violations</span>
+        <button class="btn btn-primary float-right jh-create-entity create-condition-violation" [routerLink]="['/', { outlets: { popup: ['condition-violation-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new Condition Violation
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="conditionViolations">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Condition Value</span></th>
+            <th><span>Condition Status</span></th>
+            <th><span>Violation</span></th>
+            <th><span>Guard Condition</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let conditionViolation of conditionViolations ;trackBy: trackId">
+                <td><a [routerLink]="['../condition-violation', conditionViolation.id ]">{{conditionViolation.id}}</a></td>
+                <td>{{conditionViolation.conditionValue}}</td>
+                <td>{{conditionViolation.conditionStatus}}</td>
+                <td>
+                    <div *ngIf="conditionViolation.violation">
+                        <a [routerLink]="['../violation', conditionViolation.violation?.id ]" >{{conditionViolation.violation?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="conditionViolation.guardCondition">
+                        <a [routerLink]="['../guard-condition', conditionViolation.guardCondition?.id ]" >{{conditionViolation.guardCondition?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../condition-violation', conditionViolation.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'condition-violation/'+ conditionViolation.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'condition-violation/'+ conditionViolation.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

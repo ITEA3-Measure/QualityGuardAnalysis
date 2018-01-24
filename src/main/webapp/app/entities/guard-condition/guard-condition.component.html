@@ -1,0 +1,74 @@
+<div>
+    <h2>
+        <span>Guard Conditions</span>
+        <button class="btn btn-primary float-right jh-create-entity create-guard-condition" [routerLink]="['/', { outlets: { popup: ['guard-condition-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span >
+            Create new Guard Condition
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="guardConditions">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Measure Instance</span></th>
+            <th><span>Operator</span></th>
+            <th><span>Error Value</span></th>
+            <th><span>Warning Value</span></th>
+            <th><span>Measure Field</span></th>
+            <th><span>Interval Agregation</span></th>
+            <th><span>Quality Guard</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let guardCondition of guardConditions ;trackBy: trackId">
+                <td><a [routerLink]="['../guard-condition', guardCondition.id ]">{{guardCondition.id}}</a></td>
+                <td>{{guardCondition.measureInstance}}</td>
+                <td>{{guardCondition.operator}}</td>
+                <td>{{guardCondition.errorValue}}</td>
+                <td>{{guardCondition.warningValue}}</td>
+                <td>{{guardCondition.measureField}}</td>
+                <td>{{guardCondition.intervalAgregation}}</td>
+                <td>
+                    <div *ngIf="guardCondition.qualityGuard">
+                        <a [routerLink]="['../quality-guard', guardCondition.qualityGuard?.id ]" >{{guardCondition.qualityGuard?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../guard-condition', guardCondition.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'guard-condition/'+ guardCondition.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'guard-condition/'+ guardCondition.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

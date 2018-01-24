@@ -1,0 +1,38 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "qualityGuard",
+            "otherEntityName": "qualityGuard",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "conditionViolation",
+            "otherEntityName": "conditionViolation",
+            "otherEntityRelationshipName": "violation"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "incidentStartDate",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "incidentEndDate",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "violationStatus",
+            "fieldType": "GuardStatus",
+            "fieldValues": "SUCCESS,WARNING,ERROR"
+        }
+    ],
+    "changelogDate": "20180124150826",
+    "entityTableName": "violation",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

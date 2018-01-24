@@ -1,0 +1,55 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "violation",
+            "otherEntityName": "violation",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "qualityGuard"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "violation",
+            "otherEntityName": "violation",
+            "otherEntityRelationshipName": "qualityGuard"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "guardCondition",
+            "otherEntityName": "guardCondition",
+            "otherEntityRelationshipName": "qualityGuard"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "qualityGuardName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "combinationMode",
+            "fieldType": "CombinationMode",
+            "fieldValues": "OR,AND,NA"
+        },
+        {
+            "fieldName": "measureProjectId",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "guardStatus",
+            "fieldType": "GuardStatus",
+            "fieldValues": "SUCCESS,WARNING,ERROR"
+        }
+    ],
+    "changelogDate": "20180124150824",
+    "entityTableName": "quality_guard",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

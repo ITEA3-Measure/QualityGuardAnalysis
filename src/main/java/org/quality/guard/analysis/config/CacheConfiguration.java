@@ -45,6 +45,13 @@ public class CacheConfiguration {
             cm.createCache(org.quality.guard.analysis.domain.User.class.getName(), jcacheConfiguration);
             cm.createCache(org.quality.guard.analysis.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(org.quality.guard.analysis.domain.User.class.getName() + ".authorities", jcacheConfiguration);
+            cm.createCache(org.quality.guard.analysis.domain.QualityGuard.class.getName(), jcacheConfiguration);
+            cm.createCache(org.quality.guard.analysis.domain.QualityGuard.class.getName() + ".violations", jcacheConfiguration);
+            cm.createCache(org.quality.guard.analysis.domain.QualityGuard.class.getName() + ".guardConditions", jcacheConfiguration);
+            cm.createCache(org.quality.guard.analysis.domain.GuardCondition.class.getName(), jcacheConfiguration);
+            cm.createCache(org.quality.guard.analysis.domain.Violation.class.getName(), jcacheConfiguration);
+            cm.createCache(org.quality.guard.analysis.domain.Violation.class.getName() + ".conditionViolations", jcacheConfiguration);
+            cm.createCache(org.quality.guard.analysis.domain.ConditionViolation.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

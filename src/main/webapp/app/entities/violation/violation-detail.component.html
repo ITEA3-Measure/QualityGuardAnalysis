@@ -1,0 +1,40 @@
+
+<div *ngIf="violation">
+    <h2><span>Violation</span> {{violation.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Incident Start Date</span></dt>
+        <dd>
+            <span>{{violation.incidentStartDate}}</span>
+        </dd>
+        <dt><span>Incident End Date</span></dt>
+        <dd>
+            <span>{{violation.incidentEndDate}}</span>
+        </dd>
+        <dt><span>Violation Status</span></dt>
+        <dd>
+            <span>{{violation.violationStatus}}</span>
+        </dd>
+        <dt><span>Quality Guard</span></dt>
+        <dd>
+            <div *ngIf="violation.qualityGuard">
+                <a [routerLink]="['/quality-guard', violation.qualityGuard?.id]">{{violation.qualityGuard?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'violation/'+ violation.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>
