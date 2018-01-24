@@ -40,9 +40,9 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/QualityGuardAnalysis?useUnicode=true&characterEncoding=utf8&useSSL=false
+        url: jdbc:mysql://localhost:3306/qualityguardanalysis
         username: root
-        password:
+        password: root
         hikari:
             data-source-properties:
                 cachePrepStmts: true
@@ -96,7 +96,7 @@ liquibase:
 #        key-alias: QualityGuardAnalysis
 # ===================================================================
 server:
-    port: 8080
+    port: 8585
 
 # ===================================================================
 # JHipster specific properties
