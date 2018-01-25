@@ -12,6 +12,7 @@ import { QualityGuardAnalysisAccountModule } from './account/account.module';
 import { QualityGuardAnalysisEntityModule } from './entities/entity.module';
 import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
+import { QualityGuardConfigurationModule } from './analysis-tool/quality-guard-configuration/quality-guard-configuration.module';
 
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
@@ -34,6 +35,7 @@ import {
         QualityGuardAnalysisAdminModule,
         QualityGuardAnalysisAccountModule,
         QualityGuardAnalysisEntityModule,
+        QualityGuardConfigurationModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
