@@ -1,7 +1,9 @@
 import { Route } from '@angular/router';
+
 import { QualityGuardConfigurationComponent } from './';
+
 export const qualityGuardConfigurationRoute: Route = {
-    path: 'quality-guard-configuration',
+    path: 'project/:id/quality-guard-configuration',
     component: QualityGuardConfigurationComponent,
     data: {
         authorities: [],

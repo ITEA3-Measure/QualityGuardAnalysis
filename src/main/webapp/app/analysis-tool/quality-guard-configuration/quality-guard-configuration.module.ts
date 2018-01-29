@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { QualityGuardConfigurationComponent, qualityGuardConfigurationRoute } from './';
+import { QualityGuardConfigurationService, QualityGuardConfigurationComponent, qualityGuardConfigurationRoute } from './';
 
 @NgModule({
 imports: [
@@ -13,6 +13,7 @@ imports: [
     entryComponents: [
     ],
     providers: [
+      QualityGuardConfigurationService
     ]
 })
 export class QualityGuardConfigurationModule {}
