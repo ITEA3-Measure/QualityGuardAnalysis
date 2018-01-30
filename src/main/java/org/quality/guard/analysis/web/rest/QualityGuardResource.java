@@ -116,4 +116,11 @@ public class QualityGuardResource {
         qualityGuardRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+    
+    @GetMapping("/quality-guards-by-project/{id}")
+    @Timed
+	public List<QualityGuard> getQualityGuardsByProjectId(@PathVariable Long id) {
+    	log.debug("REST request to get QualityGuards by project ID : {}", id);
+		return qualityGuardRepository.getQualityGuardsByProjectId(id);
+	}
 }

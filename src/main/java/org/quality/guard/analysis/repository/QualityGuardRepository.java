@@ -1,9 +1,12 @@
 package org.quality.guard.analysis.repository;
 
+import java.util.List;
+
 import org.quality.guard.analysis.domain.QualityGuard;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 
 
 /**
@@ -12,5 +15,6 @@ import org.springframework.data.jpa.repository.*;
 @SuppressWarnings("unused")
 @Repository
 public interface QualityGuardRepository extends JpaRepository<QualityGuard, Long> {
-
+	@Query(value="select i from QualityGuard i where i.measureProjectId = :projectId")
+	public List<QualityGuard> getQualityGuardsByProjectId(@Param("projectId")Long projectId);
 }
