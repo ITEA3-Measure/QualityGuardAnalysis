@@ -1,0 +1,11 @@
+webpackHotUpdate(2,{
+
+/***/ "./src/main/webapp/app/analysis-tool/quality-guard-configuration/quality-guard-configuration.route.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nvar _1 = __webpack_require__(\"./src/main/webapp/app/analysis-tool/quality-guard-configuration/index.ts\");\r\nexports.qualityGuardConfigurationRoute = {\r\n    path: 'project/:id/quality-guard-configuration',\r\n    component: _1.QualityGuardConfigurationComponent,\r\n    data: {\r\n        authorities: [],\r\n        pageTitle: 'QualityGuardConfiguration'\r\n    }\r\n};\r\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9zcmMvbWFpbi93ZWJhcHAvYXBwL2FuYWx5c2lzLXRvb2wvcXVhbGl0eS1ndWFyZC1jb25maWd1cmF0aW9uL3F1YWxpdHktZ3VhcmQtY29uZmlndXJhdGlvbi5yb3V0ZS50cz9jYTBlIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7O0FBRUEseUdBQXNEO0FBRXpDLHNDQUE4QixHQUFVO0lBQ2pELElBQUksRUFBRSx5Q0FBeUM7SUFDL0MsU0FBUyxFQUFFLHFDQUFrQztJQUM3QyxJQUFJLEVBQUU7UUFDSixXQUFXLEVBQUUsRUFBRTtRQUNmLFNBQVMsRUFBRSwyQkFBMkI7S0FDdkM7Q0FDRiIsImZpbGUiOiIuL3NyYy9tYWluL3dlYmFwcC9hcHAvYW5hbHlzaXMtdG9vbC9xdWFsaXR5LWd1YXJkLWNvbmZpZ3VyYXRpb24vcXVhbGl0eS1ndWFyZC1jb25maWd1cmF0aW9uLnJvdXRlLnRzLmpzIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHtSb3V0ZX0gZnJvbSAnQGFuZ3VsYXIvcm91dGVyJztcclxuXHJcbmltcG9ydCB7UXVhbGl0eUd1YXJkQ29uZmlndXJhdGlvbkNvbXBvbmVudH0gZnJvbSAnLi8nO1xyXG5cclxuZXhwb3J0IGNvbnN0IHF1YWxpdHlHdWFyZENvbmZpZ3VyYXRpb25Sb3V0ZTogUm91dGUgPSB7XHJcbiAgICBwYXRoOiAncHJvamVjdC86aWQvcXVhbGl0eS1ndWFyZC1jb25maWd1cmF0aW9uJyxcclxuICAgIGNvbXBvbmVudDogUXVhbGl0eUd1YXJkQ29uZmlndXJhdGlvbkNvbXBvbmVudCxcclxuICAgIGRhdGE6IHtcclxuICAgICAgYXV0aG9yaXRpZXM6IFtdLFxyXG4gICAgICBwYWdlVGl0bGU6ICdRdWFsaXR5R3VhcmRDb25maWd1cmF0aW9uJ1xyXG4gICAgfVxyXG4gIH1cclxuXG5cblxuLy8gV0VCUEFDSyBGT09URVIgLy9cbi8vIC4vbm9kZV9tb2R1bGVzL3RzbGludC1sb2FkZXIhLi9zcmMvbWFpbi93ZWJhcHAvYXBwL2FuYWx5c2lzLXRvb2wvcXVhbGl0eS1ndWFyZC1jb25maWd1cmF0aW9uL3F1YWxpdHktZ3VhcmQtY29uZmlndXJhdGlvbi5yb3V0ZS50cyJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./src/main/webapp/app/analysis-tool/quality-guard-configuration/quality-guard-configuration.route.ts\n");
+
+/***/ })
+
+})

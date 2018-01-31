@@ -16,5 +16,5 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface QualityGuardRepository extends JpaRepository<QualityGuard, Long> {
 	@Query(value="select i from QualityGuard i where i.measureProjectId = :projectId")
-	public List<QualityGuard> getQualityGuardsByProjectId(@Param("projectId")Long projectId);
+	public List<QualityGuard> getQualityGuardsByProjectId(@Param("projectId") Long projectId);
 }

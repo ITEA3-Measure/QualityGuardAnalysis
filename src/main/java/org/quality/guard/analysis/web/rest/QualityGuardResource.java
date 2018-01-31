@@ -117,10 +117,16 @@ public class QualityGuardResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
     
-    @GetMapping("/quality-guards-by-project/{id}")
+    /**
+     * GEt /quality-guards-by-project/:id : get the "id" qualityGuards
+     * 
+     * @param id
+     * @return the ResponseEntity with status 200 (OK) and the list of qualityGuards by projectId in body
+     */
+    @GetMapping("/quality-guards/by-project/{id}")
     @Timed
 	public List<QualityGuard> getQualityGuardsByProjectId(@PathVariable Long id) {
-    	log.debug("REST request to get QualityGuards by project ID : {}", id);
+    	log.debug("REST request to get QualityGuards by project : {}", id);
 		return qualityGuardRepository.getQualityGuardsByProjectId(id);
 	}
 }

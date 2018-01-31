@@ -40,7 +40,7 @@ public class QualityGuard implements Serializable {
     private CombinationMode combinationMode;
 
     @Column(name = "measure_project_id")
-    private Integer measureProjectId;
+    private Long measureProjectId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "guard_status")
@@ -108,16 +108,16 @@ public class QualityGuard implements Serializable {
         this.combinationMode = combinationMode;
     }
 
-    public Integer getMeasureProjectId() {
+    public Long getMeasureProjectId() {
         return measureProjectId;
     }
 
-    public QualityGuard measureProjectId(Integer measureProjectId) {
+    public QualityGuard measureProjectId(Long measureProjectId) {
         this.measureProjectId = measureProjectId;
         return this;
     }
 
-    public void setMeasureProjectId(Integer measureProjectId) {
+    public void setMeasureProjectId(Long measureProjectId) {
         this.measureProjectId = measureProjectId;
     }
 

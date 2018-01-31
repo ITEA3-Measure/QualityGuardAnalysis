@@ -1,0 +1,57 @@
+<div class="container">
+	<div class="jumbotron jumbotron-fluid">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-5 offset-sm-1 col-md-5 offset-md-1">
+					<h2 class="display-5">Quality Guard Configuration</h2>
+				</div>
+				<div class="col-sm-3 offset-sm-3 col-md-3 offset-md-3">
+					<button type="submit" class="btn btn-primary float-right" [routerLink]="[ '/', { outlets: { popup: ['new-guard'] } }] ">
+						<span class="fa fa-plus" aria-hidden="true"></span> <strong><span>New Guard</span></strong>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="card">
+		<h3 class="card-header">New Quality Guard</h3>
+		<div class="card-block">
+			<div class="container-fluid">
+				<div class="table-responsive">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th><span>Quality Guard Name</span></th>
+								<th><span>Rule</span></th>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor='let qualityGuard of qualityGuardsByProject'>
+								<td><span>{{qualityGuard.qualityGuardName}} </span></td>
+								<td><span>{{qualityGuard.description}}</span></td>
+								<td>
+									<div class="btn-group flex-btn-group-container">
+										<button type="submit" class="btn btn-primary float-right" data-toggle="modal" data-target="#newGuardModal">
+											<i class="fa fa-pencil" aria-hidden="true"></i>
+										</button>
+									</div>
+								</td>
+								<td>
+									<div class="btn-group flex-btn-group-container">
+										<button type="submit" class="btn btn-primary float-right" data-toggle="modal" data-target="#newGuardModal">
+											<i class="fa fa-trash" aria-hidden="true"></i>
+										</button>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

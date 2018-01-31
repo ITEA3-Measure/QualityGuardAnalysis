@@ -49,8 +49,8 @@ public class QualityGuardResourceIntTest {
     private static final CombinationMode DEFAULT_COMBINATION_MODE = CombinationMode.OR;
     private static final CombinationMode UPDATED_COMBINATION_MODE = CombinationMode.AND;
 
-    private static final Integer DEFAULT_MEASURE_PROJECT_ID = 1;
-    private static final Integer UPDATED_MEASURE_PROJECT_ID = 2;
+    private static final Long DEFAULT_MEASURE_PROJECT_ID = 1L;
+    private static final Long UPDATED_MEASURE_PROJECT_ID = 2L;
 
     private static final GuardStatus DEFAULT_GUARD_STATUS = GuardStatus.SUCCESS;
     private static final GuardStatus UPDATED_GUARD_STATUS = GuardStatus.WARNING;
