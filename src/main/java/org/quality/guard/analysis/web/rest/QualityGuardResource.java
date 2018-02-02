@@ -127,6 +127,7 @@ public class QualityGuardResource {
     @Timed
 	public List<QualityGuard> getQualityGuardsByProjectId(@PathVariable Long id) {
     	log.debug("REST request to get QualityGuards by project : {}", id);
+    	System.out.println(qualityGuardRepository.getQualityGuardsByProjectId(id).toString());
 		return qualityGuardRepository.getQualityGuardsByProjectId(id);
 	}
 }

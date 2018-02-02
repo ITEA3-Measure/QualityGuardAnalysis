@@ -116,4 +116,10 @@ public class GuardConditionResource {
         guardConditionRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+    @GetMapping("/guard-conditions/by-quality-guard/{id}")
+    @Timed
+    public List<GuardCondition> getGuardConditionByQualityGuardId(@PathVariable Long id){
+    	log.debug("REST request to get GuardConditions by qualityGuard : {}", id);
+    	return guardConditionRepository.getGuardConditionByQualityGuard(id);
+    }
 }
