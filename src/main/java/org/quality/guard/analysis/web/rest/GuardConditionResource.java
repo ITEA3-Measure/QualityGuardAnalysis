@@ -120,6 +120,13 @@ public class GuardConditionResource {
     @Timed
     public List<GuardCondition> getGuardConditionByProjectId(@PathVariable Long id){
     	log.debug("REST request to get GuardConditions by project : {}", id);
-    	return guardConditionRepository.getGuardConditionByQualityGuard(id);
+    	return guardConditionRepository.getGuardConditionByProjectId(id);
+    }
+    
+    @GetMapping("/guard-conditions/by-project/{idProject}/quality-guard/{idQualityGuard}")
+    @Timed
+    public List<GuardCondition> getGuardConditionByProjectIdAndQualityGuardId(@PathVariable Long idProject, @PathVariable Long idQualityGuard){
+    	log.debug("REST request to get GuardConditions by project : {} "+ idProject + " and by qualityGuard : {}", idQualityGuard);
+    	return guardConditionRepository.getGuardConditionByProjectIdAndQualityGuardId(idProject, idQualityGuard);
     }
 }
