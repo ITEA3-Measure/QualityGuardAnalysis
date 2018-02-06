@@ -8,10 +8,10 @@ import { Observable } from 'rxjs/Observable';
 import { QualityGuard } from './quality-guard.model';
 import { GuardCondition } from './guard-condition.model';
 import { GuardConditionService } from './guard-condition.service';
+import { QualityGuardPopupService } from './quality-guard-popup.service';
 import { QualityGuardService } from './quality-guard.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
-import { QualityGuardPopupService } from './quality-guard-popup.service';
 
 @Component({
     selector: 'jhi-quality-guard-configuration-dialog',
@@ -21,7 +21,7 @@ export class QualityGuardDialogComponent implements OnInit {
 
     form: FormGroup;
     qualityGuard: QualityGuard;
-    guardCondition: GuardCondition = {};
+    guardConditionsbyQualityGuard: Array<GuardCondition>;
     isSaving: boolean;
 
     constructor(
@@ -86,7 +86,9 @@ export class QualityGuardDialogComponent implements OnInit {
     clear() {
       this.activeModal.dismiss('cancel');
     }
-
+    /**
+     * CRUD methods
+     */
     save() {
       this.isSaving = true;
       if (this.qualityGuard.id !== undefined) {
@@ -133,7 +135,7 @@ export class QualityGuardPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private qualityGuardPopupService: QualityGuardPopupService
+        private qualityGuardPopupService: QualityGuardPopupService,
     ) {}
 
     ngOnInit() {

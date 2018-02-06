@@ -11,6 +11,7 @@ export class GuardConditionService {
 
     private resourceUrl =  SERVER_API_URL + 'api/guard-conditions';
     private byProject = 'by-project';
+    private byQualityGuard = 'by-quality-guard';
 
     constructor(private http: Http) { }
 
@@ -44,10 +45,18 @@ export class GuardConditionService {
     }
 
     /**
-     *  Get Guard Conditions by QualityGuardID
+     *  Get Guard Conditions by ProjectID
      */
     getGuardConditionsByProjectId(id: number): Observable<ResponseWrapper> {
         return this.http.get(`${this.resourceUrl}/${this.byProject}/${id}`)
+            .map((res: Response) => this.convertResponse(res));
+    }
+
+    /**
+     *  Get Guard Conditions by ProjectID and QualityGuardID
+     */
+    getGuardConditionsByProjectIdAndQualityGuardId(idProject: number, idQualityGuard: number): Observable<ResponseWrapper> {
+        return this.http.get(`${this.resourceUrl}/${this.byProject}/${idProject}/${this.byQualityGuard}/${idQualityGuard}`)
             .map((res: Response) => this.convertResponse(res));
     }
 
