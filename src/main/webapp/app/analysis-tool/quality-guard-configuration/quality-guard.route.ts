@@ -1,6 +1,6 @@
 import {Routes} from '@angular/router';
-
 import { UserRouteAccessService } from '../../shared';
+import { QualityGuardDeletePopupComponent } from './quality-guard-delete-dialog.component';
 import {QualityGuardComponent} from './quality-guard.component';
 import {QualityGuardPopupComponent} from './quality-guard-dialog.component';
 
@@ -17,14 +17,34 @@ export const qualityGuardRoute: Routes = [
 ];
 
 export const qualityGuardPopupRoute: Routes = [
-  {
-    path: 'new-guard',
-    component: QualityGuardPopupComponent,
-    outlet: 'popup',
-    data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'QualityGuardsConfiguration'
+    {
+        path: 'quality-guard-configuration-new',
+        component: QualityGuardPopupComponent,
+        data: {
+          authorities: ['ROLE_USER'],
+          pageTitle: 'QualityGuardsConfiguration'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
     },
-    canActivate: [UserRouteAccessService]
-  }
+    {
+        path: 'quality-guard-configuration/:id/edit',
+        component: QualityGuardPopupComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'QualityGuards'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    },
+    {
+        path: 'quality-guard-configuration/:id/delete',
+        component: QualityGuardDeletePopupComponent,
+        data: {
+          authorities: ['ROLE_USER'],
+          pageTitle: 'QualityGuardsConfiguration'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    }
 ]

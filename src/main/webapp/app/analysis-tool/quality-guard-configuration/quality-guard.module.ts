@@ -1,18 +1,14 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { QualityGuardAnalysisSharedModule } from '../../shared';
-import {
-    QualityGuardService,
-    QualityGuardPopupService,
-    QualityGuardComponent,
-    QualityGuardDialogComponent,
-    qualityGuardRoute,
-    qualityGuardPopupRoute,
-} from './';
-
-import {QualityGuardPopupComponent} from './quality-guard-dialog.component';
+import { GuardConditionService } from './guard-condition.service';
+import {QualityGuardPopupComponent, QualityGuardDialogComponent} from './quality-guard-dialog.component';
+import { QualityGuardDeleteDialogComponent, QualityGuardDeletePopupComponent } from './quality-guard-delete-dialog.component';
+import { QualityGuardPopupService } from './quality-guard-popup.service';
+import { QualityGuardComponent } from './quality-guard.component';
+import { qualityGuardRoute, qualityGuardPopupRoute } from './quality-guard.route';
+import { QualityGuardService } from './quality-guard.service';
 
 const ENTITY_STATES = [
     ...qualityGuardRoute,
@@ -22,22 +18,29 @@ const ENTITY_STATES = [
 @NgModule({
     imports: [
         QualityGuardAnalysisSharedModule,
-        RouterModule.forChild( ENTITY_STATES )
+        RouterModule.forChild( ENTITY_STATES ),
+        FormsModule,
+        ReactiveFormsModule
     ],
     declarations: [
         QualityGuardComponent,
         QualityGuardDialogComponent,
-        QualityGuardPopupComponent
+        QualityGuardPopupComponent,
+        QualityGuardDeleteDialogComponent,
+        QualityGuardDeletePopupComponent
     ],
     entryComponents: [
         QualityGuardComponent,
         QualityGuardDialogComponent,
-        QualityGuardPopupComponent
+        QualityGuardPopupComponent,
+        QualityGuardDeleteDialogComponent,
+        QualityGuardDeletePopupComponent
     ],
     providers: [
-      QualityGuardService,
-      QualityGuardPopupService
+        QualityGuardService,
+        QualityGuardPopupService,
+        GuardConditionService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class QualityGuardModule {}
+export class QualityGuardAnalysisQualityGuardModule {}

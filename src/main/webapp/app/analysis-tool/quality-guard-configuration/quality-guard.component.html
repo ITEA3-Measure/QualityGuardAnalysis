@@ -6,15 +6,14 @@
 					<h2 class="display-5">Quality Guard Configuration</h2>
 				</div>
 				<div class="col-sm-3 offset-sm-3 col-md-3 offset-md-3">
-					<button type="submit" class="btn btn-primary float-right" [routerLink]="[ '/', { outlets: { popup: ['new-guard'] } }] ">
+					<button type="submit" class="btn btn-primary float-right" [routerLink]="[ '/', { outlets: { popup: ['quality-guard-configuration-new'] } }]">
 						<span class="fa fa-plus" aria-hidden="true"></span> <strong><span>New Guard</span></strong>
 					</button>
 				</div>
 			</div>
 		</div>
 	</div>
-
-
+	
 	<div class="card">
 		<h3 class="card-header">New Quality Guard</h3>
 		<div class="card-block">
@@ -30,19 +29,37 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr *ngFor='let qualityGuard of qualityGuardsByProject'>
+							<tr *ngFor='let qualityGuard of qualityGuardsByProject; let i = index' [attr.data-index]='i'>
 								<td><span>{{qualityGuard.qualityGuardName}} </span></td>
-								<td><span>{{qualityGuard.description}}</span></td>
+								<td>
+                                    <div *ngFor='let guardCondition of allGuardConditions; let j = index' [attr.data-index]='j'>
+										<div *ngIf="guardCondition.qualityGuard.id == qualityGuard.id">
+											<span>{{guardCondition.measureField}}</span>
+		                                    <span>{{guardCondition.operator}}</span>(
+		                                    <span>{{guardCondition.warningValue}}</span>
+		                                    <span>{{guardCondition.errorValue}}</span>) 
+										</div>
+										<div *ngIf="qualityGuard.combinationMode && i==j"><span>{{qualityGuard.combinationMode}}</span></div>
+                                    </div>
+                                </td>
 								<td>
 									<div class="btn-group flex-btn-group-container">
-										<button type="submit" class="btn btn-primary float-right" data-toggle="modal" data-target="#newGuardModal">
+										<button type="submit" 
+												[routerLink]="[ '/', { outlets: { popup: 'quality-guard-configuration/' + qualityGuard.id +'/edit' } }]"
+												replaceUrl="true"
+                                				queryParamsHandling="merge"
+                                				class="btn btn-primary float-right">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
 										</button>
 									</div>
 								</td>
 								<td>
 									<div class="btn-group flex-btn-group-container">
-										<button type="submit" class="btn btn-primary float-right" data-toggle="modal" data-target="#newGuardModal">
+										<button type="submit" 
+												[routerLink]="[ '/', { outlets: { popup: 'quality-guard-configuration/' + qualityGuard.id + '/delete' } }]" 
+												replaceUrl="true"
+                                				queryParamsHandling="merge"
+                                				class="btn btn-primary float-right">
 											<i class="fa fa-trash" aria-hidden="true"></i>
 										</button>
 									</div>

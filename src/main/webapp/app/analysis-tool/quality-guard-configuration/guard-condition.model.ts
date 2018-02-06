@@ -1,4 +1,5 @@
 import { BaseEntity } from '../../shared';
+import { QualityGuard } from './quality-guard.model';
 
 export const enum GuardOperator {
     'SUPERIOR',
@@ -27,11 +28,12 @@ export class GuardCondition implements BaseEntity {
     constructor(
         public id?: number,
         public operator?: GuardOperator,
-        public measureInstance?: MeasureInstance,
+        public measureInstance?: string,
         public errorValue?: number,
         public warningValue?: number,
-        public measureField?: MeasureInstance,
+        public measureField?: string,
         public intervalAgregation?: AnalysisAgregation,
+        public qualityGuard?: QualityGuard,
     ) {
     }
 }

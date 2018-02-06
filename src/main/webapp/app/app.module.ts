@@ -7,10 +7,10 @@ import { QualityGuardAnalysisAppRoutingModule} from './app-routing.module';
 import { QualityGuardAnalysisHomeModule } from './home/home.module';
 import { QualityGuardAnalysisAdminModule } from './admin/admin.module';
 import { QualityGuardAnalysisAccountModule } from './account/account.module';
+import { QualityGuardEntityModule } from './analysis-tool/entity.module';
 import { QualityGuardAnalysisEntityModule } from './entities/entity.module';
 import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
-import { QualityGuardModule } from './analysis-tool/quality-guard-configuration/quality-guard.module';
 
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
@@ -33,7 +33,7 @@ import {
         QualityGuardAnalysisAdminModule,
         QualityGuardAnalysisAccountModule,
         QualityGuardAnalysisEntityModule,
-        QualityGuardModule
+        QualityGuardEntityModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [

@@ -14,6 +14,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface GuardConditionRepository extends JpaRepository<GuardCondition, Long> {
-	@Query(value="select i from GuardCondition i where i.qualityGuard.id = :qualityGuardId")
-	public List<GuardCondition> getGuardConditionByQualityGuard(@Param("qualityGuardId") Long qualityGuardId);
+	@Query(value="select i from GuardCondition i where i.qualityGuard.measureProjectId in ( select j.measureProjectId from QualityGuard j where j.measureProjectId = :projectId)")
+	public List<GuardCondition> getGuardConditionByQualityGuard(@Param("projectId") Long projectId);
 }

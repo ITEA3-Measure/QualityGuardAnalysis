@@ -1,5 +1,6 @@
-import { Injectable, Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { QualityGuard } from './quality-guard.model';
 import { QualityGuardService } from './quality-guard.service';
@@ -11,7 +12,7 @@ export class QualityGuardPopupService {
     constructor(
         private modalService: NgbModal,
         private router: Router,
-        private qualityGuardConfigurationService: QualityGuardService
+        private qualityGuardService: QualityGuardService
 
     ) {
         this.ngbModalRef = null;
@@ -25,8 +26,8 @@ export class QualityGuardPopupService {
             }
 
             if (id) {
-                this.qualityGuardConfigurationService.find(id).subscribe((qualityGuardConfiguration) => {
-                    this.ngbModalRef = this.qualityGuardModalRef(component, qualityGuardConfiguration);
+                this.qualityGuardService.find(id).subscribe((qualityGuard) => {
+                    this.ngbModalRef = this.qualityGuardModalRef(component, qualityGuard);
                     resolve(this.ngbModalRef);
                 });
             } else {
@@ -39,9 +40,9 @@ export class QualityGuardPopupService {
         });
     }
 
-    qualityGuardModalRef(component: Component, qualityGuardConfiguration: QualityGuard): NgbModalRef {
+    qualityGuardModalRef(component: Component, qualityGuard: QualityGuard): NgbModalRef {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
-        modalRef.componentInstance.qualityGuardConfiguration = qualityGuardConfiguration;
+        modalRef.componentInstance.qualityGuard = qualityGuard;
         modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true, queryParamsHandling: 'merge' });
             this.ngbModalRef = null;

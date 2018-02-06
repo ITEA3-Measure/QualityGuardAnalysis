@@ -1,5 +1,5 @@
-import { GuardCondition } from '../../entities/guard-condition';
 import { BaseEntity } from './../../shared';
+import { GuardCondition } from './guard-condition.model';
 
 export const enum CombinationMode {
     'OR',
@@ -20,7 +20,7 @@ export class QualityGuard implements BaseEntity {
         public description?: string,
         public combinationMode?: CombinationMode,
         public measureProjectId?: number,
-        public guardConditions?: GuardCondition[]
+        public guardConditions?: GuardCondition[],
     ) {
     }
 }
