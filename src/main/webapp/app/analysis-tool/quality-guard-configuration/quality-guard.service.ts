@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
-
 import { QualityGuard } from './quality-guard.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
 

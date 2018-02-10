@@ -1,14 +1,10 @@
-<form  [formGroup]="form" name="editForm" role="form" novalidate #editForm="ngForm">
+<form [formGroup]="form" name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
     <div class="modal-header">
         <h4 class="modal-title" id="myQualityGuardLabel">Create or edit a Quality Guard </h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="clear()">&times;</button>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" [hidden]="!qualityGuard.id">
-            <label for="id">ID</label>
-            <input type="text" class="form-control" id="id" name="id" readonly [(ngModel)]="qualityGuard.id" [ngModelOptions]="{standalone: true}" />
-        </div>
         <div class="form-group">
             <label class="form-control-label" for="field_qualityGuardName">Quality Guard Name</label>
             <input type="text" class="form-control" name="qualityGuardName" id="field_qualityGuardName"
@@ -27,27 +23,66 @@
         				<div class="form-group" [hidden]="true">
 				            <input type="text" class="form-control" id="id" name="id" readonly />
 				        </div>
-        				<select class="form-control-customize" name="measureField" id="field_measureField" >
-			            	<option *ngFor="let gc of guardConditionsbyQualityGuard" [ngValue]="gc.measureField">{{gc.measureField}}</option>			            	
-			            </select>
-			            <select class="form-control-customize" name="operator" id="field_operator" >
-			                <option value="SUPERIOR">SUPERIOR</option>
-			                <option value="INFERIOR">INFERIOR</option>
-			                <option value="EQUAL">EQUAL</option>
-			            </select>
-			            <input class="form-control-customize" type="number" name="warningValue" id="field_warningValue" placeholder="Warning Value" />
-			        	<input class="form-control-customize" type="number" name="errorValue" id="field_errorValue" placeholder="Error Value" />
-        				<span *ngIf="form.controls.rules.controls.length > 1" (click)="removeRule(i)">
-        				  <i class="fa fa-trash" style="font-size:2em;" aria-hidden="true" ></i>
-	                    </span>
+				        <div *ngIf="!qualityGuard.id;else other_case">
+				        	<select class="form-control-customize" name="measureInstance" id="field_measureInstance" formControlName="measureInstance" >
+								<option [ngValue]="null"></option>
+				            	<option *ngFor="let gc of guardConditionsbyProject" [ngValue]="gc.measureField">{{gc.measureField}}</option>			            	
+				            </select>
+					        <select class="form-control-customize" name="operator" id="field_operator" formControlName="operator" >
+				                <option value="SUPERIOR">SUPERIOR</option>
+				                <option value="INFERIOR">INFERIOR</option>
+				                <option value="EQUAL">EQUAL</option>
+				            </select>
+				            <input class="form-control-customize" type="number" name="warningValue" id="field_warningValue" placeholder="Warning Value" formControlName="warningValue" />
+				        	<input class="form-control-customize" type="number" name="errorValue" id="field_errorValue" placeholder="Error Value" formControlName="errorValue" />
+		                    <select class="form-control-customize" name="intervalAgregation" id="field_intervalAgregation" formControlName="intervalAgregation" >
+					        	<option value="STRICT">STRICT</option>
+					            <option value="MOY_MIN">MOY_MIN</option>
+					            <option value="MOY_HH">MOY_HH</option>
+					            <option value="MOY_DD">MOY_DD</option>
+					            <option value="MOY_WW">MOY_WW</option>
+					            <option value="MOY_MM">MOY_MM</option>
+					        </select>
+					        <div class="form-group" [hidden]="false">
+						    	<label for="id">ID</label>
+						    	<input type="text" class="form-control" id="id" name="id" readonly [(ngModel)]="qualityGuard.id" [ngModelOptions]="{standalone: true}" />
+						    </div>
+					        <span *ngIf="form.controls.rules.controls.length > 1" (click)="removeRule(i)">
+	        				  <i class="fa fa-trash" style="font-size:2em;" aria-hidden="true" ></i>
+		                    </span>
+				        </div>
+				        <ng-template #other_case>
+				        		<select class="form-control-customize" name="measureField" id="field_measureField" formControlName="measureField" >
+					              <option *ngFor="let gc of guardConditionsbyQualityGuard" [ngValue]="gc.measureField">{{gc.measureField}}</option>			            	
+					            </select>
+					            <select class="form-control-customize" name="operator" id="field_operator" formControlName="operator" >
+					              <option value="SUPERIOR">SUPERIOR</option>
+					              <option value="INFERIOR">INFERIOR</option>
+					              <option value="EQUAL">EQUAL</option>
+					            </select>
+					            <input class="form-control-customize" type="number" name="warningValue" id="field_warningValue" placeholder="Warning Value" formControlName="warningValue" />
+					        	<input class="form-control-customize" type="number" name="errorValue" id="field_errorValue" placeholder="Error Value" formControlName="errorValue" />
+					            <select class="form-control-customize" name="intervalAgregation" id="field_intervalAgregation" formControlName="intervalAgregation" >
+					                <option value="STRICT">STRICT</option>
+					                <option value="MOY_MIN">MOY_MIN</option>
+					                <option value="MOY_HH">MOY_HH</option>
+					                <option value="MOY_DD">MOY_DD</option>
+					                <option value="MOY_WW">MOY_WW</option>
+					                <option value="MOY_MM">MOY_MM</option>
+					            </select>
+					            <input type="hidden" name="qualityGuard" formControlName="qualityGuard" />
+					            <span *ngIf="form.controls.rules.controls.length > 1" (click)="removeRule(i)">
+		        				  <i class="fa fa-trash" style="font-size:2em;" aria-hidden="true" ></i>
+			                    </span>
+				        </ng-template>
         			</div>
         		</div>
-        		<div style="margin-top:.5rem;">
-        			<button type="button" class="btn btn-secondary" (click)="addRule()">
-			            <span class="fa fa-primary"></span>&nbsp;<span>New Rule</span>
-			        </button>
-        		</div>
 	        </div>
+	        <div style="margin-top:.5rem;">
+        		<button type="button" class="btn btn-secondary" (click)="addRule()">
+			    	<span class="fa fa-primary"></span>&nbsp;<span>New Rule</span>
+			    </button>
+        	</div>
         </div>
         <div class="form-group">
             <label class="form-control-label" for="field_combinationMode">Combination Mode</label>
@@ -55,17 +90,6 @@
                 <option value="OR">OR</option>
                 <option value="AND">AND</option>
                 <option value="NA">NA</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" for="field_intervalAgregation">Analysis Interval Agregation</label>
-            <select class="form-control" name="intervalAgregation" id="field_intervalAgregation" >
-                <option value="STRICT">STRICT</option>
-                <option value="MOY_MIN">MOY_MIN</option>
-                <option value="MOY_HH">MOY_HH</option>
-                <option value="MOY_DD">MOY_DD</option>
-                <option value="MOY_WW">MOY_WW</option>
-                <option value="MOY_MM">MOY_MM</option>
             </select>
         </div>
     </div>

@@ -118,7 +118,7 @@ public class QualityGuardResource {
     }
     
     /**
-     * GEt /quality-guards-by-project/:id : get the "id" qualityGuards
+     * GET /quality-guards-by-project/:id : get the "id" qualityGuards
      * 
      * @param id
      * @return the ResponseEntity with status 200 (OK) and the list of qualityGuards by projectId in body

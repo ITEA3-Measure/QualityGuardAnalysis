@@ -12,7 +12,7 @@ import { JhiAlertService } from 'ng-jhipster';
 export class QualityGuardPopupService {
 
     private ngbModalRef: NgbModalRef;
-    guardConditions: Array<GuardCondition> = [];
+    guardConditionsbyQualityGuard: Array<GuardCondition> = [];
 
     constructor(
         private modalService: NgbModal,
@@ -34,8 +34,8 @@ export class QualityGuardPopupService {
                 this.qualityGuardService.find(id).subscribe((qualityGuard) => {
                   this.guardConditionService.getGuardConditionsByProjectIdAndQualityGuardId(1, qualityGuard.id).subscribe(
                     (res: ResponseWrapper) => {
-                      this.guardConditions = res.json;
-                      this.ngbModalRef = this.qualityGuardModalRef(component, qualityGuard, this.guardConditions);
+                      this.guardConditionsbyQualityGuard = res.json;
+                      this.ngbModalRef = this.qualityGuardModalRef(component, qualityGuard, this.guardConditionsbyQualityGuard);
                       resolve(this.ngbModalRef);
                     },
                     (res: ResponseWrapper) => this.onError(res.json)
@@ -44,16 +44,17 @@ export class QualityGuardPopupService {
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {
-                    this.ngbModalRef = this.qualityGuardModalRef(component, new QualityGuard(), [new GuardCondition]);
+                    this.ngbModalRef = this.qualityGuardModalRef(component, new QualityGuard(), [new GuardCondition()], new GuardCondition());
                     resolve(this.ngbModalRef);
                 }, 0);
             }
         });
     }
 
-    qualityGuardModalRef(component: Component, qualityGuard: QualityGuard, guardConditions?: Array<GuardCondition>): NgbModalRef {
+    qualityGuardModalRef(component: Component, qualityGuard: QualityGuard, guardConditions: Array<GuardCondition>, guardCondition?: GuardCondition): NgbModalRef {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.qualityGuard = qualityGuard;
+        modalRef.componentInstance.guardCondition = guardCondition;
         modalRef.componentInstance.guardConditionsbyQualityGuard = guardConditions;
         modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true, queryParamsHandling: 'merge' });
