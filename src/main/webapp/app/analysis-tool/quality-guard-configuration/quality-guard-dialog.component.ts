@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {Router, ActivatedRoute } from '@angular/router'
 import {Response} from '@angular/http';
 import {FormGroup, FormArray, FormBuilder} from '@angular/forms';
 import {ResponseWrapper} from '../../shared';
@@ -26,15 +26,19 @@ export class QualityGuardDialogComponent implements OnInit {
   guardConditionsbyQualityGuard: Array<GuardCondition>;
   guardConditionsData: Array<GuardCondition>;
   isSaving: boolean;
+  projectId: number;
 
   constructor(
-    public activeModal: NgbActiveModal,
+    private router: Router,
+    private route: ActivatedRoute,
     private fb: FormBuilder,
     private jhiAlertService: JhiAlertService,
     private qualityGuardService: QualityGuardService,
     private guardConditionService: GuardConditionService,
-    private eventManager: JhiEventManager
+    private eventManager: JhiEventManager,
+    public activeModal: NgbActiveModal
   ) {
+    this.projectId = +router.parseUrl(router.url).root.children['primary'].segments[1].path;
   }
 
   ngOnInit() {
@@ -114,6 +118,7 @@ export class QualityGuardDialogComponent implements OnInit {
       this.subscribeToSaveResponseQualityGuard(
         this.qualityGuardService.update(this.qualityGuard));
     } else {
+      this.qualityGuard.measureProjectId = this.projectId;
       this.subscribeToSaveResponseQualityGuard(
         this.qualityGuardService.create(this.qualityGuard));
     }
