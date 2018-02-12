@@ -22,15 +22,13 @@ export class QualityGuardDialogComponent implements OnInit {
   form: FormGroup;
   guardConditionsbyProject: Array<GuardCondition>;
   qualityGuard: QualityGuard;
-  guardCondition: GuardCondition;
+  // guardCondition: GuardCondition;
   guardConditionsbyQualityGuard: Array<GuardCondition>;
-  guardConditionsData: Array<GuardCondition>;
   isSaving: boolean;
   projectId: number;
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
     private fb: FormBuilder,
     private jhiAlertService: JhiAlertService,
     private qualityGuardService: QualityGuardService,
@@ -42,7 +40,7 @@ export class QualityGuardDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadAll();
+    this.loadAllData();
     this.buildForm();
     this.isSaving = false;
     this.guardConditionService
@@ -60,10 +58,11 @@ export class QualityGuardDialogComponent implements OnInit {
       }, (res: ResponseWrapper) => this.onError(res.json));
   }
 
-  loadAll() {
+  loadAllData() {
     this.guardConditionService.getGuardConditionsByProjectId(1).subscribe(
       (res: ResponseWrapper) => {
         this.guardConditionsbyProject = res.json;
+        this.editRuleData();
       },
       (res: ResponseWrapper) => this.onError(res.json)
     );
@@ -76,13 +75,14 @@ export class QualityGuardDialogComponent implements OnInit {
     // build our form
     this.form = this.fb.group({
       rules: this.fb.array([
-        this.createRule(),
+        // this.createRule(),
       ])
     });
   }
 
   createRule() {
     return this.fb.group({
+      'id': [null],
       'measureInstance': [''],
       'operator': [''],
       'warningValue': [null],
@@ -101,9 +101,40 @@ export class QualityGuardDialogComponent implements OnInit {
     control.removeAt(i);
   }
 
-  addRuleData() {
+  addRuleData(result: QualityGuard) {
     const formArray = this.form.controls.rules as FormArray;
-    this.guardConditionsData = formArray.value;
+    let guardConditionsData: Array<GuardCondition>;
+    guardConditionsData = formArray.value;
+    for (const item of guardConditionsData) {
+      item.qualityGuard = result;
+      this.subscribeToSaveResponseGuardCondition(
+      this.guardConditionService.create(item));
+    }
+  }
+
+  updateRuleData(result: QualityGuard) {
+    const formArray = this.form.controls.rules as FormArray;
+    let guardConditionsData: Array<GuardCondition>;
+    guardConditionsData = formArray.value;
+    for (const item of guardConditionsData) {
+      item.qualityGuard = result;
+      this.subscribeToSaveResponseGuardCondition(
+      this.guardConditionService.update(item));
+    }
+  }
+
+  editRuleData() {
+    const formArray = this.form.controls.rules as FormArray;
+    this.guardConditionsbyQualityGuard.forEach((x) => {
+      formArray.push(this.fb.group({
+        id: x.id,
+        measureInstance: x.measureInstance,
+        operator: x.operator,
+        warningValue: x.warningValue,
+        errorValue: x.errorValue,
+        intervalAgregation: x.intervalAgregation
+      }))
+    })
   }
 
   clear() {
@@ -138,11 +169,10 @@ export class QualityGuardDialogComponent implements OnInit {
     this.eventManager.broadcast({name: 'qualityGuardListModification', content: 'OK'});
     this.isSaving = false;
     this.activeModal.dismiss(result);
-    this.addRuleData();
-    for (const item of this.guardConditionsData) {
-      item.qualityGuard = result;
-      this.subscribeToSaveResponseGuardCondition(
-      this.guardConditionService.create(item));
+    if (this.qualityGuard.id !== undefined) {
+      this.updateRuleData(result);
+    } else {
+      this.addRuleData(result);
     }
   }
 

@@ -44,17 +44,17 @@ export class QualityGuardPopupService {
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError
                 setTimeout(() => {
-                    this.ngbModalRef = this.qualityGuardModalRef(component, new QualityGuard(), [new GuardCondition()], new GuardCondition());
+                    this.ngbModalRef = this.qualityGuardModalRef(component, new QualityGuard(), [new GuardCondition()]);
                     resolve(this.ngbModalRef);
                 }, 0);
             }
         });
     }
 
-    qualityGuardModalRef(component: Component, qualityGuard: QualityGuard, guardConditions: Array<GuardCondition>, guardCondition?: GuardCondition): NgbModalRef {
+    qualityGuardModalRef(component: Component, qualityGuard: QualityGuard, guardConditions: Array<GuardCondition>): NgbModalRef {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
         modalRef.componentInstance.qualityGuard = qualityGuard;
-        modalRef.componentInstance.guardCondition = guardCondition;
+        // modalRef.componentInstance.guardCondition = guardCondition;
         modalRef.componentInstance.guardConditionsbyQualityGuard = guardConditions;
         modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true, queryParamsHandling: 'merge' });

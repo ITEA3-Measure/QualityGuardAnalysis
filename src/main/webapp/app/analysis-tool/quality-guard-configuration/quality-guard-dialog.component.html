@@ -48,6 +48,7 @@
 		                    </span>
 				        </div>
 				        <ng-template #other_case>
+				        		<input type="hidden" name="id" id="field_id" formControlName ="id"/>
 				        		<select class="form-control-customize" name="measureInstance" id="field_measureInstance" formControlName="measureInstance" >
 					              <option *ngFor="let gc of guardConditionsbyQualityGuard" [ngValue]="gc.measureInstance">{{gc.measureInstance}}</option>
 					            </select>
