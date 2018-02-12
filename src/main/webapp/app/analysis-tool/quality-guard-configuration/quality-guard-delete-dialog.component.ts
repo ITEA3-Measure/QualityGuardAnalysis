@@ -1,7 +1,10 @@
+import { ResponseWrapper } from '../../shared';
+import { GuardCondition } from './guard-condition.model';
+import { GuardConditionService } from './guard-condition.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { QualityGuardPopupService } from './quality-guard-popup.service';
 import { QualityGuard } from './quality-guard.model';
 import { QualityGuardService } from './quality-guard.service';
@@ -13,11 +16,14 @@ import { QualityGuardService } from './quality-guard.service';
 export class QualityGuardDeleteDialogComponent {
 
     qualityGuard: QualityGuard;
+    guardConditionsbyQualityGuard: Array<GuardCondition>;
 
     constructor(
         private qualityGuardService: QualityGuardService,
+        private guardConditionService: GuardConditionService,
         public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private jhiAlertService: JhiAlertService
     ) {
     }
 
@@ -26,13 +32,39 @@ export class QualityGuardDeleteDialogComponent {
     }
 
     confirmDelete(id: number) {
-        this.qualityGuardService.delete(id).subscribe((response) => {
-            this.eventManager.broadcast({
-                name: 'qualityGuardListModification',
-                content: 'Deleted an qualityGuard'
+        this.deleteGuardConditions(id);
+    }
+
+    deleteGuardConditions(id: number) {
+        this.guardConditionService.getGuardConditionsByProjectIdAndQualityGuardId(1, id).subscribe(
+          (res: ResponseWrapper) => {
+            this.guardConditionsbyQualityGuard = res.json;
+            this.guardConditionsbyQualityGuard.forEach((x) => {
+              this.guardConditionService.delete(x.id).subscribe((response) => {
+                this.eventManager.broadcast({
+                  name: 'guardConditionListModification',
+                  content: 'Deleted an guardCondition'
+                });
+              });
             });
-            this.activeModal.dismiss(true);
+            this.deleteQualityGuard(id);
+          },
+          (res: ResponseWrapper) => this.onError(res.json)
+        );
+    }
+
+    deleteQualityGuard(id: number) {
+      this.qualityGuardService.delete(id).subscribe((response) => {
+        this.eventManager.broadcast({
+          name: 'qualityGuardListModification',
+          content: 'Deleted an qualityGuard'
         });
+        this.activeModal.dismiss(true);
+      });
+    }
+
+    private onError(error) {
+        this.jhiAlertService.error(error.message, null, null);
     }
 }
 
