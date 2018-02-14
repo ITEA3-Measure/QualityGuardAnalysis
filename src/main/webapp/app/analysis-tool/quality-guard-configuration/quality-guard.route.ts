@@ -17,34 +17,34 @@ export const qualityGuardRoute: Routes = [
 ];
 
 export const qualityGuardPopupRoute: Routes = [
-    {
-        path: 'quality-guard-configuration-new',
-        component: QualityGuardPopupComponent,
-        data: {
-          authorities: ['ROLE_USER'],
-          pageTitle: 'QualityGuardsConfiguration'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
+  {
+    path: 'quality-guard-configuration-new',
+    component: QualityGuardPopupComponent,
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'QualityGuardsConfiguration'
     },
-    {
-        path: 'quality-guard-configuration/:id/edit',
-        component: QualityGuardPopupComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'QualityGuards'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
+    canActivate: [UserRouteAccessService],
+    outlet: 'popup'
+  },
+  {
+    path: 'quality-guard-configuration/:id/edit',
+    component: QualityGuardPopupComponent,
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'QualityGuards'
     },
-    {
-        path: 'quality-guard-configuration/:id/delete',
-        component: QualityGuardDeletePopupComponent,
-        data: {
-          authorities: ['ROLE_USER'],
-          pageTitle: 'QualityGuardsConfiguration'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    }
+    canActivate: [UserRouteAccessService],
+    outlet: 'popup'
+  },
+  {
+    path: 'quality-guard-configuration/:id/delete',
+    component: QualityGuardDeletePopupComponent,
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'QualityGuardsConfiguration'
+    },
+    canActivate: [UserRouteAccessService],
+    outlet: 'popup'
+  }
 ]

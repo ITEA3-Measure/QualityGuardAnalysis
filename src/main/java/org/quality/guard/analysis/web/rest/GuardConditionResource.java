@@ -4,6 +4,8 @@ import com.codahale.metrics.annotation.Timed;
 import org.quality.guard.analysis.domain.GuardCondition;
 
 import org.quality.guard.analysis.repository.GuardConditionRepository;
+import org.quality.guard.analysis.web.rest.dto.MeasureInstanceType;
+import org.quality.guard.analysis.web.rest.dto.MeasureInstanceTypeManagement;
 import org.quality.guard.analysis.web.rest.errors.BadRequestAlertException;
 import org.quality.guard.analysis.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +32,7 @@ public class GuardConditionResource {
     private static final String ENTITY_NAME = "guardCondition";
 
     private final GuardConditionRepository guardConditionRepository;
-
+    
     public GuardConditionResource(GuardConditionRepository guardConditionRepository) {
         this.guardConditionRepository = guardConditionRepository;
     }
@@ -116,11 +118,11 @@ public class GuardConditionResource {
         guardConditionRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-    @GetMapping("/guard-conditions/by-project/{id}")
+    @GetMapping("/guard-conditions/by-project/{idProject}")
     @Timed
-    public List<GuardCondition> getGuardConditionByProjectId(@PathVariable Long id){
-    	log.debug("REST request to get GuardConditions by project : {}", id);
-    	return guardConditionRepository.getGuardConditionByProjectId(id);
+    public List<GuardCondition> getGuardConditionByProjectId(@PathVariable Long idProject){
+    	log.debug("REST request to get GuardConditions by project : {}", idProject);
+    	return guardConditionRepository.getGuardConditionByProjectId(idProject);
     }
     
     @GetMapping("/guard-conditions/by-project/{idProject}/by-quality-guard/{idQualityGuard}")
@@ -128,5 +130,11 @@ public class GuardConditionResource {
     public List<GuardCondition> getGuardConditionByProjectIdAndQualityGuardId(@PathVariable Long idProject, @PathVariable Long idQualityGuard){
     	log.debug("REST request to get GuardConditions by project : {} "+ idProject + " and by qualityGuard : {}", idQualityGuard);
     	return guardConditionRepository.getGuardConditionByProjectIdAndQualityGuardId(idProject, idQualityGuard);
+    }
+    
+    @GetMapping("/guard-conditions/measure-instance-type")
+    @Timed
+    public List<MeasureInstanceType> getMeasureInstanceType(){
+    	return MeasureInstanceTypeManagement.getAllMeasureInstanceType();
     }
 }

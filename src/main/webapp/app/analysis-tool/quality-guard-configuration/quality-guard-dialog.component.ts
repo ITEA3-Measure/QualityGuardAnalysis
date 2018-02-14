@@ -8,6 +8,7 @@ import {Observable} from 'rxjs/Observable';
 import {QualityGuard} from './quality-guard.model';
 import {GuardCondition} from './guard-condition.model';
 import {GuardConditionService} from './guard-condition.service';
+import { MeasureInstanceType } from './measure-instance-type.model';
 import {QualityGuardPopupService} from './quality-guard-popup.service';
 import {QualityGuardService} from './quality-guard.service';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
@@ -24,6 +25,8 @@ export class QualityGuardDialogComponent implements OnInit {
   qualityGuard: QualityGuard;
   // guardCondition: GuardCondition;
   guardConditionsbyQualityGuard: Array<GuardCondition>;
+  allMeasureInstanceType: Array<MeasureInstanceType>;
+  allFieldNames: Array<string> = [];
   isSaving: boolean;
   projectId: number;
 
@@ -41,6 +44,8 @@ export class QualityGuardDialogComponent implements OnInit {
 
   ngOnInit() {
     this.loadAllData();
+    // debugger
+    this.retrieveMeasureInstanceType();
     this.buildForm();
     this.isSaving = false;
     this.guardConditionService
@@ -68,6 +73,15 @@ export class QualityGuardDialogComponent implements OnInit {
     );
   }
 
+  retrieveMeasureInstanceType() {
+    this.guardConditionService.getMeasureInstanceType().subscribe(
+      (res: ResponseWrapper) => {
+        this.allMeasureInstanceType = res.json;
+      },
+      (res: ResponseWrapper) => this.onError(res.json)
+    )
+  }
+
   /**
    * build the initial form
    */
@@ -84,6 +98,7 @@ export class QualityGuardDialogComponent implements OnInit {
     return this.fb.group({
       'id': [null],
       'measureInstance': [''],
+      'measureField': [''],
       'operator': [''],
       'warningValue': [null],
       'errorValue': [null],
@@ -129,12 +144,24 @@ export class QualityGuardDialogComponent implements OnInit {
       formArray.push(this.fb.group({
         id: x.id,
         measureInstance: x.measureInstance,
+        measureField: x.measureField,
         operator: x.operator,
         warningValue: x.warningValue,
         errorValue: x.errorValue,
         intervalAgregation: x.intervalAgregation
       }))
     })
+  }
+
+  dropDownChanged(val: any) {
+    for (const obj of this.allMeasureInstanceType) {
+      if (val === obj.instanceName) {
+        this.allFieldNames = obj.fields;
+        break;
+      } else {
+        this.allFieldNames = [];
+      }
+    }
   }
 
   clear() {

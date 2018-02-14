@@ -11,6 +11,7 @@ export class GuardConditionService {
     private resourceUrl =  SERVER_API_URL + 'api/guard-conditions';
     private byProject = 'by-project';
     private byQualityGuard = 'by-quality-guard';
+    private measureInstanceType = 'measure-instance-type';
 
     constructor(private http: Http) { }
 
@@ -56,6 +57,14 @@ export class GuardConditionService {
      */
     getGuardConditionsByProjectIdAndQualityGuardId(idProject: number, idQualityGuard: number): Observable<ResponseWrapper> {
         return this.http.get(`${this.resourceUrl}/${this.byProject}/${idProject}/${this.byQualityGuard}/${idQualityGuard}`)
+            .map((res: Response) => this.convertResponse(res));
+    }
+
+    /**
+     *  Get MeasureInstanceType
+     */
+    getMeasureInstanceType(): Observable<ResponseWrapper> {
+        return this.http.get(`${this.resourceUrl}/${this.measureInstanceType}`)
             .map((res: Response) => this.convertResponse(res));
     }
 

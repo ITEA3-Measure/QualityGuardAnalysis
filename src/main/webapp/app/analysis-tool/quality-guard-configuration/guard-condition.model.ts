@@ -1,4 +1,5 @@
 import { BaseEntity } from '../../shared';
+import { MeasureInstanceType } from './measure-instance-type.model';
 import { QualityGuard } from './quality-guard.model';
 
 export const enum GuardOperator {
@@ -14,14 +15,6 @@ export const enum AnalysisAgregation {
     'MOY_DD',
     'MOY_WW',
     'MOY_MM'
-}
-
-export class MeasureInstance {
-  constructor(
-    public id?: number,
-    public instanceName?: string
-  ) {
-  }
 }
 
 export class GuardCondition implements BaseEntity {

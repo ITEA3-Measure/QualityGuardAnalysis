@@ -1,8 +1,8 @@
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ResponseWrapper } from '../../shared';
 import { GuardCondition } from './guard-condition.model';
 import { GuardConditionService } from './guard-condition.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { QualityGuardPopupService } from './quality-guard-popup.service';
