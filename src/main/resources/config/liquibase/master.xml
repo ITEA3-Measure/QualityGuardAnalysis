@@ -15,4 +15,9 @@
     <include file="config/liquibase/changelog/20180124150826_added_entity_constraints_Violation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180124150827_added_entity_constraints_ConditionViolation.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+	<changeSet author="aboudeffa (generated)" id="1518710795106-1">
+        <addColumn tableName="quality_guard">
+            <column name="is_shedule" type="bit"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

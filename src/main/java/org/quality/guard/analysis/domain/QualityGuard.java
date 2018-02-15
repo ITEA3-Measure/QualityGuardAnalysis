@@ -45,6 +45,9 @@ public class QualityGuard implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "guard_status")
     private GuardStatus guardStatus;
+    
+    @Column(name = "is_shedule")
+    private Boolean isShedule;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -133,7 +136,20 @@ public class QualityGuard implements Serializable {
     public void setGuardStatus(GuardStatus guardStatus) {
         this.guardStatus = guardStatus;
     }
+    
+    public Boolean isIsShedule() {
+        return isShedule;
+    }
 
+    public QualityGuard isShedule(Boolean isShedule) {
+        this.isShedule = isShedule;
+        return this;
+    }
+
+    public void setIsShedule(Boolean isShedule) {
+        this.isShedule = isShedule;
+    }
+    
     public Violation getViolation() {
         return violation;
     }
