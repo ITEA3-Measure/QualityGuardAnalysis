@@ -68,6 +68,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
             .antMatchers(HttpMethod.OPTIONS, "/**")
+            .antMatchers("/api/quality-guard/sheduling/**")
             .antMatchers("/api/guard-conditions/measure-instance-type")
             .antMatchers("/api/quality-guards/by-project/*")
             .antMatchers("/api/guard-conditions/by-project/*")
