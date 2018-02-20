@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ResponseWrapper } from '../../shared';
 import { GuardCondition } from './guard-condition.model';
 import { GuardConditionService } from './guard-condition.service';
@@ -17,14 +17,17 @@ export class QualityGuardDeleteDialogComponent {
 
     qualityGuard: QualityGuard;
     guardConditionsbyQualityGuard: Array<GuardCondition>;
+    projectId: number;
 
     constructor(
+        private router: Router,
         private qualityGuardService: QualityGuardService,
         private guardConditionService: GuardConditionService,
         public activeModal: NgbActiveModal,
         private eventManager: JhiEventManager,
         private jhiAlertService: JhiAlertService
     ) {
+      this.projectId = +router.parseUrl(router.url).root.children['primary'].segments[1].path;
     }
 
     clear() {
@@ -36,7 +39,7 @@ export class QualityGuardDeleteDialogComponent {
     }
 
     deleteGuardConditions(id: number) {
-        this.guardConditionService.getGuardConditionsByProjectIdAndQualityGuardId(1, id).subscribe(
+        this.guardConditionService.getGuardConditionsByProjectIdAndQualityGuardId(this.projectId, id).subscribe(
           (res: ResponseWrapper) => {
             this.guardConditionsbyQualityGuard = res.json;
             this.guardConditionsbyQualityGuard.forEach((x) => {

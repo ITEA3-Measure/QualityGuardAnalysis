@@ -79,19 +79,18 @@
         			</div>
         		</div>
 	        </div>
-	        <div style="margin-top:.5rem;">
+ 	        <div style="margin-top:.5rem; margin-bottom:1rem;">
         		<button type="button" class="btn btn-secondary" (click)="addRule()">
 			    	<span class="fa fa-primary"></span>&nbsp;<span>New Rule</span>
 			    </button>
         	</div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" for="field_combinationMode">Combination Mode</label>
-            <select class="form-control" name="combinationMode" id="field_combinationMode" [(ngModel)]="qualityGuard.combinationMode" [ngModelOptions]="{standalone: true}">
-                <option value="OR">OR</option>
-                <option value="AND">AND</option>
-                <option value="NA">NA</option>
-            </select>
+        	<div [hidden]="form.controls.rules.controls.length == 1">
+	            <label class="form-control-label" for="field_combinationMode">Combination Mode</label>
+	            <select class="form-control" name="combinationMode" id="field_combinationMode" [(ngModel)]="qualityGuard.combinationMode" [ngModelOptions]="{standalone: true}">
+	                <option value="OR">OR</option>
+	                <option value="AND">AND</option>
+	            </select>
+	        </div>
         </div>
     </div>
     <div class="modal-footer">

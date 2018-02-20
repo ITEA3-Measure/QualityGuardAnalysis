@@ -64,7 +64,7 @@ export class QualityGuardDialogComponent implements OnInit {
   }
 
   loadAllData() {
-    this.guardConditionService.getGuardConditionsByProjectId(1).subscribe(
+    this.guardConditionService.getGuardConditionsByProjectId(this.projectId).subscribe(
       (res: ResponseWrapper) => {
         this.guardConditionsbyProject = res.json;
         this.editRuleData();

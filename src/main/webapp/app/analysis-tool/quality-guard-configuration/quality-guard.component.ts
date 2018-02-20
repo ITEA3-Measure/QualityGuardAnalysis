@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-// import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ResponseWrapper } from '../../shared';
 import { GuardCondition } from './guard-condition.model';
 import { GuardConditionService } from './guard-condition.service';
@@ -17,14 +17,16 @@ export class QualityGuardComponent implements OnInit {
   allGuardConditions: Array<GuardCondition> = [];
   qualityGuard: QualityGuard = {};
   errorMessage: any;
+  projectId: number;
 
   constructor(
-        // private route: ActivatedRoute,
+        private router: Router,
         private qualityGuardService: QualityGuardService,
         private guardConditionService: GuardConditionService,
         private jhiAlertService: JhiAlertService,
   ) {
     // this.route.params.subscribe((res) => console.log(res.id));
+    this.projectId = +router.parseUrl(router.url).root.children['primary'].segments[1].path;
   }
 
   ngOnInit() {
@@ -32,13 +34,13 @@ export class QualityGuardComponent implements OnInit {
   }
 
   loadAll() {
-    this.qualityGuardService.getQualityGuardsByProjectId(1).subscribe(
+    this.qualityGuardService.getQualityGuardsByProjectId(this.projectId).subscribe(
       (resQG: ResponseWrapper) => {
         this.qualityGuardsByProject = resQG.json
       },
       (resQG: ResponseWrapper) => this.onError(resQG.json)
     );
-    this.guardConditionService.getGuardConditionsByProjectId(1).subscribe(
+    this.guardConditionService.getGuardConditionsByProjectId(this.projectId).subscribe(
       (resGC: ResponseWrapper) => {
         this.allGuardConditions = resGC.json;
       },

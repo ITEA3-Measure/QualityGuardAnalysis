@@ -26,6 +26,7 @@
 								<th><span>Rule</span></th>
 								<th></th>
 								<th></th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -42,6 +43,13 @@
 										<div *ngIf="qualityGuard.combinationMode && i==j"><span>{{qualityGuard.combinationMode}}</span></div>
                                     </div>
                                 </td>
+                                <td>
+                                	<button type="btn-group flex-btn-group-container"
+										replaceUrl="true" queryParamsHandling="merge"
+										class="btn btn-danger float-right">
+										<i class="fa fa-power-off" aria-hidden="true"></i>
+									</button>
+								</td>
 								<td>
 									<div class="btn-group flex-btn-group-container">
 										<button type="submit"

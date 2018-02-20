@@ -13,6 +13,7 @@ export class QualityGuardPopupService {
 
     private ngbModalRef: NgbModalRef;
     guardConditionsbyQualityGuard: Array<GuardCondition> = [];
+    projectId: number;
 
     constructor(
         private modalService: NgbModal,
@@ -22,6 +23,7 @@ export class QualityGuardPopupService {
         private jhiAlertService: JhiAlertService,
     ) {
         this.ngbModalRef = null;
+        this.projectId = +router.parseUrl(router.url).root.children['primary'].segments[1].path;
     }
 
     open(component: Component, id?: number | any): Promise<NgbModalRef> {
@@ -32,7 +34,7 @@ export class QualityGuardPopupService {
             }
             if (id) {
                 this.qualityGuardService.find(id).subscribe((qualityGuard) => {
-                  this.guardConditionService.getGuardConditionsByProjectIdAndQualityGuardId(1, qualityGuard.id).subscribe(
+                  this.guardConditionService.getGuardConditionsByProjectIdAndQualityGuardId(this.projectId, qualityGuard.id).subscribe(
                     (res: ResponseWrapper) => {
                       this.guardConditionsbyQualityGuard = res.json;
                       this.ngbModalRef = this.qualityGuardModalRef(component, qualityGuard, this.guardConditionsbyQualityGuard);
