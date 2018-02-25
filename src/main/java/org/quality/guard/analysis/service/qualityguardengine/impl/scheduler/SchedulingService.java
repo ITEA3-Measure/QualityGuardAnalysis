@@ -1,13 +1,18 @@
 package org.quality.guard.analysis.service.qualityguardengine.impl.scheduler;
 
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
+import java.util.stream.IntStream;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.quality.guard.analysis.core.api.entities.IQualityGuardService;
+import org.quality.guard.analysis.domain.GuardCondition;
 import org.quality.guard.analysis.domain.QualityGuard;
 import org.quality.guard.analysis.service.qualityguardengine.api.ISchedulingService;
 import org.quality.guard.analysis.service.qualityguardengine.impl.qualityguardexecution.QualityGuardExecutionService;
@@ -24,9 +29,6 @@ public class SchedulingService implements ISchedulingService{
     private TaskScheduler taskScheduler;
 	
 	@Inject
-	private IQualityGuardService qualityGuardService;
-	
-	@Inject
 	private QualityGuardExecutionService qualityGuardExecutionService;
 	
 	private Map<Long, ScheduledFuture> jobs;
@@ -38,7 +40,7 @@ public class SchedulingService implements ISchedulingService{
 	
 	@Override
 	public Boolean scheduleQualityGuard(QualityGuard qualityGuard) {
-		if (qualityGuard.isIsShedule()) {
+		if (qualityGuard.isIsSchedule()) {
 			scheduleExecution(qualityGuard);
 			return true;
 		}
@@ -46,12 +48,17 @@ public class SchedulingService implements ISchedulingService{
 	}
 	
 	private void scheduleExecution(QualityGuard qualityGuard) {
+		Long minIntervalAgregation = getMinIntervalAgregation(qualityGuard);
 		ScheduledFuture job = taskScheduler.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-            	qualityGuardExecutionService.executeQualityGuard(qualityGuard);
+            	try {
+					qualityGuardExecutionService.executeQualityGuard(qualityGuard);
+				} catch (UnknownHostException e) {
+					e.printStackTrace();
+				}
             }
-        }, 5000);
+        }, minIntervalAgregation);
 		this.jobs.put(qualityGuard.getId(), job);
 	}
 	
@@ -71,6 +78,18 @@ public class SchedulingService implements ISchedulingService{
 			return true;
 		}
 		return false;
+	}
+	
+	public Long getMinIntervalAgregation(QualityGuard qualityGuard) {
+		List<GuardCondition> relatedRules = new ArrayList<GuardCondition>();
+		QualityGuardExecutionService qualityGuardExecutionService= new QualityGuardExecutionService(); 
+		relatedRules.addAll(qualityGuard.getGuardConditions());
+		List<Long> intervalAgregation = new ArrayList<Long>();
+		for (GuardCondition guardCondition : relatedRules) {
+			intervalAgregation.add(qualityGuardExecutionService.getTimeAgo(guardCondition.getIntervalAgregation().name()));
+		}
+		Long minIntervalAgregation = Collections.min(intervalAgregation);
+		return minIntervalAgregation;
 	}
 
 }

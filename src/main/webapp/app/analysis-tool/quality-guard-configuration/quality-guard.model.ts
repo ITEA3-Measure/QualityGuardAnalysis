@@ -3,8 +3,7 @@ import { GuardCondition } from './guard-condition.model';
 
 export const enum CombinationMode {
     'OR',
-    'AND',
-    'NA'
+    'AND'
 }
 
 export const enum GuardStatus {

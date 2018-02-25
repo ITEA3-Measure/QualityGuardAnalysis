@@ -31,7 +31,7 @@ public class QualityGuardSchedulingConfigurer implements SchedulingConfigurer {
 	public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
 		taskRegistrar.setTaskScheduler(taskScheduler());
 		for (QualityGuard qualityGuard : qualityGuardService.findAll()) {
-			if(qualityGuard.isIsShedule() != null && qualityGuard.isIsShedule()) {
+			if(qualityGuard.isIsSchedule() != null && qualityGuard.isIsSchedule()) {
 				scheduleService.scheduleQualityGuard(qualityGuard);
 			}
 		}

@@ -3,10 +3,10 @@ package org.quality.guard.analysis.repository;
 import java.util.List;
 
 import org.quality.guard.analysis.domain.QualityGuard;
-import org.springframework.stereotype.Repository;
-
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 
 /**

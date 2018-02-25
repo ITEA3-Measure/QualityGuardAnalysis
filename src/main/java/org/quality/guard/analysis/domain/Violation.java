@@ -37,9 +37,12 @@ public class Violation implements Serializable {
     @Column(name = "violation_status")
     private GuardStatus violationStatus;
 
-    @ManyToOne
-    private QualityGuard qualityGuard;
+    @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL, mappedBy = "violation")
+    private QualityGuard actualQualityGuard;
 
+	@ManyToOne
+    private QualityGuard qualityGuard;
+    
     @OneToMany(mappedBy = "violation")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -92,7 +95,15 @@ public class Violation implements Serializable {
     public void setViolationStatus(GuardStatus violationStatus) {
         this.violationStatus = violationStatus;
     }
+    
+    public QualityGuard getActualQualityGuard() {
+		return actualQualityGuard;
+	}
 
+	public void setActualQualityGuard(QualityGuard actualQualityGuard) {
+		this.actualQualityGuard = actualQualityGuard;
+	}
+    
     public QualityGuard getQualityGuard() {
         return qualityGuard;
     }

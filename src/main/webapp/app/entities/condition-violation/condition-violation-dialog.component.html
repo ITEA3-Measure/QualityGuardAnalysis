@@ -27,17 +27,17 @@
         </div>
 
         <div class="form-group">
+            <label class="form-control-label" for="field_guardCondition">Guard Condition</label>
+            <select class="form-control" id="field_guardCondition" name="guardCondition" [(ngModel)]="conditionViolation.guardCondition" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="guardConditionOption.id === conditionViolation.guardCondition?.id ? conditionViolation.guardCondition : guardConditionOption" *ngFor="let guardConditionOption of guardconditions; trackBy: trackGuardConditionById">{{guardConditionOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
             <label class="form-control-label" for="field_violation">Violation</label>
             <select class="form-control" id="field_violation" name="violation" [(ngModel)]="conditionViolation.violation" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="violationOption.id === conditionViolation.violation?.id ? conditionViolation.violation : violationOption" *ngFor="let violationOption of violations; trackBy: trackViolationById">{{violationOption.id}}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" for="field_guardCondition">Guard Condition</label>
-            <select class="form-control" id="field_guardCondition" name="guardCondition" [(ngModel)]="conditionViolation.guardCondition">
-                <option [ngValue]="null"></option>
-                <option [ngValue]="guardConditionOption.id === conditionViolation.guardCondition?.id ? conditionViolation.guardCondition : guardConditionOption" *ngFor="let guardConditionOption of guardconditions; trackBy: trackGuardConditionById">{{guardConditionOption.id}}</option>
             </select>
         </div>
     </div>

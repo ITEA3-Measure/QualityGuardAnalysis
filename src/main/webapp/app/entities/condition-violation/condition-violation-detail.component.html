@@ -12,16 +12,16 @@
         <dd>
             <span>{{conditionViolation.conditionStatus}}</span>
         </dd>
-        <dt><span>Violation</span></dt>
-        <dd>
-            <div *ngIf="conditionViolation.violation">
-                <a [routerLink]="['/violation', conditionViolation.violation?.id]">{{conditionViolation.violation?.id}}</a>
-            </div>
-        </dd>
         <dt><span>Guard Condition</span></dt>
         <dd>
             <div *ngIf="conditionViolation.guardCondition">
                 <a [routerLink]="['/guard-condition', conditionViolation.guardCondition?.id]">{{conditionViolation.guardCondition?.id}}</a>
+            </div>
+        </dd>
+        <dt><span>Violation</span></dt>
+        <dd>
+            <div *ngIf="conditionViolation.violation">
+                <a [routerLink]="['/violation', conditionViolation.violation?.id]">{{conditionViolation.violation?.id}}</a>
             </div>
         </dd>
     </dl>

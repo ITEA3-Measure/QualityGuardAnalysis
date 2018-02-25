@@ -27,7 +27,6 @@
             <select class="form-control" name="combinationMode" [(ngModel)]="qualityGuard.combinationMode" id="field_combinationMode" >
                 <option value="OR">OR</option>
                 <option value="AND">AND</option>
-                <option value="NA">NA</option>
             </select>
         </div>
         <div class="form-group">
@@ -36,12 +35,9 @@
                 [(ngModel)]="qualityGuard.measureProjectId" />
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_guardStatus">Guard Status</label>
-            <select class="form-control" name="guardStatus" [(ngModel)]="qualityGuard.guardStatus" id="field_guardStatus" >
-                <option value="SUCCESS">SUCCESS</option>
-                <option value="WARNING">WARNING</option>
-                <option value="ERROR">ERROR</option>
-            </select>
+            <label class="form-control-label" for="field_isSchedule">Is Schedule</label>
+            <input type="checkbox" class="form-control" name="isSchedule" id="field_isSchedule"
+                [(ngModel)]="qualityGuard.isSchedule" />
         </div>
 
         <div class="form-group">

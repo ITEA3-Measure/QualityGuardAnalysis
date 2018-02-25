@@ -49,7 +49,7 @@ public class QualityGuardResource {
         if (qualityGuard.getId() != null) {
             throw new BadRequestAlertException("A new qualityGuard cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        qualityGuard.setIsShedule(false);
+        qualityGuard.setIsSchedule(false);
         QualityGuard result = qualityGuardRepository.save(qualityGuard);
         return ResponseEntity.created(new URI("/api/quality-guards/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

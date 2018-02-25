@@ -32,11 +32,10 @@ public class ConditionViolation implements Serializable {
     private GuardStatus conditionStatus;
 
     @ManyToOne
-    private Violation violation;
-
-    @OneToOne
-    @JoinColumn(unique = true)
     private GuardCondition guardCondition;
+
+    @ManyToOne
+    private Violation violation;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -73,19 +72,6 @@ public class ConditionViolation implements Serializable {
         this.conditionStatus = conditionStatus;
     }
 
-    public Violation getViolation() {
-        return violation;
-    }
-
-    public ConditionViolation violation(Violation violation) {
-        this.violation = violation;
-        return this;
-    }
-
-    public void setViolation(Violation violation) {
-        this.violation = violation;
-    }
-
     public GuardCondition getGuardCondition() {
         return guardCondition;
     }
@@ -97,6 +83,19 @@ public class ConditionViolation implements Serializable {
 
     public void setGuardCondition(GuardCondition guardCondition) {
         this.guardCondition = guardCondition;
+    }
+
+    public Violation getViolation() {
+        return violation;
+    }
+
+    public ConditionViolation violation(Violation violation) {
+        this.violation = violation;
+        return this;
+    }
+
+    public void setViolation(Violation violation) {
+        this.violation = violation;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

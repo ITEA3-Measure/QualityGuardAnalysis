@@ -30,7 +30,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.quality.guard.analysis.domain.enumeration.CombinationMode;
-import org.quality.guard.analysis.domain.enumeration.GuardStatus;
 /**
  * Test class for the QualityGuardResource REST controller.
  *
@@ -52,8 +51,8 @@ public class QualityGuardResourceIntTest {
     private static final Long DEFAULT_MEASURE_PROJECT_ID = 1L;
     private static final Long UPDATED_MEASURE_PROJECT_ID = 2L;
 
-    private static final GuardStatus DEFAULT_GUARD_STATUS = GuardStatus.SUCCESS;
-    private static final GuardStatus UPDATED_GUARD_STATUS = GuardStatus.WARNING;
+    private static final Boolean DEFAULT_IS_SCHEDULE = false;
+    private static final Boolean UPDATED_IS_SCHEDULE = true;
 
     @Autowired
     private QualityGuardRepository qualityGuardRepository;
@@ -97,7 +96,7 @@ public class QualityGuardResourceIntTest {
             .description(DEFAULT_DESCRIPTION)
             .combinationMode(DEFAULT_COMBINATION_MODE)
             .measureProjectId(DEFAULT_MEASURE_PROJECT_ID)
-            .guardStatus(DEFAULT_GUARD_STATUS);
+            .isSchedule(DEFAULT_IS_SCHEDULE);
         return qualityGuard;
     }
 
@@ -125,7 +124,7 @@ public class QualityGuardResourceIntTest {
         assertThat(testQualityGuard.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testQualityGuard.getCombinationMode()).isEqualTo(DEFAULT_COMBINATION_MODE);
         assertThat(testQualityGuard.getMeasureProjectId()).isEqualTo(DEFAULT_MEASURE_PROJECT_ID);
-        assertThat(testQualityGuard.getGuardStatus()).isEqualTo(DEFAULT_GUARD_STATUS);
+        assertThat(testQualityGuard.isIsSchedule()).isEqualTo(DEFAULT_IS_SCHEDULE);
     }
 
     @Test
@@ -162,7 +161,7 @@ public class QualityGuardResourceIntTest {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].combinationMode").value(hasItem(DEFAULT_COMBINATION_MODE.toString())))
             .andExpect(jsonPath("$.[*].measureProjectId").value(hasItem(DEFAULT_MEASURE_PROJECT_ID)))
-            .andExpect(jsonPath("$.[*].guardStatus").value(hasItem(DEFAULT_GUARD_STATUS.toString())));
+            .andExpect(jsonPath("$.[*].isSchedule").value(hasItem(DEFAULT_IS_SCHEDULE.booleanValue())));
     }
 
     @Test
@@ -180,7 +179,7 @@ public class QualityGuardResourceIntTest {
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.combinationMode").value(DEFAULT_COMBINATION_MODE.toString()))
             .andExpect(jsonPath("$.measureProjectId").value(DEFAULT_MEASURE_PROJECT_ID))
-            .andExpect(jsonPath("$.guardStatus").value(DEFAULT_GUARD_STATUS.toString()));
+            .andExpect(jsonPath("$.isSchedule").value(DEFAULT_IS_SCHEDULE.booleanValue()));
     }
 
     @Test
@@ -207,7 +206,7 @@ public class QualityGuardResourceIntTest {
             .description(UPDATED_DESCRIPTION)
             .combinationMode(UPDATED_COMBINATION_MODE)
             .measureProjectId(UPDATED_MEASURE_PROJECT_ID)
-            .guardStatus(UPDATED_GUARD_STATUS);
+            .isSchedule(UPDATED_IS_SCHEDULE);
 
         restQualityGuardMockMvc.perform(put("/api/quality-guards")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -222,7 +221,7 @@ public class QualityGuardResourceIntTest {
         assertThat(testQualityGuard.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testQualityGuard.getCombinationMode()).isEqualTo(UPDATED_COMBINATION_MODE);
         assertThat(testQualityGuard.getMeasureProjectId()).isEqualTo(UPDATED_MEASURE_PROJECT_ID);
-        assertThat(testQualityGuard.getGuardStatus()).isEqualTo(UPDATED_GUARD_STATUS);
+        assertThat(testQualityGuard.isIsSchedule()).isEqualTo(UPDATED_IS_SCHEDULE);
     }
 
     @Test

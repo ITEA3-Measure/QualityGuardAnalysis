@@ -9,8 +9,8 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { ConditionViolation } from './condition-violation.model';
 import { ConditionViolationPopupService } from './condition-violation-popup.service';
 import { ConditionViolationService } from './condition-violation.service';
-import { Violation, ViolationService } from '../violation';
 import { GuardCondition, GuardConditionService } from '../guard-condition';
+import { Violation, ViolationService } from '../violation';
 import { ResponseWrapper } from '../../shared';
 
 @Component({
@@ -22,37 +22,26 @@ export class ConditionViolationDialogComponent implements OnInit {
     conditionViolation: ConditionViolation;
     isSaving: boolean;
 
-    violations: Violation[];
-
     guardconditions: GuardCondition[];
+
+    violations: Violation[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private conditionViolationService: ConditionViolationService,
-        private violationService: ViolationService,
         private guardConditionService: GuardConditionService,
+        private violationService: ViolationService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
+        this.guardConditionService.query()
+            .subscribe((res: ResponseWrapper) => { this.guardconditions = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
         this.violationService.query()
             .subscribe((res: ResponseWrapper) => { this.violations = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
-        this.guardConditionService
-            .query({filter: 'conditionviolation-is-null'})
-            .subscribe((res: ResponseWrapper) => {
-                if (!this.conditionViolation.guardCondition || !this.conditionViolation.guardCondition.id) {
-                    this.guardconditions = res.json;
-                } else {
-                    this.guardConditionService
-                        .find(this.conditionViolation.guardCondition.id)
-                        .subscribe((subRes: GuardCondition) => {
-                            this.guardconditions = [subRes].concat(res.json);
-                        }, (subRes: ResponseWrapper) => this.onError(subRes.json));
-                }
-            }, (res: ResponseWrapper) => this.onError(res.json));
     }
 
     clear() {
@@ -89,11 +78,11 @@ export class ConditionViolationDialogComponent implements OnInit {
         this.jhiAlertService.error(error.message, null, null);
     }
 
-    trackViolationById(index: number, item: Violation) {
+    trackGuardConditionById(index: number, item: GuardCondition) {
         return item.id;
     }
 
-    trackGuardConditionById(index: number, item: GuardCondition) {
+    trackViolationById(index: number, item: Violation) {
         return item.id;
     }
 }

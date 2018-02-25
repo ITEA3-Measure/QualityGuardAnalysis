@@ -38,7 +38,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="guard_status" type="varchar(255)">
+            <column name="is_schedule" type="bit">
                 <constraints nullable="true" />
             </column>
             <column name="violation_id" type="bigint">

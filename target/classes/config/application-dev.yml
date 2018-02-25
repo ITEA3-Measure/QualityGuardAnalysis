@@ -40,7 +40,7 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/qualityguardanalysis
+        url: jdbc:mysql://localhost:3306/QualityGuardAnalysis
         username: root
         password: root
         hikari:

@@ -58,14 +58,16 @@ public class MeasureStorage {
 		return timeAgo;
 	}
 	
-	public List<Map> getMeasureValue(String index, String type, String analysisAgregation) throws UnknownHostException {
-		List<Map> measureValues = new ArrayList<>();
+	public List<Object> getMeasureValue(String index, String type, String field, String analysisAgregation) throws UnknownHostException {
+		List<Object> measureValues = new ArrayList<>();
 		TransportClient client = this.getConnection();
+		index += "-alias";
 		SearchResponse response = client.prepareSearch(index)
 		        .setTypes(type)
 		        .setSearchType(SearchType.QUERY_AND_FETCH)
 		        .addSort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)
 		        .setScroll(new TimeValue(60000))
+		        .setFetchSource(new String[]{field}, null)
 		        .setQuery(QueryBuilders.rangeQuery("postDate")
 		        .from(new Date().getTime() - this.getTimeAgo(analysisAgregation)).to(new Date().getTime()))
 		        .setSize(100)
@@ -74,7 +76,8 @@ public class MeasureStorage {
 		do {
 		    for (SearchHit hit : response.getHits().getHits()) {
 		    	Map map = hit.getSource();
-				measureValues.add(map);
+		    	measureValues.add(map.get("value"));
+		    	//System.out.println(map.get("value"));
 		    }
 		    response = client.prepareSearchScroll(response.getScrollId()).setScroll(new TimeValue(60000)).execute().actionGet();
 		} while(response.getHits().getHits().length != 0);
@@ -84,9 +87,11 @@ public class MeasureStorage {
 	
 	public static void main(String[] args) throws UnknownHostException {
 		MeasureStorage ms = new MeasureStorage();
-		List<Map> measureValues = ms.getMeasureValue("randommeasure-alias", "M1", AnalysisAgregation.MOY_DD.toString());
+		List<Object> measureValues = ms.getMeasureValue("randommeasure", "M1", "value", AnalysisAgregation.MOY_DD.toString());
 		System.out.println("Size " + measureValues.size());
-		System.out.println(measureValues.get(0));
+//		for (Object obj : measureValues) {
+//			System.out.println(obj);
+//		}
 	}
 
 	

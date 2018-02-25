@@ -2,14 +2,7 @@ import { BaseEntity } from './../../shared';
 
 export const enum CombinationMode {
     'OR',
-    'AND',
-    'NA'
-}
-
-export const enum GuardStatus {
-    'SUCCESS',
-    'WARNING',
-    'ERROR'
+    'AND'
 }
 
 export class QualityGuard implements BaseEntity {
@@ -19,10 +12,11 @@ export class QualityGuard implements BaseEntity {
         public description?: string,
         public combinationMode?: CombinationMode,
         public measureProjectId?: number,
-        public guardStatus?: GuardStatus,
+        public isSchedule?: boolean,
         public violation?: BaseEntity,
         public violations?: BaseEntity[],
         public guardConditions?: BaseEntity[],
     ) {
+        this.isSchedule = false;
     }
 }

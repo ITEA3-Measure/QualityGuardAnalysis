@@ -13,8 +13,6 @@ import java.util.Objects;
 
 import org.quality.guard.analysis.domain.enumeration.CombinationMode;
 
-import org.quality.guard.analysis.domain.enumeration.GuardStatus;
-
 /**
  * A QualityGuard.
  */
@@ -42,23 +40,19 @@ public class QualityGuard implements Serializable {
     @Column(name = "measure_project_id")
     private Long measureProjectId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "guard_status")
-    private GuardStatus guardStatus;
-    
-    @Column(name = "is_shedule")
-    private Boolean isShedule;
+    @Column(name = "is_schedule")
+    private Boolean isSchedule;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="violation_id", unique = true)
     private Violation violation;
 
-    @OneToMany(mappedBy = "qualityGuard")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "qualityGuard", cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Violation> violations = new HashSet<>();
 
-    @OneToMany(mappedBy = "qualityGuard")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "qualityGuard", cascade = CascadeType.ALL)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<GuardCondition> guardConditions = new HashSet<>();
@@ -124,32 +118,19 @@ public class QualityGuard implements Serializable {
         this.measureProjectId = measureProjectId;
     }
 
-    public GuardStatus getGuardStatus() {
-        return guardStatus;
+    public Boolean isIsSchedule() {
+        return isSchedule;
     }
 
-    public QualityGuard guardStatus(GuardStatus guardStatus) {
-        this.guardStatus = guardStatus;
+    public QualityGuard isSchedule(Boolean isSchedule) {
+        this.isSchedule = isSchedule;
         return this;
     }
 
-    public void setGuardStatus(GuardStatus guardStatus) {
-        this.guardStatus = guardStatus;
-    }
-    
-    public Boolean isIsShedule() {
-        return isShedule;
+    public void setIsSchedule(Boolean isSchedule) {
+        this.isSchedule = isSchedule;
     }
 
-    public QualityGuard isShedule(Boolean isShedule) {
-        this.isShedule = isShedule;
-        return this;
-    }
-
-    public void setIsShedule(Boolean isShedule) {
-        this.isShedule = isShedule;
-    }
-    
     public Violation getViolation() {
         return violation;
     }
@@ -242,7 +223,7 @@ public class QualityGuard implements Serializable {
             ", description='" + getDescription() + "'" +
             ", combinationMode='" + getCombinationMode() + "'" +
             ", measureProjectId=" + getMeasureProjectId() +
-            ", guardStatus='" + getGuardStatus() + "'" +
+            ", isSchedule='" + isIsSchedule() + "'" +
             "}";
     }
 }

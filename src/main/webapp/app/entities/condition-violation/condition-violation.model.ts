@@ -11,8 +11,8 @@ export class ConditionViolation implements BaseEntity {
         public id?: number,
         public conditionValue?: string,
         public conditionStatus?: GuardStatus,
-        public violation?: BaseEntity,
         public guardCondition?: BaseEntity,
+        public violation?: BaseEntity,
     ) {
     }
 }

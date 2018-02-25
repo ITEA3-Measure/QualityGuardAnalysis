@@ -46,7 +46,7 @@ public class GuardCondition implements Serializable {
     @Column(name = "interval_agregation")
     private AnalysisAgregation intervalAgregation;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private QualityGuard qualityGuard;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

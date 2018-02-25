@@ -16,7 +16,7 @@
         {
             "fieldName": "operator",
             "fieldType": "GuardOperator",
-            "fieldValues": "SUPERIOR,INFERIOR,EQUAL"
+            "fieldValues": "SUPERIOR,INFERIOR"
         },
         {
             "fieldName": "errorValue",

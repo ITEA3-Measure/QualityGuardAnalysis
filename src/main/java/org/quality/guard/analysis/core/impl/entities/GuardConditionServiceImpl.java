@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.quality.guard.analysis.core.api.entities.IGuardConditionService;
 import org.quality.guard.analysis.domain.GuardCondition;
+import org.quality.guard.analysis.domain.QualityGuard;
 import org.quality.guard.analysis.repository.GuardConditionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class GuardConditionServiceImpl implements IGuardConditionService{
-	private final Logger log = LoggerFactory.getLogger(QualityGuardServiceImpl.class);
+	private final Logger log = LoggerFactory.getLogger(GuardConditionServiceImpl.class);
 	
 	@Inject
 	private GuardConditionRepository guardConditionRepository;

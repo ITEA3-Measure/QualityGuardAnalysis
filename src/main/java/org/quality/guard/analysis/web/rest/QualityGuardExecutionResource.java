@@ -26,8 +26,8 @@ public class QualityGuardExecutionResource {
 			Long qualityGuardId = Long.valueOf(id);
 			if(!schedulingService.isShedule(qualityGuardId)) {
 				QualityGuard qualityGuard = qualityGuardService.findOne(qualityGuardId);
-				if (!qualityGuard.isIsShedule()) {
-					qualityGuard.setIsShedule(true);
+				if (!qualityGuard.isIsSchedule()) {
+					qualityGuard.isSchedule(true);
 					qualityGuardService.update(qualityGuard);
 				}
 				return schedulingService.scheduleQualityGuard(qualityGuard);
@@ -42,8 +42,8 @@ public class QualityGuardExecutionResource {
 			Long qualityGuardId = Long.valueOf(id);
 			if(schedulingService.isShedule(qualityGuardId)) {
 				QualityGuard qualityGuard = qualityGuardService.findOne(qualityGuardId);
-				if (qualityGuard.isIsShedule()) {
-					qualityGuard.setIsShedule(false);
+				if (qualityGuard.isIsSchedule()) {
+					qualityGuard.isSchedule(false);
 					qualityGuardService.update(qualityGuard);
 				}
 				return schedulingService.removeQualityGuard(qualityGuardId);

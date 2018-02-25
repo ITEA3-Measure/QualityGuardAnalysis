@@ -2,8 +2,7 @@ import { BaseEntity } from './../../shared';
 
 export const enum GuardOperator {
     'SUPERIOR',
-    'INFERIOR',
-    'EQUAL'
+    'INFERIOR'
 }
 
 export const enum AnalysisAgregation {

@@ -8,8 +8,8 @@ import { QualityGuardAnalysisTestModule } from '../../../test.module';
 import { ConditionViolationDialogComponent } from '../../../../../../main/webapp/app/entities/condition-violation/condition-violation-dialog.component';
 import { ConditionViolationService } from '../../../../../../main/webapp/app/entities/condition-violation/condition-violation.service';
 import { ConditionViolation } from '../../../../../../main/webapp/app/entities/condition-violation/condition-violation.model';
-import { ViolationService } from '../../../../../../main/webapp/app/entities/violation';
 import { GuardConditionService } from '../../../../../../main/webapp/app/entities/guard-condition';
+import { ViolationService } from '../../../../../../main/webapp/app/entities/violation';
 
 describe('Component Tests', () => {
 
@@ -25,8 +25,8 @@ describe('Component Tests', () => {
                 imports: [QualityGuardAnalysisTestModule],
                 declarations: [ConditionViolationDialogComponent],
                 providers: [
-                    ViolationService,
                     GuardConditionService,
+                    ViolationService,
                     ConditionViolationService
                 ]
             })

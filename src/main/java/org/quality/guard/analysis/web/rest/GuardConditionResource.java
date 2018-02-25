@@ -1,24 +1,31 @@
 package org.quality.guard.analysis.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import org.quality.guard.analysis.domain.GuardCondition;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
+import org.quality.guard.analysis.domain.GuardCondition;
 import org.quality.guard.analysis.repository.GuardConditionRepository;
 import org.quality.guard.analysis.web.rest.dto.MeasureInstanceType;
 import org.quality.guard.analysis.web.rest.dto.MeasureInstanceTypeManagement;
 import org.quality.guard.analysis.web.rest.errors.BadRequestAlertException;
 import org.quality.guard.analysis.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import com.codahale.metrics.annotation.Timed;
+
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing GuardCondition.
@@ -118,6 +125,7 @@ public class GuardConditionResource {
         guardConditionRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+    
     @GetMapping("/guard-conditions/by-project/{idProject}")
     @Timed
     public List<GuardCondition> getGuardConditionByProjectId(@PathVariable Long idProject){

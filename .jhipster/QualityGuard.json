@@ -34,16 +34,15 @@
         {
             "fieldName": "combinationMode",
             "fieldType": "CombinationMode",
-            "fieldValues": "OR,AND,NA"
+            "fieldValues": "OR,AND"
         },
         {
             "fieldName": "measureProjectId",
             "fieldType": "Integer"
         },
         {
-            "fieldName": "guardStatus",
-            "fieldType": "GuardStatus",
-            "fieldValues": "SUCCESS,WARNING,ERROR"
+            "fieldName": "isSchedule",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20180124150824",

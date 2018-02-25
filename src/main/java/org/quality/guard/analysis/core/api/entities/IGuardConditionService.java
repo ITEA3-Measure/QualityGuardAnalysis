@@ -16,7 +16,7 @@ public interface IGuardConditionService {
 	GuardCondition save(GuardCondition guardCondition);
 
     /**
-     * Get all the guardConditions.
+     * Get all the guardCondition.
      * @return the list of entities
      */
     List<GuardCondition> findAll();
@@ -33,4 +33,5 @@ public interface IGuardConditionService {
      * @param id the id of the entity
      */
     void delete(Long id);
+    
 }

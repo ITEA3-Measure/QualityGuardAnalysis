@@ -30,12 +30,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="guard_condition_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <column name="violation_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <column name="guard_condition_id" type="bigint">
-                <constraints unique="true" nullable="true" />
-            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         

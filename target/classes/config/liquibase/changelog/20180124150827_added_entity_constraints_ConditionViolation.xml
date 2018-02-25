@@ -8,17 +8,17 @@
     -->
     <changeSet id="20180124150827-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="violation_id"
-                                 baseTableName="condition_violation"
-                                 constraintName="fk_condition_violation_violation_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="violation"/>
-
         <addForeignKeyConstraint baseColumnNames="guard_condition_id"
                                  baseTableName="condition_violation"
                                  constraintName="fk_condition_violation_guard_condition_id"
                                  referencedColumnNames="id"
                                  referencedTableName="guard_condition"/>
+
+        <addForeignKeyConstraint baseColumnNames="violation_id"
+                                 baseTableName="condition_violation"
+                                 constraintName="fk_condition_violation_violation_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="violation"/>
 
     </changeSet>
 </databaseChangeLog>

@@ -2,18 +2,16 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "many-to-one",
+            "relationshipName": "guardCondition",
+            "otherEntityName": "guardCondition",
+            "otherEntityField": "id"
+        },
+        {
             "relationshipName": "violation",
             "otherEntityName": "violation",
             "relationshipType": "many-to-one",
             "otherEntityField": "id"
-        },
-        {
-            "relationshipType": "one-to-one",
-            "relationshipName": "guardCondition",
-            "otherEntityName": "guardCondition",
-            "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "conditionViolation"
         }
     ],
     "fields": [
