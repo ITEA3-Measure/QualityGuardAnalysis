@@ -36,6 +36,8 @@ export class QualityGuardDialogComponent implements OnInit {
     private jhiAlertService: JhiAlertService,
     private qualityGuardService: QualityGuardService,
     private guardConditionService: GuardConditionService,
+//    private violationService: ViolationService,
+//    private conditionViolationService: ConditionViolationService,
     private eventManager: JhiEventManager,
     public activeModal: NgbActiveModal
   ) {

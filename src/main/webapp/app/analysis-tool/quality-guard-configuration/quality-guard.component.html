@@ -44,8 +44,8 @@
                                 </td>
                                 <td>
                                 	<button type="btn-group flex-btn-group-container"
-										replaceUrl="true" queryParamsHandling="merge"
-										class="btn btn-danger">
+										[ngClass]="(qualityGuard.isSchedule == true)?'btn btn-danger':'btn btn-success'"
+										(click)="(qualityGuard.isSchedule == true)?stopScheduling(qualityGuard.id):startScheduling(qualityGuard.id)">
 										<i class="fa fa-power-off" aria-hidden="true"></i>
 									</button>
 								</td>
