@@ -32,7 +32,7 @@
 							<tr *ngFor='let qualityGuard of qualityGuardsByProject; let i = index' [attr.data-index]='i'>
 								<td><span>{{qualityGuard.qualityGuardName}} </span></td>
 								<td>
-                                    <div *ngFor='let guardCondition of allGuardConditions; let j = index' [attr.data-index]='j'>
+                                    <div *ngFor='let guardCondition of guardConditionsByProject let j = index' [attr.data-index]='j'>
 										<div *ngIf="guardCondition.qualityGuard.id == qualityGuard.id">
 											<span>{{guardCondition.measureInstance}}</span>
 		                                    <span>{{guardCondition.operator}}</span>(
@@ -44,7 +44,7 @@
                                 </td>
                                 <td>
                                 	<button type="btn-group flex-btn-group-container"
-										[ngClass]="(qualityGuard.isSchedule == true)?'btn btn-danger':'btn btn-success'"
+										[ngClass]="(qualityGuard.isSchedule == true)?'btn btn-danger btn-sm':'btn btn-success btn-sm'"
 										(click)="(qualityGuard.isSchedule == true)?stopScheduling(qualityGuard.id):startScheduling(qualityGuard.id)">
 										<i class="fa fa-power-off" aria-hidden="true"></i>
 									</button>
@@ -55,14 +55,14 @@
 												[routerLink]="[ '', { outlets: { popup: 'quality-guard-configuration/' + qualityGuard.id +'/edit' } }]"
 												replaceUrl="true"
                                 				queryParamsHandling="merge"
-                                				class="btn btn-primary float-right">
+                                				class="btn btn-primary btn-sm float-right">
 											<i class="fa fa-pencil" aria-hidden="true"></i>
 										</button>
 										<button type="submit"
 												[routerLink]="[ '', { outlets: { popup: 'quality-guard-configuration/' + qualityGuard.id + '/delete' } }]"
 												replaceUrl="true"
                                 				queryParamsHandling="merge"
-                                				class="btn btn-primary float-right">
+                                				class="btn btn-primary btn-sm float-right">
 											<i class="fa fa-trash" aria-hidden="true"></i>
 										</button>
 									</div>

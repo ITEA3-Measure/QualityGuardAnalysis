@@ -33,7 +33,7 @@ public class QualityGuardExecutionResource {
 				return schedulingService.scheduleQualityGuard(qualityGuard);
 			}
 		}
-		return null;
+		return false;
 	}
 	
 	@RequestMapping(value="/stop", method = RequestMethod.GET)

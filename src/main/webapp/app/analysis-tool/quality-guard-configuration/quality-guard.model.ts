@@ -6,12 +6,6 @@ export const enum CombinationMode {
     'AND'
 }
 
-export const enum GuardStatus {
-    'SUCCESS',
-    'WARNING',
-    'ERROR'
-}
-
 export class QualityGuard implements BaseEntity {
     constructor(
         public id?: number,
@@ -19,6 +13,7 @@ export class QualityGuard implements BaseEntity {
         public description?: string,
         public combinationMode?: CombinationMode,
         public measureProjectId?: number,
+        public isSchedule?: boolean,
         public guardConditions?: GuardCondition[],
     ) {
     }

@@ -2,7 +2,7 @@ package org.quality.guard.analysis.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import org.quality.guard.analysis.domain.ConditionViolation;
-
+import org.quality.guard.analysis.domain.GuardCondition;
 import org.quality.guard.analysis.repository.ConditionViolationRepository;
 import org.quality.guard.analysis.web.rest.errors.BadRequestAlertException;
 import org.quality.guard.analysis.web.rest.util.HeaderUtil;
@@ -115,5 +115,12 @@ public class ConditionViolationResource {
         log.debug("REST request to delete ConditionViolation : {}", id);
         conditionViolationRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    @GetMapping("/condition-violations/by-project/{idProject}/by-quality-guard/{idQualityGuard}")
+    @Timed
+    public List<ConditionViolation> getConditionViolationByProjectIdAndQualityGuardId(@PathVariable Long idProject,@PathVariable Long idQualityGuard){
+    	log.debug("REST request to get GuardConditions by project : {} "+ idProject + " {} "+ idQualityGuard);
+    	return conditionViolationRepository.getConditionViolationByProjectIdAndQualityGuardId(idProject, idQualityGuard);
     }
 }

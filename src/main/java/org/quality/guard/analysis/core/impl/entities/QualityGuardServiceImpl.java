@@ -7,8 +7,10 @@ import javax.inject.Inject;
 import org.quality.guard.analysis.core.api.entities.IQualityGuardService;
 import org.quality.guard.analysis.domain.GuardCondition;
 import org.quality.guard.analysis.domain.QualityGuard;
+import org.quality.guard.analysis.repository.ConditionViolationRepository;
 import org.quality.guard.analysis.repository.GuardConditionRepository;
 import org.quality.guard.analysis.repository.QualityGuardRepository;
+import org.quality.guard.analysis.repository.ViolationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,9 @@ public class QualityGuardServiceImpl implements IQualityGuardService{
 	
 	@Inject
 	private GuardConditionRepository guardConditionRepository;
+	
+	@Inject
+	private ViolationRepository violationRepository;
 	
 	/**
      * Save a qualityGuard.
@@ -79,7 +84,7 @@ public class QualityGuardServiceImpl implements IQualityGuardService{
 	public void delete(Long id) {
 		QualityGuard qualityGuard = qualityGuardRepository.findOne(id);
 		Long projectId = qualityGuardRepository.getProjectIdByQualityGuard(id);
-		
+		violationRepository.delete(qualityGuard.getViolation());
 		for (GuardCondition guardCondition : guardConditionRepository.getGuardConditionByProjectIdAndQualityGuardId(projectId, id)) {
 			guardConditionRepository.delete(guardCondition);
 		}

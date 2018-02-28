@@ -43,12 +43,11 @@ public class QualityGuard implements Serializable {
     @Column(name = "is_schedule")
     private Boolean isSchedule;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name="violation_id", unique = true)
     private Violation violation;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "qualityGuard", cascade = CascadeType.ALL)
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Violation> violations = new HashSet<>();
 

@@ -1,22 +1,29 @@
 package org.quality.guard.analysis.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import org.quality.guard.analysis.domain.Violation;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
+import org.quality.guard.analysis.domain.Violation;
 import org.quality.guard.analysis.repository.ViolationRepository;
 import org.quality.guard.analysis.web.rest.errors.BadRequestAlertException;
 import org.quality.guard.analysis.web.rest.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing Violation.
@@ -115,5 +122,12 @@ public class ViolationResource {
         log.debug("REST request to delete Violation : {}", id);
         violationRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    
+    @GetMapping("/violations/by-project/{idProject}/by-quality-guard/{idQualityGuard}")
+    @Timed
+    public List<Violation> getViolationByProjectIdAndQualityGuardId(@PathVariable Long idProject,@PathVariable Long idQualityGuard){
+    	log.debug("REST request to get GuardConditions by project : {} "+ idProject + " {} "+ idQualityGuard);
+    	return violationRepository.getViolationByProjectIdAndQualityGuardId(idProject, idQualityGuard);
     }
 }

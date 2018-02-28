@@ -38,9 +38,11 @@ public class Violation implements Serializable {
     private GuardStatus violationStatus;
 
     @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL, mappedBy = "violation")
+    @JsonIgnore
     private QualityGuard actualQualityGuard;
 
 	@ManyToOne
+	@JsonIgnore
     private QualityGuard qualityGuard;
     
     @OneToMany(mappedBy = "violation")

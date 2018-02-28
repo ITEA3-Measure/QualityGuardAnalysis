@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ResponseWrapper } from '../../shared';
 import { GuardCondition } from './guard-condition.model';
 import { GuardConditionService } from './guard-condition.service';
+import { QualityGuardSchedulingService } from './quality-guard-scheduling.service';
 import { QualityGuardService } from './quality-guard.service';
 import { QualityGuard } from './quality-guard.model';
 import { JhiAlertService } from 'ng-jhipster';
@@ -14,19 +15,22 @@ import { JhiAlertService } from 'ng-jhipster';
 export class QualityGuardComponent implements OnInit {
 
   qualityGuardsByProject: Array<QualityGuard> = [];
-  allGuardConditions: Array<GuardCondition> = [];
+  guardConditionsByProject: Array<GuardCondition> = [];
   qualityGuard: QualityGuard = {};
   errorMessage: any;
   projectId: number;
+  interval: any;
 
   constructor(
         private router: Router,
         private qualityGuardService: QualityGuardService,
         private guardConditionService: GuardConditionService,
+        private qualityGuardSchedulingService: QualityGuardSchedulingService,
         private jhiAlertService: JhiAlertService,
   ) {
     // this.route.params.subscribe((res) => console.log(res.id));
     this.projectId = +router.parseUrl(router.url).root.children['primary'].segments[1].path;
+    router.events.subscribe((event) => this.loadAll());
   }
 
   ngOnInit() {
@@ -42,10 +46,24 @@ export class QualityGuardComponent implements OnInit {
     );
     this.guardConditionService.getGuardConditionsByProjectId(this.projectId).subscribe(
       (resGC: ResponseWrapper) => {
-        this.allGuardConditions = resGC.json;
+        this.guardConditionsByProject = resGC.json;
       },
       (resGC: ResponseWrapper) => this.onError(resGC.json)
     );
+  }
+
+  startScheduling(id: number) {
+    this.qualityGuardSchedulingService.startQualityGuardSchedule(id).subscribe((response) => {
+      console.log('isStarted ' + response)
+      this.loadAll();
+    });
+  }
+
+  stopScheduling(id: number) {
+    this.qualityGuardSchedulingService.stopQualityGuardSchedule(id).subscribe((response) => {
+      console.log('isStopped ' + response)
+      this.loadAll();
+    });
   }
 
   private onError(error) {
