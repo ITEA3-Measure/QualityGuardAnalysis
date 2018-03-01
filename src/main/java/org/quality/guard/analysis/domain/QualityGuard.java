@@ -52,7 +52,6 @@ public class QualityGuard implements Serializable {
     private Set<Violation> violations = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "qualityGuard", cascade = CascadeType.ALL)
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<GuardCondition> guardConditions = new HashSet<>();
 

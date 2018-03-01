@@ -10,6 +10,8 @@ import java.util.Objects;
 
 import org.quality.guard.analysis.domain.enumeration.GuardOperator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.quality.guard.analysis.domain.enumeration.AnalysisAgregation;
 
 /**
@@ -46,7 +48,8 @@ public class GuardCondition implements Serializable {
     @Column(name = "interval_agregation")
     private AnalysisAgregation intervalAgregation;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
+    @JsonIgnore
     private QualityGuard qualityGuard;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
