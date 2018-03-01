@@ -1,7 +1,5 @@
 package org.quality.guard.analysis.web.rest;
 
-import javax.inject.Inject;
-
 import org.quality.guard.analysis.core.api.entities.IQualityGuardService;
 import org.quality.guard.analysis.domain.QualityGuard;
 import org.quality.guard.analysis.service.qualityguardengine.api.ISchedulingService;
@@ -9,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.inject.Inject;
 
 @RestController
 @RequestMapping(value = "api/quality-guard/sheduling")

@@ -7,6 +7,8 @@ export class ConditionViolation implements BaseEntity {
         public conditionValue?: string,
         public conditionStatus?: GuardStatus,
         public guardCondition?: BaseEntity,
+        public measureInstance?: string,
+        public measureField?: string,
         public violation?: BaseEntity,
     ) {
     }

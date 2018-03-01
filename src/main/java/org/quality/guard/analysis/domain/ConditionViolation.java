@@ -31,9 +31,12 @@ public class ConditionViolation implements Serializable {
     @Column(name = "condition_status")
     private GuardStatus conditionStatus;
 
-    @ManyToOne
-    private GuardCondition guardCondition;
-
+    @Column(name = "measure_instance")
+    private String measureInstance;
+    
+    @Column(name = "measure_field")
+    private String measureField;
+    
     @ManyToOne
     private Violation violation;
 
@@ -71,18 +74,31 @@ public class ConditionViolation implements Serializable {
     public void setConditionStatus(GuardStatus conditionStatus) {
         this.conditionStatus = conditionStatus;
     }
-
-    public GuardCondition getGuardCondition() {
-        return guardCondition;
+    
+    public String getMeasureInstance() {
+        return measureInstance;
     }
 
-    public ConditionViolation guardCondition(GuardCondition guardCondition) {
-        this.guardCondition = guardCondition;
+    public ConditionViolation measureInstance(String measureInstance) {
+        this.measureInstance = measureInstance;
         return this;
     }
 
-    public void setGuardCondition(GuardCondition guardCondition) {
-        this.guardCondition = guardCondition;
+    public void setMeasureInstance(String measureInstance) {
+        this.measureInstance = measureInstance;
+    }
+    
+    public String getMeasureField() {
+        return measureField;
+    }
+
+    public ConditionViolation measureField(String measureField) {
+        this.measureField = measureField;
+        return this;
+    }
+
+    public void setMeasureField(String measureField) {
+        this.measureField = measureField;
     }
 
     public Violation getViolation() {

@@ -15,4 +15,15 @@
     <include file="config/liquibase/changelog/20180124150826_added_entity_constraints_Violation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180124150827_added_entity_constraints_ConditionViolation.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <changeSet author="aboudeffa (generated)" id="1519905976469-1">
+        <addColumn tableName="condition_violation">
+            <column name="measure_field" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="aboudeffa (generated)" id="1519905976469-3">
+        <dropForeignKeyConstraint baseTableName="condition_violation" constraintName="fk_condition_violation_guard_condition_id"/>
+    </changeSet>
+    <changeSet author="aboudeffa (generated)" id="1519905976469-4">
+        <dropColumn columnName="guard_condition_id" tableName="condition_violation"/>
+    </changeSet>
 </databaseChangeLog>

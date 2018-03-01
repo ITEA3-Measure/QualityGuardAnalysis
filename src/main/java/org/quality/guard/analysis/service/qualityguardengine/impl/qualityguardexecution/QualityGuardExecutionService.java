@@ -52,16 +52,16 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 	
 	@Override
 	public void executeQualityGuard(QualityGuard qualityGuard) throws UnknownHostException {
-//		System.out.println("Execution : " +qualityGuard.getQualityGuardName());
-//		List<EvaluatedGuardCondition> conditions = new ArrayList<>();
-//		for(GuardCondition guardCondition : qualityGuard.getGuardConditions()) {
-//			List<Object> values = getMeasureValue("randommeasure", guardCondition.getMeasureInstance(), guardCondition.getMeasureField(), guardCondition.getIntervalAgregation().name());
-//			int average = calculateAverage(values);
-//			conditions.add(new EvaluatedGuardCondition(guardCondition, average));
-//		}
-//
-// 		GuardStatus newStatus = evaluateQualityGuard(qualityGuard, conditions);
-//		manageViolations(qualityGuard, newStatus, conditions);
+		System.out.println("Execution : " +qualityGuard.getQualityGuardName());
+		List<EvaluatedGuardCondition> conditions = new ArrayList<>();
+		for(GuardCondition guardCondition : qualityGuard.getGuardConditions()) {
+			List<Object> values = getMeasureValue("randommeasure", guardCondition.getMeasureInstance(), guardCondition.getMeasureField(), guardCondition.getIntervalAgregation().name());
+			int average = calculateAverage(values);
+			conditions.add(new EvaluatedGuardCondition(guardCondition, average));
+		}
+
+ 		GuardStatus newStatus = evaluateQualityGuard(qualityGuard, conditions);
+		manageViolations(qualityGuard, newStatus, conditions);
 	}
 	
 	private GuardStatus evaluateQualityGuard(QualityGuard qualityGuard, List<EvaluatedGuardCondition> conditions) {
@@ -135,7 +135,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 			qualityGuard.setViolation(violation);
 			qualityGuardService.update(qualityGuard);
 			for (EvaluatedGuardCondition evaluatedGuardCondition : conditions) {
-				conditionViolationService.save(this.getConditionViolation(String.valueOf(evaluatedGuardCondition.getValue()), newStatus, violation, evaluatedGuardCondition.getGuardCondition()));
+				conditionViolationService.save(this.getConditionViolation(String.valueOf(evaluatedGuardCondition.getValue()), newStatus, violation));
 			}
 		}
 		
@@ -167,12 +167,11 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 		return violation;
 	}
 	
-	public ConditionViolation getConditionViolation(String conditionValue, GuardStatus guardStatus, Violation violation, GuardCondition guardCondition) {
+	public ConditionViolation getConditionViolation(String conditionValue, GuardStatus guardStatus, Violation violation) {
 		ConditionViolation conditionViolation = new ConditionViolation();
 		conditionViolation.setConditionValue(conditionValue);
 		conditionViolation.setConditionStatus(guardStatus);
 		conditionViolation.setViolation(violation);
-		conditionViolation.setGuardCondition(guardCondition);
 		return conditionViolation;		
 	}
 	
