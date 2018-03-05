@@ -20,9 +20,6 @@
         	<div formArrayName="rules">
         		<div *ngFor="let rule of form.controls.rules.controls;let i=index;">
         			<div [formGroupName]="i">
-        				<div class="form-group" [hidden]="true">
-				            <input type="text" class="form-control" id="id" name="id" readonly />
-				        </div>
 				        <div *ngIf="!qualityGuard.id;else other_case">
 				        	<select class="form-control-customize" name="measureInstance" id="field_measureInstance" formControlName="measureInstance" (change)="dropDownChanged($event.target.value)">
 				            	<option *ngFor="let measure of allMeasureInstanceType" value="{{measure.instanceName}}">{{measure.instanceName}}</option>

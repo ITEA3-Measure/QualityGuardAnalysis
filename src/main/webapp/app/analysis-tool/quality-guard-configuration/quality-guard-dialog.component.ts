@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Router, ActivatedRoute } from '@angular/router'
+import {Router, ActivatedRoute} from '@angular/router'
 import {Response} from '@angular/http';
 import {FormGroup, FormArray, FormBuilder} from '@angular/forms';
 import {ResponseWrapper} from '../../shared';
@@ -8,7 +8,7 @@ import {Observable} from 'rxjs/Observable';
 import {QualityGuard} from './quality-guard.model';
 import {GuardCondition} from './guard-condition.model';
 import {GuardConditionService} from './guard-condition.service';
-import { MeasureInstanceType } from './measure-instance-type.model';
+import {MeasureInstanceType} from './measure-instance-type.model';
 import {QualityGuardPopupService} from './quality-guard-popup.service';
 import {QualityGuardService} from './quality-guard.service';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
@@ -23,7 +23,7 @@ export class QualityGuardDialogComponent implements OnInit {
   form: FormGroup;
   guardConditionsbyProject: Array<GuardCondition>;
   qualityGuard: QualityGuard;
-  // guardCondition: GuardCondition;
+  removedGuardConditionRules: Array<GuardCondition>;
   guardConditionsbyQualityGuard: Array<GuardCondition>;
   allMeasureInstanceType: Array<MeasureInstanceType>;
   allFieldNames: Array<string> = [];
@@ -36,8 +36,6 @@ export class QualityGuardDialogComponent implements OnInit {
     private jhiAlertService: JhiAlertService,
     private qualityGuardService: QualityGuardService,
     private guardConditionService: GuardConditionService,
-//    private violationService: ViolationService,
-//    private conditionViolationService: ConditionViolationService,
     private eventManager: JhiEventManager,
     public activeModal: NgbActiveModal
   ) {
@@ -46,7 +44,6 @@ export class QualityGuardDialogComponent implements OnInit {
 
   ngOnInit() {
     this.loadAllData();
-    // debugger
     this.retrieveMeasureInstanceType();
     this.buildForm();
     this.isSaving = false;
@@ -115,30 +112,34 @@ export class QualityGuardDialogComponent implements OnInit {
 
   removeRule(i) {
     const control = <FormArray>this.form.get('rules');
+    this.removedGuardConditionRules = this.removedGuardConditionRules || [];
+    this.removedGuardConditionRules.push(control.value[i] as GuardCondition);
     control.removeAt(i);
   }
 
-  addRuleData(result: QualityGuard) {
-    const formArray = this.form.controls.rules as FormArray;
-    let guardConditionsData: Array<GuardCondition>;
-    guardConditionsData = formArray.value;
-    for (const item of guardConditionsData) {
-      item.qualityGuard = result;
-      this.subscribeToSaveResponseGuardCondition(
-      this.guardConditionService.create(item));
-    }
-  }
+  //  addRuleData(result: QualityGuard) {
+  //    const formArray = this.form.controls.rules as FormArray;
+  //    let guardConditionsData: Array<GuardCondition>;
+  //    guardConditionsData = formArray.value;
+  //    this.qualityGuard.guardConditions = guardConditionsData;
+  //    for (const item of guardConditionsData) {
+  //      item.qualityGuard = result;
+  //      this.subscribeToSaveResponseGuardCondition(
+  //      this.guardConditionService.create(item));
+  //    }
+  //  }
 
-  updateRuleData(result: QualityGuard) {
-    const formArray = this.form.controls.rules as FormArray;
-    let guardConditionsData: Array<GuardCondition>;
-    guardConditionsData = formArray.value;
-    for (const item of guardConditionsData) {
-      item.qualityGuard = result;
-      this.subscribeToSaveResponseGuardCondition(
-      this.guardConditionService.update(item));
-    }
-  }
+  //  updateRuleData(result: QualityGuard) {
+  //    const formArray = this.form.controls.rules as FormArray;
+  //    let guardConditionsData: Array<GuardCondition>;
+  //    guardConditionsData = formArray.value;
+  //    // this.qualityGuard.guardConditions = guardConditionsData;
+  //    for (const item of guardConditionsData) {
+  //      item.qualityGuard = result;
+  //      this.subscribeToSaveResponseGuardCondition(
+  //      this.guardConditionService.update(item));
+  //    }
+  //  }
 
   editRuleData() {
     const formArray = this.form.controls.rules as FormArray;
@@ -152,7 +153,7 @@ export class QualityGuardDialogComponent implements OnInit {
         errorValue: x.errorValue,
         intervalAgregation: x.intervalAgregation
       }))
-    })
+    });
   }
 
   dropDownChanged(val: any) {
@@ -174,6 +175,8 @@ export class QualityGuardDialogComponent implements OnInit {
    */
   save() {
     this.isSaving = true;
+    const formArray = this.form.controls.rules as FormArray;
+    this.qualityGuard.guardConditions = formArray.value;
     if (this.qualityGuard.id !== undefined) {
       this.subscribeToSaveResponseQualityGuard(
         this.qualityGuardService.update(this.qualityGuard));
@@ -182,6 +185,22 @@ export class QualityGuardDialogComponent implements OnInit {
       this.subscribeToSaveResponseQualityGuard(
         this.qualityGuardService.create(this.qualityGuard));
     }
+    if (this.removedGuardConditionRules !== undefined) {
+      this.removeGuardConditionRules();
+      console.log('remove GC')
+    }
+  }
+
+  removeGuardConditionRules() {
+    this.removedGuardConditionRules.forEach((guardCondition) => {
+      this.guardConditionService.delete(guardCondition.id).subscribe((response) => {
+        this.eventManager.broadcast({
+          name: 'guardConditionListModification',
+          content: 'Deleted a guardCondition'
+        });
+        // this.activeModal.dismiss(false);
+      })
+    });
   }
 
   private subscribeToSaveResponseQualityGuard(result: Observable<QualityGuard>) {
@@ -189,27 +208,27 @@ export class QualityGuardDialogComponent implements OnInit {
       this.onSaveSuccessQualityGuard(res), (res: Response) => this.onSaveError());
   }
 
-  private subscribeToSaveResponseGuardCondition(result: Observable<GuardCondition>) {
-    result.subscribe((res: GuardCondition) =>
-      this.onSaveSuccessGuardCondition(res), (res: Response) => this.onSaveError());
-  }
+//  private subscribeToSaveResponseGuardCondition(result: Observable<GuardCondition>) {
+//    result.subscribe((res: GuardCondition) =>
+//      this.onSaveSuccessGuardCondition(res), (res: Response) => this.onSaveError());
+//  }
 
   private onSaveSuccessQualityGuard(result: QualityGuard) {
     this.eventManager.broadcast({name: 'qualityGuardListModification', content: 'OK'});
     this.isSaving = false;
     this.activeModal.dismiss(result);
-    if (this.qualityGuard.id !== undefined) {
-      this.updateRuleData(result);
-    } else {
-      this.addRuleData(result);
-    }
+    //    if (this.qualityGuard.id !== undefined) {
+    //      this.updateRuleData(result);
+    //    } else {
+    //      this.addRuleData(result);
+    //    }
   }
 
-  private onSaveSuccessGuardCondition(result: GuardCondition) {
-    this.eventManager.broadcast({name: 'guardConditionListModification', content: 'OK'});
-    this.isSaving = false;
-    this.activeModal.dismiss(result);
-  }
+//  private onSaveSuccessGuardCondition(result: GuardCondition) {
+//    this.eventManager.broadcast({name: 'guardConditionListModification', content: 'OK'});
+//    this.isSaving = false;
+//    this.activeModal.dismiss(result);
+//  }
 
   private onSaveError() {
     this.isSaving = false;

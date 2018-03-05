@@ -20,6 +20,11 @@
             <column name="measure_field" type="varchar(255)"/>
         </addColumn>
     </changeSet>
+    <changeSet author="aboudeffa (generated)" id="1519905976469-2">
+        <addColumn tableName="condition_violation">
+            <column name="measure_instance" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
     <changeSet author="aboudeffa (generated)" id="1519905976469-3">
         <dropForeignKeyConstraint baseTableName="condition_violation" constraintName="fk_condition_violation_guard_condition_id"/>
     </changeSet>

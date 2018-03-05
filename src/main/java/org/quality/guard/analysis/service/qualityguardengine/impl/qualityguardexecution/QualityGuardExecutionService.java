@@ -135,7 +135,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 			qualityGuard.setViolation(violation);
 			qualityGuardService.update(qualityGuard);
 			for (EvaluatedGuardCondition evaluatedGuardCondition : conditions) {
-				conditionViolationService.save(this.getConditionViolation(String.valueOf(evaluatedGuardCondition.getValue()), newStatus, violation));
+				conditionViolationService.save(this.getConditionViolation(String.valueOf(evaluatedGuardCondition.getValue()), newStatus, violation, evaluatedGuardCondition.getGuardCondition().getMeasureInstance(), evaluatedGuardCondition.getGuardCondition().getMeasureField()));
 			}
 		}
 		
@@ -147,7 +147,6 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 	public void closeViolationIssue(QualityGuard qualityGuard) {
 		Violation currentViolation = qualityGuard.getViolation();
 		if (currentViolation != null) {
-			// Close violation issue
 			currentViolation.setIncidentEndDate(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
 			violationService.update(currentViolation);
 		}
@@ -167,11 +166,13 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 		return violation;
 	}
 	
-	public ConditionViolation getConditionViolation(String conditionValue, GuardStatus guardStatus, Violation violation) {
+	public ConditionViolation getConditionViolation(String conditionValue, GuardStatus guardStatus, Violation violation, String measureInstance, String measureField) {
 		ConditionViolation conditionViolation = new ConditionViolation();
 		conditionViolation.setConditionValue(conditionValue);
 		conditionViolation.setConditionStatus(guardStatus);
 		conditionViolation.setViolation(violation);
+		conditionViolation.setMeasureInstance(measureInstance);
+		conditionViolation.setMeasureField(measureField);
 		return conditionViolation;		
 	}
 	

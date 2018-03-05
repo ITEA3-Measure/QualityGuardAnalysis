@@ -1,6 +1,8 @@
 package org.quality.guard.analysis.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+
+import org.quality.guard.analysis.domain.GuardCondition;
 import org.quality.guard.analysis.domain.QualityGuard;
 
 import org.quality.guard.analysis.repository.QualityGuardRepository;
@@ -49,6 +51,9 @@ public class QualityGuardResource {
         if (qualityGuard.getId() != null) {
             throw new BadRequestAlertException("A new qualityGuard cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        for(GuardCondition guardCondition : qualityGuard.getGuardConditions()) {
+        	guardCondition.setQualityGuard(qualityGuard);
+        }
         qualityGuard.setIsSchedule(false);
         QualityGuard result = qualityGuardRepository.save(qualityGuard);
         return ResponseEntity.created(new URI("/api/quality-guards/" + result.getId()))
@@ -71,6 +76,9 @@ public class QualityGuardResource {
         log.debug("REST request to update QualityGuard : {}", qualityGuard);
         if (qualityGuard.getId() == null) {
             return createQualityGuard(qualityGuard);
+        }
+        for(GuardCondition guardCondition : qualityGuard.getGuardConditions()) {
+        	guardCondition.setQualityGuard(qualityGuard);
         }
         QualityGuard result = qualityGuardRepository.save(qualityGuard);
         return ResponseEntity.ok()

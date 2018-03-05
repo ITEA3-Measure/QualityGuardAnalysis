@@ -12,4 +12,6 @@ export * from './quality-guard-dialog.component';
 export * from './quality-guard-delete-dialog.component'
 export * from './quality-guard.component';
 export * from './project-history.component';
+export * from './quality-guard-dashboard.component';
+export * from './incident-history-dashboard.component';
 export * from './quality-guard.route';

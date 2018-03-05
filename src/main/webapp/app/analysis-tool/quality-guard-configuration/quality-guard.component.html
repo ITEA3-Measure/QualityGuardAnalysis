@@ -29,23 +29,25 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr *ngFor='let qualityGuard of qualityGuardsByProject; let i = index' [attr.data-index]='i'>
+							<tr *ngFor="let qualityGuard of qualityGuardsByProject">
 								<td><span>{{qualityGuard.qualityGuardName}} </span></td>
 								<td>
-                                    <div *ngFor='let guardCondition of guardConditionsByProject let j = index' [attr.data-index]='j'>
-										<div *ngIf="guardCondition.qualityGuard.id == qualityGuard.id">
-											<span>{{guardCondition.measureInstance}}</span>
-		                                    <span>{{guardCondition.operator}}</span>(
-		                                    <span>{{guardCondition.warningValue}}</span>
-		                                    <span>{{guardCondition.errorValue}}</span>)
-										</div>
-										<div *ngIf="qualityGuard.combinationMode && i==j"><span>{{qualityGuard.combinationMode}}</span></div>
-                                    </div>
-                                </td>
+									<div style="white-space:nowrap;">
+										<span *ngFor="let guardCondition of qualityGuard.guardConditions;let i = index" [attr.data-index]="i">
+											<span>
+												<span>{{guardCondition.measureInstance}}</span> <span>{{guardCondition.operator}}</span> (
+												<span>{{guardCondition.warningValue}}</span> | <span>{{guardCondition.errorValue}}</span> )
+											</span> 
+											<span *ngIf="qualityGuard.combinationMode && qualityGuard.guardConditions.length != i+1">
+												<span>{{qualityGuard.combinationMode}}</span>
+											</span>
+										</span>
+									</div>
+								</td>
                                 <td>
                                 	<button type="btn-group flex-btn-group-container"
-										[ngClass]="(qualityGuard.isSchedule == true)?'btn btn-danger btn-sm':'btn btn-success btn-sm'"
-										(click)="(qualityGuard.isSchedule == true)?stopScheduling(qualityGuard.id):startScheduling(qualityGuard.id)">
+										[ngClass]="qualityGuard.isSchedule == false ? 'btn btn-danger btn-sm' : 'btn btn-success btn-sm'"
+										(click)="qualityGuard.isSchedule == false ? startScheduling(qualityGuard.id) : stopScheduling(qualityGuard.id)">
 										<i class="fa fa-power-off" aria-hidden="true"></i>
 									</button>
 								</td>

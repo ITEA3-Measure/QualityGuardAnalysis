@@ -81,11 +81,11 @@ public class QualityGuardServiceImpl implements IQualityGuardService{
      * Delete the  qualityGuard by id.
      * @param id the id of the entity
      */
+	
 	public void delete(Long id) {
 		QualityGuard qualityGuard = qualityGuardRepository.findOne(id);
-		Long projectId = qualityGuardRepository.getProjectIdByQualityGuard(id);
 		violationRepository.delete(qualityGuard.getViolation());
-		for (GuardCondition guardCondition : guardConditionRepository.getGuardConditionByProjectIdAndQualityGuardId(projectId, id)) {
+		for (GuardCondition guardCondition : qualityGuard.getGuardConditions()) {
 			guardConditionRepository.delete(guardCondition);
 		}
 		qualityGuardRepository.delete(qualityGuard);

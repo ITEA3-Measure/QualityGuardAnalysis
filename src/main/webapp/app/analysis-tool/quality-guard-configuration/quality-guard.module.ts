@@ -4,7 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { QualityGuardAnalysisSharedModule } from '../../shared';
 import { ConditionViolationService } from './condition-violation.service';
 import { GuardConditionService } from './guard-condition.service';
+import { IncidentHistoryDashboardComponent } from './incident-history-dashboard.component';
 import { ProjectHistoryComponent } from './project-history.component';
+import { QualityGuardDashboardComponent } from './quality-guard-dashboard.component';
 import { QualityGuardPopupComponent, QualityGuardDialogComponent} from './quality-guard-dialog.component';
 import { QualityGuardDeleteDialogComponent, QualityGuardDeletePopupComponent } from './quality-guard-delete-dialog.component';
 import { QualityGuardPopupService } from './quality-guard-popup.service';
@@ -32,7 +34,9 @@ const ENTITY_STATES = [
         QualityGuardPopupComponent,
         QualityGuardDeleteDialogComponent,
         QualityGuardDeletePopupComponent,
-        ProjectHistoryComponent
+        ProjectHistoryComponent,
+        QualityGuardDashboardComponent,
+        IncidentHistoryDashboardComponent
     ],
     entryComponents: [
         QualityGuardComponent,

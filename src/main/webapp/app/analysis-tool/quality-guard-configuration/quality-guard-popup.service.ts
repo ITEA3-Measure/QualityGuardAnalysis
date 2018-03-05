@@ -34,14 +34,9 @@ export class QualityGuardPopupService {
             }
             if (id) {
                 this.qualityGuardService.find(id).subscribe((qualityGuard) => {
-                  this.guardConditionService.getGuardConditionsByProjectIdAndQualityGuardId(this.projectId, qualityGuard.id).subscribe(
-                    (res: ResponseWrapper) => {
-                      this.guardConditionsbyQualityGuard = res.json;
+                      this.guardConditionsbyQualityGuard = qualityGuard.guardConditions;
                       this.ngbModalRef = this.qualityGuardModalRef(component, qualityGuard, this.guardConditionsbyQualityGuard);
                       resolve(this.ngbModalRef);
-                    },
-                    (res: ResponseWrapper) => this.onError(res.json)
-                  );
                 });
             } else {
                 // setTimeout used as a workaround for getting ExpressionChangedAfterItHasBeenCheckedError

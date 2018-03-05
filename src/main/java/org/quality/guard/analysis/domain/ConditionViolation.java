@@ -10,6 +10,8 @@ import java.util.Objects;
 
 import org.quality.guard.analysis.domain.enumeration.GuardStatus;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * A ConditionViolation.
  */
@@ -38,6 +40,7 @@ public class ConditionViolation implements Serializable {
     private String measureField;
     
     @ManyToOne
+    @JsonIgnore
     private Violation violation;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

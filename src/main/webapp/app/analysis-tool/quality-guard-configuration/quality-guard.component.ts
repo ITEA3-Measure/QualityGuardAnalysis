@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { ResponseWrapper } from '../../shared';
 import { GuardCondition } from './guard-condition.model';
 import { GuardConditionService } from './guard-condition.service';

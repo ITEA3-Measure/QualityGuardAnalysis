@@ -45,9 +45,8 @@ public class Violation implements Serializable {
 	@JsonIgnore
     private QualityGuard qualityGuard;
     
-    @OneToMany(mappedBy = "violation")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @OneToMany(fetch = FetchType.EAGER, cascade =  CascadeType.ALL, mappedBy = "violation")
+    @Cache(usage = CacheConcurrencyStrategy.NONE)
     private Set<ConditionViolation> conditionViolations = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
