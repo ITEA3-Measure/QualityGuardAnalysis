@@ -1,0 +1,28 @@
+<div class="container">
+	<div class="card">
+		<div class="card-header"><h5>Project Quality Issues</h5></div>
+		<div class="card-block">
+			<div class="container-fluid">
+				<div class="table-responsive" *ngIf="qualityGuardsByProject">
+					<table class="table table-bordered">
+						<tbody *ngFor='let qualityGuard of qualityGuardsByProject; let i = index' [attr.data-index]='i'>
+							<tr>
+								<td>
+									<div>
+										<span [ngClass]="qualityGuard.violations[qualityGuard.violations.length-1].violationStatus.toString() == 'WARNING' ? 'btn btn-warning btn-circle btn-rounded' : 'btn btn-danger btn-circle btn-rounded'"></span>
+										<span>{{qualityGuard.violations[qualityGuard.violations.length-1].incidentStartDate}}</span>
+									</div>
+								</td>
+								<td>
+									<div>
+										<span>{{qualityGuard.qualityGuardName}}</span>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>			
+		</div>
+	</div>
+</div>

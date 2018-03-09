@@ -10,10 +10,84 @@
 	</div>
 
 	<div class="card">
-		<div class="card-header">Featured</div>
+		<div class="card-header"><h5>Project Quality Guard</h5></div>
 		<div class="card-block">
-			<h4 class="card-title">Special title treatment</h4>
-			
+			<div class="container-fluid">
+				<div class="table-responsive" *ngIf="qualityGuardsByProject">
+					<table class="table table-bordered">
+						<tbody *ngFor='let qualityGuard of qualityGuardsByProject; let i = index' [attr.data-index]='i'>
+							<tr>
+								<td>
+									<div style="margin-top: 4%;">
+										<span>{{qualityGuard.qualityGuardName}}</span>
+									</div>
+								</td>
+								<td>
+									<div><small>Last incident start</small></div>
+<!-- 									<div><small>{{qualityGuard.violations[qualityGuard.violations.length-1].incidentStartDate}}</small></div> -->
+								</td>
+                                <td>
+                                	<div>
+                                		<span *ngFor='let incident of incidentsHistory'>
+											<span [ngClass]="{'btn btn-success btn-circle' : incident.guardStatus=='SUCCESS'}"></span>
+											<span [ngClass]="{'btn btn-warning btn-circle' : incident.guardStatus=='WARNING'}"></span>
+											<span [ngClass]="{'btn btn-danger btn-circle' : incident.guardStatus=='ERROR'}"></span>
+											<span class="dateStatus">{{incident.dateStatus}}</span>
+	                                	</span>
+	                                	<span> 
+											<select class="dropDownPosition" name="intervalAgregation" id="field_intervalAgregation" ngModel (ngModelChange)="getIncidentStatus(qualityGuard, 'MOY_DD')">
+												<option value=""></option>
+												<option value="MOY_MIN">MOY_MIN</option>
+												<option value="MOY_HH">MOY_HH</option>
+												<option value="MOY_DD">MOY_DD</option>
+												<option value="MOY_WW">MOY_WW</option>
+												<option value="MOY_MM">MOY_MM</option>
+											</select>
+										</span>
+                                	</div>
+                                </td>
+								<td>
+									<button class="btn btn-primary btn-sm" (click)="toggleRowDetails(i)">
+			                            <span *ngIf="rowSelected!=i; else close">
+			                            	<i class="fa fa-arrow-up" aria-hidden="true"></i>
+			                            </span>
+			                            <ng-template #close>
+			                            	<i class="fa fa-arrow-down" aria-hidden="true"></i>
+			                            </ng-template>
+			                        </button>
+								</td>
+							</tr>
+							<tr *ngIf="rowSelected == i">
+<!-- 			                    <td [colSpan]="4"> -->
+<!-- 			                    	<div> -->
+<!-- 				                    	<small>Rule: </small> -->
+<!-- 				                    	<small *ngFor='let guardCondition of guardConditionsByProject let j = index' [attr.data-index]='j'> -->
+<!-- 											<span *ngIf="guardCondition.qualityGuard.id == qualityGuard.id"> -->
+<!-- 												<span>{{guardCondition.measureInstance}}</span> <span>{{guardCondition.operator}}</span>( -->
+<!-- 												<span>{{guardCondition.warningValue}}</span> | <span>{{guardCondition.errorValue}}</span>) -->
+<!-- 										</span> -->
+<!-- 											<span *ngIf="qualityGuard.combinationMode && i == j"><span>{{qualityGuard.combinationMode}}</span></span> -->
+<!-- 	                                    </small> -->
+<!--                                     </div> -->
+<!--                                     <br/> -->
+<!--                                     <table class="table"> -->
+<!--                                     	<thead> -->
+<!--                                     		<th>Incidents</th> -->
+<!--                                     		<th></th> -->
+<!--                                     	</thead> -->
+<!-- 										<tbody> -->
+<!-- 											<tr *ngFor="let violation of qualityGuard.violations"> -->
+<!-- 												<td>{{violation.incidentStartDate}}</td> -->
+<!-- 												<td><span [ngClass]="violation.violationStatus.toString() == 'WARNING' ? 'btn btn-warning btn-circle' : 'btn btn-danger btn-circle'"></span></td> -->
+<!-- 											</tr> -->
+<!-- 										</tbody> -->
+<!-- 									</table> -->
+<!-- 								</td> -->
+			                </tr>
+						</tbody>
+					</table>
+				</div>
+			</div>			
 		</div>
 	</div>
 </div>

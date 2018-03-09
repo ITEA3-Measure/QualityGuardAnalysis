@@ -9,6 +9,7 @@ import { ProjectHistoryComponent } from './project-history.component';
 import { QualityGuardDashboardComponent } from './quality-guard-dashboard.component';
 import { QualityGuardPopupComponent, QualityGuardDialogComponent} from './quality-guard-dialog.component';
 import { QualityGuardDeleteDialogComponent, QualityGuardDeletePopupComponent } from './quality-guard-delete-dialog.component';
+import { QualityGuardIncidentHistoryService } from './quality-guard-incident-history.service';
 import { QualityGuardPopupService } from './quality-guard-popup.service';
 import { QualityGuardSchedulingService } from './quality-guard-scheduling.service';
 import { QualityGuardComponent } from './quality-guard.component';
@@ -51,7 +52,8 @@ const ENTITY_STATES = [
         GuardConditionService,
         ViolationService,
         ConditionViolationService,
-        QualityGuardSchedulingService
+        QualityGuardSchedulingService,
+        QualityGuardIncidentHistoryService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

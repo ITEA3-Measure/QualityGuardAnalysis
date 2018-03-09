@@ -1,6 +1,7 @@
 export * from './quality-guard.model';
 export * from './guard-condition.model';
 export * from './measure-instance-type.model';
+export * from './incident-status.model';
 export * from './violation.model';
 export * from './condition-violation.model';
 export * from './quality-guard-popup.service';

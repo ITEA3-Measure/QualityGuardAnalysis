@@ -39,16 +39,16 @@ import org.springframework.stereotype.Service;
 public class QualityGuardExecutionService implements IQualityGuardExecutionService{
 
 	@Inject
-	IQualityGuardService qualityGuardService;
+	private IQualityGuardService qualityGuardService;
 	
 	@Inject
-	IGuardConditionService guardConditionService;
+	private IGuardConditionService guardConditionService;
 	
 	@Inject
-	IViolationService violationService;
+	private IViolationService violationService;
 	
 	@Inject
-	IConditionViolationService conditionViolationService;
+	private IConditionViolationService conditionViolationService;
 	
 	@Override
 	public void executeQualityGuard(QualityGuard qualityGuard) throws UnknownHostException {
@@ -130,7 +130,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 	}
 	
 	public Violation openViolationIssue(QualityGuard qualityGuard, GuardStatus newStatus, List<EvaluatedGuardCondition> conditions) {
-		Violation violation = violationService.save(getViolationObject(new SimpleDateFormat("dd-MM-yyyy").format(new Date()), null, newStatus, qualityGuard));
+		Violation violation = violationService.save(getViolationObject(new SimpleDateFormat("dd-M-yyyy hh:mm:ss").format(new Date()), null, newStatus, qualityGuard));
 		if(violation != null) {
 			qualityGuard.setViolation(violation);
 			qualityGuardService.update(qualityGuard);
@@ -147,15 +147,13 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 	public void closeViolationIssue(QualityGuard qualityGuard) {
 		Violation currentViolation = qualityGuard.getViolation();
 		if (currentViolation != null) {
-			currentViolation.setIncidentEndDate(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+			currentViolation.setIncidentEndDate(new SimpleDateFormat("dd-M-yyyy hh:mm:ss").format(new Date()));
 			violationService.update(currentViolation);
 		}
 		qualityGuard.setViolation(null);
 		qualityGuardService.update(qualityGuard);
 		System.out.println("Close Violation : " + qualityGuard.getQualityGuardName());
 	}
-	
-
 	
 	public Violation getViolationObject(String incidentStartDate, String incidentEndDate, GuardStatus violationStatus, QualityGuard qualityGuard) {
 		Violation violation = new Violation();
@@ -196,7 +194,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 		        .setScroll(new TimeValue(60000))
 		        .setFetchSource(new String[]{field}, null)
 		        .setQuery(QueryBuilders.rangeQuery("postDate")
-		        .from(new Date().getTime() - this.getTimeAgo(intervalAgregation)).to(new Date().getTime()))
+		        .from(new Date().getTime() - getTimeAgo(intervalAgregation)).to(new Date().getTime()))
 		        .setSize(100)
 		        .get();
 		

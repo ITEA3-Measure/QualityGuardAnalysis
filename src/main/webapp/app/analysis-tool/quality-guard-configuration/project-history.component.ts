@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResponseWrapper } from '../../shared/model/response-wrapper.model';
-import { GuardCondition } from './guard-condition.model';
-import { GuardConditionService } from './guard-condition.service';
+import { IncidentStatus } from './incident-status.model';
+import { QualityGuardIncidentHistoryService } from './quality-guard-incident-history.service';
 import { QualityGuard } from './quality-guard.model';
 import { QualityGuardService } from './quality-guard.service';
 import { JhiAlertService } from 'ng-jhipster';
@@ -14,17 +14,17 @@ import { JhiAlertService } from 'ng-jhipster';
 export class ProjectHistoryComponent implements OnInit {
 
   qualityGuardsByProject: Array<QualityGuard> = [];
-  guardConditionsByProject: Array<GuardCondition> = [];
+  incidentsHistory: Array<IncidentStatus> = [];
   errorMessage: any;
   projectId: number;
+  rowSelected: number;
 
   constructor(
         private router: Router,
         private qualityGuardService: QualityGuardService,
-        private guardConditionService: GuardConditionService,
+        private qualityGuardIncidentHistoryService: QualityGuardIncidentHistoryService,
         private jhiAlertService: JhiAlertService,
   ) {
-    // this.route.params.subscribe((res) => console.log(res.id));
     this.projectId = +router.parseUrl(router.url).root.children['primary'].segments[1].path;
   }
 
@@ -39,12 +39,25 @@ export class ProjectHistoryComponent implements OnInit {
       },
       (resQG: ResponseWrapper) => this.onError(resQG.json)
     );
-    this.guardConditionService.getGuardConditionsByProjectId(this.projectId).subscribe(
-      (resGC: ResponseWrapper) => {
-        this.guardConditionsByProject = resGC.json;
+  }
+
+  getIncidentStatus(qualityGuard: QualityGuard, interval: string) {
+    this.qualityGuardIncidentHistoryService.retrieveIncidentsHistory(qualityGuard.id, 'MOY_DD').subscribe(
+      (resGS: ResponseWrapper) => {
+        this.incidentsHistory = resGS.json;
       },
-      (resGC: ResponseWrapper) => this.onError(resGC.json)
+      (resGS: ResponseWrapper) => this.onError(resGS.json)
     );
+  }
+
+  public toggleRowDetails(rowId: number): void {
+    if (this.rowSelected === -1) {
+      this.rowSelected = rowId
+    } else if (this.rowSelected === rowId) {
+        this.rowSelected = -1
+      } else {
+        this.rowSelected = rowId
+      }
   }
 
   private onError(error) {
