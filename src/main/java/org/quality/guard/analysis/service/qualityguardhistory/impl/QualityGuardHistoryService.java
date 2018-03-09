@@ -2,7 +2,9 @@ package org.quality.guard.analysis.service.qualityguardhistory.impl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +15,9 @@ import org.quality.guard.analysis.domain.Violation;
 import org.quality.guard.analysis.domain.enumeration.GuardStatus;
 import org.quality.guard.analysis.service.qualityguardhistory.api.IQualityGuardHistoryService;
 import org.springframework.stereotype.Service;
+
+import static java.time.ZoneOffset.UTC;
+import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
 public class QualityGuardHistoryService implements IQualityGuardHistoryService {
@@ -35,11 +40,11 @@ public class QualityGuardHistoryService implements IQualityGuardHistoryService {
 				to = Date.from(now.minusDays(i).toInstant());
 				from = Date.from(now.minusDays(i+1).toInstant());
 			} if (intervalAgregation.equals("MOY_WW")) {
-				ZonedDateTime now = ZonedDateTime.now().truncatedTo(ChronoUnit.WEEKS).plusWeeks(1);
+				ZonedDateTime now = ZonedDateTime.now(UTC).with(DayOfWeek.MONDAY);				
 				to = Date.from(now.minusWeeks(i).toInstant());
 				from = Date.from(now.minusWeeks(i+1).toInstant());
 			} if (intervalAgregation.equals("MOY_MM")) {
-				ZonedDateTime now = ZonedDateTime.now().truncatedTo(ChronoUnit.MONTHS).plusMonths(1);
+				ZonedDateTime now = ZonedDateTime.now(UTC).truncatedTo(DAYS).withDayOfMonth(1);
 				to = Date.from(now.minusMonths(i).toInstant());
 				from = Date.from(now.minusMonths(i+1).toInstant());
 			}
@@ -73,7 +78,7 @@ public class QualityGuardHistoryService implements IQualityGuardHistoryService {
 		case "MOY_HH":
 			return new SimpleDateFormat("dd-MM HH").format(dateStatus);
 		case "MOY_DD":
-			return new SimpleDateFormat( "dd-MM").format(dateStatus);
+			return new SimpleDateFormat("dd-MM").format(dateStatus);
 		case "MOY_WW":
 			return new SimpleDateFormat("dd-MM").format(dateStatus);
 		case "MOY_MM":
