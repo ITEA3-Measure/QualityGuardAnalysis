@@ -42,7 +42,7 @@ export class ProjectHistoryComponent implements OnInit {
   }
 
   getIncidentStatus(qualityGuard: QualityGuard, interval: string) {
-    this.qualityGuardIncidentHistoryService.retrieveIncidentsHistory(qualityGuard.id, 'MOY_DD').subscribe(
+    this.qualityGuardIncidentHistoryService.retrieveIncidentsHistory(qualityGuard.id, interval).subscribe(
       (resGS: ResponseWrapper) => {
         this.incidentsHistory = resGS.json;
       },

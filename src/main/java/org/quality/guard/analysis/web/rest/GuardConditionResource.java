@@ -5,10 +5,12 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
+import javax.inject.Inject;
+
 import org.quality.guard.analysis.domain.GuardCondition;
+import org.quality.guard.analysis.integration.api.IMeasuresAccessService;
+import org.quality.guard.analysis.integration.impl.data.MeasureInstanceType;
 import org.quality.guard.analysis.repository.GuardConditionRepository;
-import org.quality.guard.analysis.web.rest.dto.MeasureInstanceType;
-import org.quality.guard.analysis.web.rest.dto.MeasureInstanceTypeManagement;
 import org.quality.guard.analysis.web.rest.errors.BadRequestAlertException;
 import org.quality.guard.analysis.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
@@ -33,6 +35,10 @@ import io.github.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class GuardConditionResource {
+	
+	
+	@Inject
+	private IMeasuresAccessService measurAccessService;
 
     private final Logger log = LoggerFactory.getLogger(GuardConditionResource.class);
 
@@ -133,9 +139,9 @@ public class GuardConditionResource {
     	return guardConditionRepository.getGuardConditionByProjectId(idProject);
     }
     
-    @GetMapping("/guard-conditions/measure-instance-type")
+    @GetMapping("/guard-conditions/measure-instance-type/by-project/{idProject}")
     @Timed
-    public List<MeasureInstanceType> getMeasureInstanceType(){
-    	return MeasureInstanceTypeManagement.getAllMeasureInstanceType();
+    public List<MeasureInstanceType> getMeasureInstanceType(@PathVariable Long idProject){
+    	return measurAccessService.getPlatformeMeasures(idProject);
     }
 }

@@ -54,8 +54,8 @@ export class GuardConditionService {
     /**
      *  Get MeasureInstanceType
      */
-    getMeasureInstanceType(): Observable<ResponseWrapper> {
-        return this.http.get(`${this.resourceUrl}/${this.measureInstanceType}`)
+    getMeasureInstanceType(idProject: number): Observable<ResponseWrapper> {
+        return this.http.get(`${this.resourceUrl}/${this.measureInstanceType}/${this.byProject}/${idProject}`)
             .map((res: Response) => this.convertResponse(res));
     }
 

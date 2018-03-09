@@ -2,6 +2,7 @@ package org.quality.guard.analysis;
 
 import org.quality.guard.analysis.config.ApplicationProperties;
 import org.quality.guard.analysis.config.DefaultProfileUtil;
+import org.quality.guard.analysis.integration.impl.QualityGuardRegistration;
 
 import io.github.jhipster.config.JHipsterConstants;
 
@@ -17,6 +18,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -31,6 +34,9 @@ public class QualityGuardAnalysisApp {
     private static final Logger log = LoggerFactory.getLogger(QualityGuardAnalysisApp.class);
 
     private final Environment env;
+    
+    @Inject
+    private QualityGuardRegistration registrationService;
 
     public QualityGuardAnalysisApp(Environment env) {
         this.env = env;
@@ -54,6 +60,8 @@ public class QualityGuardAnalysisApp {
             log.error("You have misconfigured your application! It should not " +
                 "run with both the 'dev' and 'cloud' profiles at the same time.");
         }
+        registrationService.registerAnalysisTool();
+        
     }
 
     /**

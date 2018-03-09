@@ -73,7 +73,7 @@ export class QualityGuardDialogComponent implements OnInit {
   }
 
   retrieveMeasureInstanceType() {
-    this.guardConditionService.getMeasureInstanceType().subscribe(
+    this.guardConditionService.getMeasureInstanceType(this.projectId).subscribe(
       (res: ResponseWrapper) => {
         this.allMeasureInstanceType = res.json;
       },

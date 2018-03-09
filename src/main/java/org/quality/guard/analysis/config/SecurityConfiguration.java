@@ -70,7 +70,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.OPTIONS, "/**")
             .antMatchers("/api/quality-guard/incident-history/**")
             .antMatchers("/api/quality-guard/sheduling/**")
-            .antMatchers("/api/guard-conditions/measure-instance-type")
+            .antMatchers("/api/guard-conditions/measure-instance-type/by-project/*")
             .antMatchers("/api/condition-violations/by-project/**")
             .antMatchers("/api/violations/by-project/**")
             .antMatchers("/api/quality-guards/by-project/*")

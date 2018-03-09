@@ -23,9 +23,9 @@
 									</div>
 								</td>
 								<td>
-									<div><small>Last incident start</small></div>
-<!-- 									<div><small>{{qualityGuard.violations[qualityGuard.violations.length-1].incidentStartDate}}</small></div> -->
+									<div><small>Last incident start date</small></div>
 								</td>
+								
                                 <td>
                                 	<div>
                                 		<span *ngFor='let incident of incidentsHistory'>
@@ -35,7 +35,7 @@
 											<span class="dateStatus">{{incident.dateStatus}}</span>
 	                                	</span>
 	                                	<span> 
-											<select class="dropDownPosition" name="intervalAgregation" id="field_intervalAgregation" ngModel (ngModelChange)="getIncidentStatus(qualityGuard, 'MOY_DD')">
+											<select class="dropDownPosition" name="intervalAgregation" id="field_intervalAgregation" (change)="getIncidentStatus(qualityGuard, $event.target.value)">
 												<option value=""></option>
 												<option value="MOY_MIN">MOY_MIN</option>
 												<option value="MOY_HH">MOY_HH</option>
@@ -58,31 +58,42 @@
 								</td>
 							</tr>
 							<tr *ngIf="rowSelected == i">
-<!-- 			                    <td [colSpan]="4"> -->
-<!-- 			                    	<div> -->
-<!-- 				                    	<small>Rule: </small> -->
-<!-- 				                    	<small *ngFor='let guardCondition of guardConditionsByProject let j = index' [attr.data-index]='j'> -->
-<!-- 											<span *ngIf="guardCondition.qualityGuard.id == qualityGuard.id"> -->
-<!-- 												<span>{{guardCondition.measureInstance}}</span> <span>{{guardCondition.operator}}</span>( -->
-<!-- 												<span>{{guardCondition.warningValue}}</span> | <span>{{guardCondition.errorValue}}</span>) -->
-<!-- 										</span> -->
-<!-- 											<span *ngIf="qualityGuard.combinationMode && i == j"><span>{{qualityGuard.combinationMode}}</span></span> -->
-<!-- 	                                    </small> -->
-<!--                                     </div> -->
-<!--                                     <br/> -->
-<!--                                     <table class="table"> -->
-<!--                                     	<thead> -->
-<!--                                     		<th>Incidents</th> -->
-<!--                                     		<th></th> -->
-<!--                                     	</thead> -->
-<!-- 										<tbody> -->
-<!-- 											<tr *ngFor="let violation of qualityGuard.violations"> -->
-<!-- 												<td>{{violation.incidentStartDate}}</td> -->
-<!-- 												<td><span [ngClass]="violation.violationStatus.toString() == 'WARNING' ? 'btn btn-warning btn-circle' : 'btn btn-danger btn-circle'"></span></td> -->
-<!-- 											</tr> -->
-<!-- 										</tbody> -->
-<!-- 									</table> -->
-<!-- 								</td> -->
+			                    <td [colSpan]="4">
+			                    	<div>
+				                    	<small>Rule: </small>
+				                    	<small *ngFor="let guardCondition of qualityGuard.guardConditions;let j = index" [attr.data-index]="j">
+											<span>
+												<span>{{guardCondition.measureInstance}}</span> <span>{{guardCondition.operator}}</span> (
+												<span>{{guardCondition.warningValue}}</span> | <span>{{guardCondition.errorValue}}</span> )
+											</span> 
+											<span *ngIf="qualityGuard.combinationMode && qualityGuard.guardConditions.length != j+1">
+												<span>{{qualityGuard.combinationMode}}</span>
+											</span>
+										</small>
+                                    </div>
+                                    <br/>
+                                    <table class="table">
+                                    	<thead>
+	                                    	<tr>
+	                                    		<th>Incidents Start Date</th>
+	                                    		<th>Incidents End Date</th>
+                                    			<th *ngFor='let guardCondition of qualityGuard.guardConditions'>{{guardCondition.measureInstance}}</th>
+	                                    	</tr>
+                                    	</thead>
+										<tbody>
+											<tr *ngFor='let violation of qualityGuard.violations'>
+												<td>{{violation.incidentStartDate}}</td>
+												<td>{{violation.incidentEndDate}}</td>
+												<td *ngFor='let conditionViolation of violation.conditionViolations'>
+													<span [ngClass]="{'btn btn-success btn-circle' : conditionViolation.conditionStatus=='SUCCESS'}"></span>
+													<span [ngClass]="{'btn btn-warning btn-circle' : conditionViolation.conditionStatus=='WARNING'}"></span>
+													<span [ngClass]="{'btn btn-danger btn-circle' : conditionViolation.conditionStatus=='ERROR'}"></span>
+													<span *ngIf="conditionViolation.conditionStatus">{{conditionViolation.conditionValue}}</span>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
 			                </tr>
 						</tbody>
 					</table>
