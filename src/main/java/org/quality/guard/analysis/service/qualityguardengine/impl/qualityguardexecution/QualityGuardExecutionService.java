@@ -130,7 +130,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 	}
 	
 	public Violation openViolationIssue(QualityGuard qualityGuard, GuardStatus newStatus, List<EvaluatedGuardCondition> conditions) {
-		Violation violation = violationService.save(getViolationObject(new SimpleDateFormat("dd-M-yyyy hh:mm:ss").format(new Date()), null, newStatus, qualityGuard));
+		Violation violation = violationService.save(getViolationObject(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()), null, newStatus, qualityGuard));
 		if(violation != null) {
 			qualityGuard.setViolation(violation);
 			qualityGuardService.update(qualityGuard);
@@ -147,7 +147,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 	public void closeViolationIssue(QualityGuard qualityGuard) {
 		Violation currentViolation = qualityGuard.getViolation();
 		if (currentViolation != null) {
-			currentViolation.setIncidentEndDate(new SimpleDateFormat("dd-M-yyyy hh:mm:ss").format(new Date()));
+			currentViolation.setIncidentEndDate(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()));
 			violationService.update(currentViolation);
 		}
 		qualityGuard.setViolation(null);

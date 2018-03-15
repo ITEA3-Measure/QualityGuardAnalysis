@@ -1,23 +1,23 @@
-<div class="container">
-	<div class="card" style="width: 20rem;">
-		<div class="card-header"><h5>Project Quality Guard</h5></div>
-		<div class="card-block">
-			<div class="container-fluid">
-				<div class="table-responsive" *ngIf="qualityGuardsByProject">
-					<table class="table table-bordered">
-						<tbody *ngFor='let qualityGuard of qualityGuardsByProject; let i = index' [attr.data-index]='i'>
-							<tr>
-								<td>
-									<div>
-										<span [ngClass]="qualityGuard.violations[qualityGuard.violations.length-1].violationStatus.toString() == 'WARNING' ? 'btn btn-warning btn-circle btn-rounded' : 'btn btn-danger btn-circle btn-rounded'"></span>
-										<span>{{qualityGuard.qualityGuardName}}</span>
-									</div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>			
-		</div>
+<div style="width: 20rem;">
+	<h5>Project Quality Guard</h5>
+	<div class="">
+		<div class="">
+			<div class="table-responsive" *ngIf="qualityGuardsByProject">
+				<table class="table">
+					<tbody *ngFor='let qualityGuard of qualityGuardsByProject; let i = index' [attr.data-index]='i'>
+						<tr>
+							<td>
+								<div>
+									<span [ngClass]="{'btn btn-success btn-circle' : qualityGuard.violation==null}"></span>
+									<span [ngClass]="{'btn btn-warning btn-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='WARNING'}"></span>
+									<span [ngClass]="{'btn btn-danger btn-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='ERROR'}"></span>
+									<span>{{qualityGuard.qualityGuardName}}</span>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>			
 	</div>
 </div>

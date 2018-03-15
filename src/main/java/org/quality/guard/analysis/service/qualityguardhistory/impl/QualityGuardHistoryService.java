@@ -40,11 +40,11 @@ public class QualityGuardHistoryService implements IQualityGuardHistoryService {
 				to = Date.from(now.minusDays(i).toInstant());
 				from = Date.from(now.minusDays(i+1).toInstant());
 			} if (intervalAgregation.equals("MOY_WW")) {
-				ZonedDateTime now = ZonedDateTime.now(UTC).with(DayOfWeek.MONDAY);				
+				ZonedDateTime now = ZonedDateTime.now(UTC).truncatedTo(ChronoUnit.DAYS).with(DayOfWeek.MONDAY).plusWeeks(1);				
 				to = Date.from(now.minusWeeks(i).toInstant());
 				from = Date.from(now.minusWeeks(i+1).toInstant());
 			} if (intervalAgregation.equals("MOY_MM")) {
-				ZonedDateTime now = ZonedDateTime.now(UTC).truncatedTo(DAYS).withDayOfMonth(1);
+				ZonedDateTime now = ZonedDateTime.now(UTC).truncatedTo(DAYS).withDayOfMonth(1).plusMonths(1);
 				to = Date.from(now.minusMonths(i).toInstant());
 				from = Date.from(now.minusMonths(i+1).toInstant());
 			}
@@ -52,8 +52,8 @@ public class QualityGuardHistoryService implements IQualityGuardHistoryService {
   			GuardStatus status = GuardStatus.SUCCESS;
 			for (Violation violation : qualityGuard.getViolations()) {
 				try {
-					Date incidentStartDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").parse(violation.getIncidentStartDate());
-					Date incidentEndDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").parse(violation.getIncidentStartDate());
+					Date incidentStartDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(violation.getIncidentStartDate());
+					Date incidentEndDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(violation.getIncidentStartDate());
 					if(incidentStartDate.getTime() < to.getTime() && incidentEndDate .getTime() > from.getTime() ) {
 						if(violation.getViolationStatus().equals(GuardStatus.ERROR)) {
 							status = GuardStatus.ERROR;
@@ -76,7 +76,7 @@ public class QualityGuardHistoryService implements IQualityGuardHistoryService {
 		case "MOY_MIN":
 			return new SimpleDateFormat("HH:mm").format(dateStatus);
 		case "MOY_HH":
-			return new SimpleDateFormat("dd-MM HH").format(dateStatus);
+			return new SimpleDateFormat("dd-MM HH:mm").format(dateStatus);
 		case "MOY_DD":
 			return new SimpleDateFormat("dd-MM").format(dateStatus);
 		case "MOY_WW":

@@ -1,31 +1,23 @@
-<div class="container">
-	<div class="jumbotron jumbotron-fluid">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-sm-5 offset-sm-3 col-md-5 offset-md-3">
-					<h2 class="display-5">Quality Guard Main View</h2>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="card">
-		<div class="card-header"><h5>Project Quality Guard</h5></div>
-		<div class="card-block">
-			<div class="container-fluid">
+<div>
+		<h5>Project Quality Guard</h5>
+		<div>
+			<div>
 				<div class="table-responsive" *ngIf="qualityGuardsByProject">
-					<table class="table table-bordered">
+					<table class="table">
 						<tbody *ngFor='let qualityGuard of qualityGuardsByProject; let i = index' [attr.data-index]='i'>
 							<tr>
 								<td>
 									<div style="margin-top: 4%;">
+										<span [ngClass]="{'btn btn-success btn-circle' : qualityGuard.violation==null}"></span>
+										<span [ngClass]="{'btn btn-warning btn-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='WARNING'}"></span>
+										<span [ngClass]="{'btn btn-danger btn-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='ERROR'}"></span>
 										<span>{{qualityGuard.qualityGuardName}}</span>
 									</div>
 								</td>
 								<td>
-									<div><small>Last incident start date</small></div>
+									<div><small>Last incident date</small></div>
+									<div><small>{{qualityGuard.violations[qualityGuard.violations.length-1].incidentStartDate}}</small></div>
 								</td>
-								
                                 <td>
                                 	<div>
                                 		<span *ngFor='let incident of incidentsHistory'>
@@ -101,4 +93,3 @@
 			</div>			
 		</div>
 	</div>
-</div>

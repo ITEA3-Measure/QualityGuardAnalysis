@@ -916,7 +916,7 @@
     height: 30px!important;
 }
 
-div span.dateStatus {
+table tbody tr td div span.dateStatus {
 	position: relative; 
 	top: 30px;
 	left: -35px;

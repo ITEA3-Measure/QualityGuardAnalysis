@@ -1,78 +1,68 @@
-<div class="container">
-	<div class="jumbotron jumbotron-fluid">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-sm-5 offset-sm-1 col-md-5 offset-md-1">
-					<h2 class="display-5">Quality Guard Configuration</h2>
-				</div>
-				<div class="col-sm-3 offset-sm-3 col-md-3 offset-md-3">
-					<button type="submit" class="btn btn-primary float-right" [routerLink]="[ '', { outlets: { popup: ['quality-guard-configuration-new'] } }]">
-						<span class="fa fa-plus" aria-hidden="true"></span> <strong><span>New Guard</span></strong>
-					</button>
-				</div>
-			</div>
-		</div>
+<div class="row">
+	<div class="col-sm-6 offset-sm-6 col-md-6 offset-md-6">
+		<button type="submit" class="btn btn-primary float-right"
+			[routerLink]="[ '', { outlets: { popup: ['quality-guard-configuration-new'] } }]">
+			<span class="fa fa-plus" aria-hidden="true"></span>
+		</button>
 	</div>
-	
-	<div class="card">
-		<h3 class="card-header">New Quality Guard</h3>
-		<div class="card-block">
-			<div class="container-fluid">
-				<div class="table-responsive" *ngIf="qualityGuardsByProject">
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th><span>Quality Guard Name</span></th>
-								<th><span>Rule</span></th>
-								<th>Schedule</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr *ngFor="let qualityGuard of qualityGuardsByProject">
-								<td><span>{{qualityGuard.qualityGuardName}} </span></td>
-								<td>
-									<div style="white-space:nowrap;">
-										<span *ngFor="let guardCondition of qualityGuard.guardConditions;let i = index" [attr.data-index]="i">
-											<span>
-												<span>{{guardCondition.measureInstance}}</span> <span>{{guardCondition.operator}}</span> (
-												<span>{{guardCondition.warningValue}}</span> | <span>{{guardCondition.errorValue}}</span> )
-											</span> 
-											<span *ngIf="qualityGuard.combinationMode && qualityGuard.guardConditions.length != i+1">
-												<span>{{qualityGuard.combinationMode}}</span>
-											</span>
-										</span>
-									</div>
-								</td>
-                                <td>
-                                	<button type="btn-group flex-btn-group-container"
-										[ngClass]="qualityGuard.isSchedule == false ? 'btn btn-danger btn-sm' : 'btn btn-success btn-sm'"
-										(click)="qualityGuard.isSchedule == false ? startScheduling(qualityGuard.id) : stopScheduling(qualityGuard.id)">
-										<i class="fa fa-power-off" aria-hidden="true"></i>
+</div>
+<br/>
+<div class="">
+	<div class="">
+		<div class="">
+			<div class="table-responsive" *ngIf="qualityGuardsByProject">
+				<table class="table">
+					<thead>
+						<tr>
+							<th><span>Quality Guard Name</span></th>
+							<th><span>Rule</span></th>
+							<th><span>Schedule</span></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let qualityGuard of qualityGuardsByProject">
+							<td><span>{{qualityGuard.qualityGuardName}} </span></td>
+							<td>
+								<div style="white-space: nowrap;">
+									<span
+										*ngFor="let guardCondition of qualityGuard.guardConditions;let i = index"
+										[attr.data-index]="i"> <span> <span>{{guardCondition.measureInstance}}</span>
+											<span>{{guardCondition.operator}}</span> ( <span>{{guardCondition.warningValue}}</span>
+											| <span>{{guardCondition.errorValue}}</span> )
+									</span> <span
+										*ngIf="qualityGuard.combinationMode && qualityGuard.guardConditions.length != i+1">
+											<span>{{qualityGuard.combinationMode}}</span>
+									</span>
+									</span>
+								</div>
+							</td>
+							<td>
+								<button type="btn-group flex-btn-group-container"
+									[ngClass]="qualityGuard.isSchedule == false ? 'btn btn-danger btn-sm' : 'btn btn-success btn-sm'"
+									(click)="qualityGuard.isSchedule == false ? startScheduling(qualityGuard.id) : stopScheduling(qualityGuard.id)">
+									<i class="fa fa-power-off" aria-hidden="true"></i>
+								</button>
+							</td>
+							<td>
+								<div class="btn-group flex-btn-group-container">
+									<button type="submit"
+										[routerLink]="[ '', { outlets: { popup: 'quality-guard-configuration/' + qualityGuard.id +'/edit' } }]"
+										replaceUrl="true" queryParamsHandling="merge"
+										class="btn btn-primary btn-sm float-right">
+										<i class="fa fa-pencil" aria-hidden="true"></i>
 									</button>
-								</td>
-								<td>
-									<div class="btn-group flex-btn-group-container">
-										<button type="submit"
-												[routerLink]="[ '', { outlets: { popup: 'quality-guard-configuration/' + qualityGuard.id +'/edit' } }]"
-												replaceUrl="true"
-                                				queryParamsHandling="merge"
-                                				class="btn btn-primary btn-sm float-right">
-											<i class="fa fa-pencil" aria-hidden="true"></i>
-										</button>
-										<button type="submit"
-												[routerLink]="[ '', { outlets: { popup: 'quality-guard-configuration/' + qualityGuard.id + '/delete' } }]"
-												replaceUrl="true"
-                                				queryParamsHandling="merge"
-                                				class="btn btn-primary btn-sm float-right">
-											<i class="fa fa-trash" aria-hidden="true"></i>
-										</button>
-									</div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+									<button type="submit"
+										[routerLink]="[ '', { outlets: { popup: 'quality-guard-configuration/' + qualityGuard.id + '/delete' } }]"
+										replaceUrl="true" queryParamsHandling="merge"
+										class="btn btn-primary btn-sm float-right">
+										<i class="fa fa-trash" aria-hidden="true"></i>
+									</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>

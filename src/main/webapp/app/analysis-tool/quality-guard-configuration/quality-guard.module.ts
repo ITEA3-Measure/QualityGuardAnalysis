@@ -37,7 +37,7 @@ const ENTITY_STATES = [
         QualityGuardDeletePopupComponent,
         ProjectHistoryComponent,
         QualityGuardDashboardComponent,
-        IncidentHistoryDashboardComponent
+        IncidentHistoryDashboardComponent,
     ],
     entryComponents: [
         QualityGuardComponent,

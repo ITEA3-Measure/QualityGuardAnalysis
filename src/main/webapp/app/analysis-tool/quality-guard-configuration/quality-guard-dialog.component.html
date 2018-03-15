@@ -25,7 +25,7 @@
 				            	<option *ngFor="let measure of allMeasureInstanceType" value="{{measure.instanceName}}">{{measure.instanceName}}</option>
 				            </select>
 				            <select class="form-control-customize" name="measureField" id="field_measureField" formControlName="measureField" >
-				            	<option *ngFor="let field of allFieldNames" [ngValue]="field">{{field}}</option>
+				            	<option *ngFor="let field of allFieldNames" value="{{field}}">{{field}}</option>
 				            </select>
 					        <select class="form-control-customize" name="operator" id="field_operator" formControlName="operator" >
 				                <option value="SUPERIOR">SUPERIOR</option>
@@ -46,12 +46,13 @@
 		                    </span>
 				        </div>
 				        <ng-template #other_case>
+<!-- 				        		(change)="dropDownChanged($event.target.value)" on-mouseover="dropDownChanged($event.target.value)" -->
 				        		<input type="hidden" name="id" id="field_id" formControlName ="id"/>
 				        		<select class="form-control-customize" name="measureInstance" id="field_measureInstance" formControlName="measureInstance" (change)="dropDownChanged($event.target.value)" on-mouseover="dropDownChanged($event.target.value)">
 					              <option *ngFor="let measure of allMeasureInstanceType" value="{{measure.instanceName}}">{{measure.instanceName}}</option>
 					            </select>
 					            <select class="form-control-customize" name="measureField" id="field_measureField" formControlName="measureField" >
-					            	<option *ngFor="let field of allFieldNames" [ngValue]="field">{{field}}</option>
+					            	<option *ngFor="let field of allFieldNames" value="{{field}}">{{field}}</option>
 					            </select>
 					            <select class="form-control-customize" name="operator" id="field_operator" formControlName="operator" >
 					              <option value="SUPERIOR">SUPERIOR</option>

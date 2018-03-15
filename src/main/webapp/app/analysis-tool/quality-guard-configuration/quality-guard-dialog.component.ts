@@ -3,7 +3,6 @@ import {Router, ActivatedRoute} from '@angular/router'
 import {Response} from '@angular/http';
 import {FormGroup, FormArray, FormBuilder} from '@angular/forms';
 import {ResponseWrapper} from '../../shared';
-
 import {Observable} from 'rxjs/Observable';
 import {QualityGuard} from './quality-guard.model';
 import {GuardCondition} from './guard-condition.model';
@@ -26,7 +25,7 @@ export class QualityGuardDialogComponent implements OnInit {
   removedGuardConditionRules: Array<GuardCondition>;
   guardConditionsbyQualityGuard: Array<GuardCondition>;
   allMeasureInstanceType: Array<MeasureInstanceType>;
-  allFieldNames: Array<string> = [];
+  allFieldNames: Array<any> = [];
   isSaving: boolean;
   projectId: number;
 
@@ -79,6 +78,10 @@ export class QualityGuardDialogComponent implements OnInit {
       },
       (res: ResponseWrapper) => this.onError(res.json)
     )
+  }
+
+  getFieldsMeasure(i: number) {
+    return this.allMeasureInstanceType[i].fields;
   }
 
   /**
@@ -166,6 +169,17 @@ export class QualityGuardDialogComponent implements OnInit {
       }
     }
   }
+
+//  measureInstanceChanged(i) {
+//    const control = <FormArray>this.form.get('rules');
+//    const instanceName = control.value[i].measureInstance;
+//    debugger
+//    this.allFieldNames = this.allMeasureInstanceType.filter((m) => m.instanceName === instanceName);
+//  }
+
+//  measureInstanceChanged(i) {
+//    return this.allMeasureInstanceType[i].fields;
+//  }
 
   clear() {
     this.activeModal.dismiss('cancel');

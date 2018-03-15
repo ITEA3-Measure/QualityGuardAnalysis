@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { SERVER_API_URL } from '../../app.constants';
 import { GuardCondition } from './guard-condition.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
+import { MeasureInstanceType } from './measure-instance-type.model';
 
 @Injectable()
 export class GuardConditionService {
@@ -56,7 +57,7 @@ export class GuardConditionService {
      */
     getMeasureInstanceType(idProject: number): Observable<ResponseWrapper> {
         return this.http.get(`${this.resourceUrl}/${this.measureInstanceType}/${this.byProject}/${idProject}`)
-            .map((res: Response) => this.convertResponse(res));
+            .map((res: Response) => this.convertResponseMeasureInstanceType(res));
     }
 
     delete(id: number): Observable<Response> {
@@ -72,11 +73,28 @@ export class GuardConditionService {
         return new ResponseWrapper(res.headers, result, res.status);
     }
 
+    private convertResponseMeasureInstanceType(res: Response): ResponseWrapper {
+        const jsonResponse = res.json();
+        const result = [];
+        for (let i = 0; i < jsonResponse.length; i++) {
+            result.push(this.convertItemFromServerToMeasureInstanceType(jsonResponse[i]));
+        }
+        return new ResponseWrapper(res.headers, result, res.status);
+    }
+
     /**
      * Convert a returned JSON object to GuardCondition.
      */
     private convertItemFromServer(json: any): GuardCondition {
         const entity: GuardCondition = Object.assign(new GuardCondition(), json);
+        return entity;
+    }
+
+    /**
+     * Convert a returned JSON object to MeasureInstanceType.
+     */
+    private convertItemFromServerToMeasureInstanceType(json: any): MeasureInstanceType {
+        const entity: MeasureInstanceType = Object.assign(new MeasureInstanceType(), json);
         return entity;
     }
 

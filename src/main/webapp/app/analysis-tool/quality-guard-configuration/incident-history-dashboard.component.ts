@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResponseWrapper } from '../../shared/model/response-wrapper.model';
-import { GuardCondition } from './guard-condition.model';
 import { QualityGuard } from './quality-guard.model';
 import { QualityGuardService } from './quality-guard.service';
 import { JhiAlertService } from 'ng-jhipster';
@@ -13,7 +12,6 @@ import { JhiAlertService } from 'ng-jhipster';
 export class IncidentHistoryDashboardComponent implements OnInit {
 
   qualityGuardsByProject: Array<QualityGuard> = [];
-  guardConditionsByProject: Array<GuardCondition> = [];
   errorMessage: any;
   projectId: number;
   rowSelected: number;
