@@ -4,19 +4,23 @@ import com.codahale.metrics.annotation.Timed;
 
 import org.quality.guard.analysis.domain.GuardCondition;
 import org.quality.guard.analysis.domain.QualityGuard;
-
+import org.quality.guard.analysis.integration.impl.data.MeasureInstance;
+import org.quality.guard.analysis.integration.impl.data.MeasureInstanceType;
 import org.quality.guard.analysis.repository.QualityGuardRepository;
 import org.quality.guard.analysis.web.rest.errors.BadRequestAlertException;
 import org.quality.guard.analysis.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +31,9 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class QualityGuardResource {
 
+	@Value("${analysis-tool.ws.url}")
+	private String serverURL;
+	
     private final Logger log = LoggerFactory.getLogger(QualityGuardResource.class);
 
     private static final String ENTITY_NAME = "qualityGuard";
@@ -52,6 +59,11 @@ public class QualityGuardResource {
             throw new BadRequestAlertException("A new qualityGuard cannot already have an ID", ENTITY_NAME, "idexists");
         }
         for(GuardCondition guardCondition : qualityGuard.getGuardConditions()) {
+        	for (MeasureInstanceType measureInstanceType : this.getMeasureInstanceType(qualityGuard.getMeasureProjectId())) {
+				if (measureInstanceType.getMeasureInstance().equals(guardCondition.getMeasureInstance())) {
+					guardCondition.setMeasureName(measureInstanceType.getMeasureName().toLowerCase());
+				}
+			}
         	guardCondition.setQualityGuard(qualityGuard);
         }
         qualityGuard.setIsSchedule(false);
@@ -78,6 +90,11 @@ public class QualityGuardResource {
             return createQualityGuard(qualityGuard);
         }
         for(GuardCondition guardCondition : qualityGuard.getGuardConditions()) {
+        	for (MeasureInstanceType measureInstanceType : getMeasureInstanceType(qualityGuard.getMeasureProjectId())) {
+				if (measureInstanceType.getMeasureInstance().equals(guardCondition.getMeasureInstance())) {
+					guardCondition.setMeasureName(measureInstanceType.getMeasureName());
+				}
+			}
         	guardCondition.setQualityGuard(qualityGuard);
         }
         QualityGuard result = qualityGuardRepository.save(qualityGuard);
@@ -139,4 +156,13 @@ public class QualityGuardResource {
     	System.out.println(qualityGuardRepository.getQualityGuardsByProjectId(id).toString());
 		return qualityGuardRepository.getQualityGuardsByProjectId(id);
 	}
+    
+    public List<MeasureInstanceType> getMeasureInstanceType(Long projectId) {
+    	List<MeasureInstanceType> measureInstancesType = new ArrayList<MeasureInstanceType>();
+		RestTemplate restTemplate = new RestTemplate();
+		MeasureInstanceType[] measureInstances = restTemplate.getForObject(serverURL +"/api/guard-conditions/measure-instance-type/by-project/"+projectId, MeasureInstanceType[].class);
+		measureInstancesType.addAll(Arrays.asList(measureInstances));
+		return measureInstancesType;
+    }
+    
 }

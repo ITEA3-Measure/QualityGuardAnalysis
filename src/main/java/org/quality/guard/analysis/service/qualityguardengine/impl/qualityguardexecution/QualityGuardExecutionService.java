@@ -55,7 +55,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 		System.out.println("Execution : " +qualityGuard.getQualityGuardName());
 		List<EvaluatedGuardCondition> conditions = new ArrayList<>();
 		for(GuardCondition guardCondition : qualityGuard.getGuardConditions()) {
-			List<Object> values = getMeasureValue("randommeasure", guardCondition.getMeasureInstance(), guardCondition.getMeasureField(), guardCondition.getIntervalAgregation().name());
+			List<Object> values = getMeasureValue(guardCondition.getMeasureName(), guardCondition.getMeasureInstance(), guardCondition.getMeasureField(), guardCondition.getIntervalAgregation().name());
 			int average = calculateAverage(values);
 			conditions.add(new EvaluatedGuardCondition(guardCondition, average));
 		}
@@ -185,7 +185,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 	
 	public List<Object> getMeasureValue(String index, String type, String field, String intervalAgregation) throws UnknownHostException {
 		List<Object> measureValues = new ArrayList<>();
-		TransportClient client = this.getConnection();
+		TransportClient client = getConnection();
 		index += "-alias";
 		SearchResponse response = client.prepareSearch(index)
 		        .setTypes(type)

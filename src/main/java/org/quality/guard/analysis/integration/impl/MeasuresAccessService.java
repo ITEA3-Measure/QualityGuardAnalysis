@@ -28,7 +28,8 @@ public class MeasuresAccessService implements IMeasuresAccessService{
 		for(MeasureInstance instance : instances) {
 			MeasureInstanceType iType = new MeasureInstanceType();
 			iType.setId(instance.getId());
-			iType.setInstanceName(instance.getInstanceName());
+			iType.setMeasureInstance(instance.getInstanceName());
+			iType.setMeasureName(instance.getMeasureName());
 			
 			Measure measure =  restTemplate.getForObject(serverURL +"api/measure/"+instance.getMeasureName(),Measure.class);
 			if(measure != null) {

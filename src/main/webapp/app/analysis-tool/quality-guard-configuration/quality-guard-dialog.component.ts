@@ -161,7 +161,7 @@ export class QualityGuardDialogComponent implements OnInit {
 
   dropDownChanged(val: any) {
     for (const obj of this.allMeasureInstanceType) {
-      if (val === obj.instanceName) {
+      if (val === obj.measureInstance) {
         this.allFieldNames = obj.fields;
         break;
       } else {

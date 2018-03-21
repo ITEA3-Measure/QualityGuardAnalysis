@@ -5,7 +5,6 @@
     <groupId>org.quality.guard.analysis</groupId>
     <artifactId>quality-guard-analysis</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
     <name>Quality Guard Analysis</name>
 
     <properties>
@@ -1024,4 +1023,5 @@
             </dependencies>
         </profile>
     </profiles>
+    <packaging>war</packaging>
 </project>

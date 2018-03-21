@@ -6,16 +6,17 @@ import java.util.List;
 public class MeasureInstanceType {
 
 	private Long id;
-	private String measureInstanceName;
+	private String measureInstance;
+	private String measureName;
 	private List<String> measurefield = new ArrayList<>();
 
 	public MeasureInstanceType() {
 	}
 
-	public MeasureInstanceType(Long id, String instanceName, List<String> fields) {
+	public MeasureInstanceType(Long id, String measureInstance, List<String> fields) {
 		super();
 		this.id = id;
-		this.measureInstanceName = instanceName;
+		this.measureInstance = measureInstance;
 		this.measurefield = fields;
 	}
 	
@@ -27,12 +28,20 @@ public class MeasureInstanceType {
 		this.id = id;
 	}
 
-	public String getInstanceName() {
-		return measureInstanceName;
+	public String getMeasureInstance() {
+		return measureInstance;
 	}
 
-	public void setInstanceName(String instanceName) {
-		this.measureInstanceName = instanceName;
+	public void setMeasureInstance(String measureInstance) {
+		this.measureInstance = measureInstance;
+	}
+	
+	public String getMeasureName() {
+		return measureName;
+	}
+
+	public void setMeasureName(String measureName) {
+		this.measureName = measureName;
 	}
 
 	public List<String> getFields() {

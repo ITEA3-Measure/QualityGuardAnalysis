@@ -35,8 +35,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 @RestController
 @RequestMapping("/api")
 public class GuardConditionResource {
-	
-	
+		
 	@Inject
 	private IMeasuresAccessService measurAccessService;
 

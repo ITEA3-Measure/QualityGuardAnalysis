@@ -30,6 +30,9 @@ public class GuardCondition implements Serializable {
 
     @Column(name = "measure_instance")
     private String measureInstance;
+    
+    @Column(name = "measure_name")
+    private String measureName;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "operator")
@@ -72,6 +75,19 @@ public class GuardCondition implements Serializable {
 
     public void setMeasureInstance(String measureInstance) {
         this.measureInstance = measureInstance;
+    }
+    
+    public String getMeasureName() {
+        return measureName;
+    }
+
+    public GuardCondition measureName(String measureName) {
+        this.measureName = measureName;
+        return this;
+    }
+
+    public void setMeasureName(String measureName) {
+        this.measureName = measureName;
     }
 
     public GuardOperator getOperator() {
