@@ -1,50 +1,54 @@
-<div>
+<div class="content">
 		<h5>Project Quality Guard</h5>
 		<div>
 			<div>
 				<div class="table-responsive" *ngIf="qualityGuardsByProject">
-					<table class="table">
+					<table class="table" width="200" align="center">
 						<tbody *ngFor='let qualityGuard of qualityGuardsByProject; let i = index' [attr.data-index]='i'>
-							<tr>
+                            <tr *ngIf="i == 0">
+                                <td colspan="4">
+                                    <span>
+                                        <select class="dropDownPosition" name="intervalAgregation" id="field_intervalAgregation" [(ngModel)]="intervalAgregation" (change)="getIncidentStatus($event.target.value)">
+                                            <option *ngIf='intervalAgregation == undefined' value=""></option>
+                                            <option value="MOY_MIN">MOY_MIN</option>
+                                            <option value="MOY_HH">MOY_HH</option>
+                                            <option value="MOY_DD">MOY_DD</option>
+                                            <option value="MOY_WW">MOY_WW</option>
+                                            <option value="MOY_MM">MOY_MM</option>
+                                        </select>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
 								<td>
 									<div style="margin-top: 4%;">
-										<span [ngClass]="{'btn btn-success btn-circle' : qualityGuard.violation==null}"></span>
-										<span [ngClass]="{'btn btn-warning btn-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='WARNING'}"></span>
-										<span [ngClass]="{'btn btn-danger btn-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='ERROR'}"></span>
+										<span [ngClass]="{'button-success button-circle' : qualityGuard.violation==null}"></span>
+										<span [ngClass]="{'button-warning button-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='WARNING'}"></span>
+										<span [ngClass]="{'button-danger button-circle': qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='ERROR'}"></span>
 										<span>{{qualityGuard.qualityGuardName}}</span>
 									</div>
 								</td>
 								<td>
 									<div><small>Last incident date</small></div>
-									<div><small>{{qualityGuard.violations[qualityGuard.violations.length-1].incidentStartDate}}</small></div>
+									<div *ngIf="qualityGuard.violations.length > 0"><small>{{qualityGuard.violations[qualityGuard.violations.length-1].incidentStartDate}}</small></div>
 								</td>
                                 <td>
                                 	<div>
-                                		<span *ngFor='let incident of incidentsHistory'>
-											<span [ngClass]="{'btn btn-success btn-circle' : incident.guardStatus=='SUCCESS'}"></span>
-											<span [ngClass]="{'btn btn-warning btn-circle' : incident.guardStatus=='WARNING'}"></span>
-											<span [ngClass]="{'btn btn-danger btn-circle' : incident.guardStatus=='ERROR'}"></span>
+                                		<span *ngFor='let incident of qualityGuard.incidentsHistory'>
+											<span [ngClass]="{'button-success button-circle' : incident.guardStatus=='SUCCESS'}"></span>
+											<span [ngClass]="{'button-warning button-circle' : incident.guardStatus=='WARNING'}"></span>
+											<span [ngClass]="{'button-danger button-circle' : incident.guardStatus=='ERROR'}"></span>
 											<span class="dateStatus">{{incident.dateStatus}}</span>
 	                                	</span>
-	                                	<span> 
-											<select class="dropDownPosition" name="intervalAgregation" id="field_intervalAgregation" (change)="getIncidentStatus(qualityGuard, $event.target.value)">
-												<option value=""></option>
-												<option value="MOY_MIN">MOY_MIN</option>
-												<option value="MOY_HH">MOY_HH</option>
-												<option value="MOY_DD">MOY_DD</option>
-												<option value="MOY_WW">MOY_WW</option>
-												<option value="MOY_MM">MOY_MM</option>
-											</select>
-										</span>
                                 	</div>
                                 </td>
 								<td>
-									<button class="btn btn-primary btn-sm" (click)="toggleRowDetails(i)">
+									<button class="btn btn-primary btn-sm" style="float: right;" (click)="toggleRowDetails(i)">
 			                            <span *ngIf="rowSelected!=i; else close">
-			                            	<i class="fa fa-arrow-up" aria-hidden="true"></i>
+			                            	<i class="fa fa-plus" aria-hidden="true"></i>
 			                            </span>
 			                            <ng-template #close>
-			                            	<i class="fa fa-arrow-down" aria-hidden="true"></i>
+			                            	<i class="fa fa-minus" aria-hidden="true"></i>
 			                            </ng-template>
 			                        </button>
 								</td>
@@ -57,7 +61,7 @@
 											<span>
 												<span>{{guardCondition.measureInstance}}</span> <span>{{guardCondition.operator}}</span> (
 												<span>{{guardCondition.warningValue}}</span> | <span>{{guardCondition.errorValue}}</span> )
-											</span> 
+											</span>
 											<span *ngIf="qualityGuard.combinationMode && qualityGuard.guardConditions.length != j+1">
 												<span>{{qualityGuard.combinationMode}}</span>
 											</span>
@@ -67,19 +71,26 @@
                                     <table class="table">
                                     	<thead>
 	                                    	<tr>
+                                                <th>Incidents Status</th>
 	                                    		<th>Incidents Start Date</th>
 	                                    		<th>Incidents End Date</th>
                                     			<th *ngFor='let guardCondition of qualityGuard.guardConditions'>{{guardCondition.measureInstance}}</th>
 	                                    	</tr>
                                     	</thead>
-										<tbody>
+										<tbody *ngIf="qualityGuard.violations.length > 0">
 											<tr *ngFor='let violation of qualityGuard.violations'>
-												<td>{{violation.incidentStartDate}}</td>
-												<td>{{violation.incidentEndDate}}</td>
+                                                <td>
+                                                    <span [ngClass]="{'button-success button-circle' : violation.violationStatus=='SUCCESS'}"></span>
+                                                    <span [ngClass]="{'button-warning button-circle' : violation.violationStatus=='WARNING'}"></span>
+                                                    <span [ngClass]="{'button-danger button-circle' : violation.violationStatus=='ERROR'}"></span>
+                                                </td>
+												<td>
+                                                    <span>{{violation.incidentStartDate}}</span>
+                                                </td>
+												<td>
+                                                    <span>{{violation.incidentEndDate}}</span>
+                                                </td>
 												<td *ngFor='let conditionViolation of violation.conditionViolations'>
-													<span [ngClass]="{'btn btn-success btn-circle' : conditionViolation.conditionStatus=='SUCCESS'}"></span>
-													<span [ngClass]="{'btn btn-warning btn-circle' : conditionViolation.conditionStatus=='WARNING'}"></span>
-													<span [ngClass]="{'btn btn-danger btn-circle' : conditionViolation.conditionStatus=='ERROR'}"></span>
 													<span *ngIf="conditionViolation.conditionStatus">{{conditionViolation.conditionValue}}</span>
 												</td>
 											</tr>
@@ -90,6 +101,6 @@
 						</tbody>
 					</table>
 				</div>
-			</div>			
+			</div>
 		</div>
 	</div>

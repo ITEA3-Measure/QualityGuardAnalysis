@@ -8,9 +8,9 @@
 						<tr>
 							<td>
 								<div>
-									<span [ngClass]="{'btn btn-success btn-circle' : qualityGuard.violation==null}"></span>
-									<span [ngClass]="{'btn btn-warning btn-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='WARNING'}"></span>
-									<span [ngClass]="{'btn btn-danger btn-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='ERROR'}"></span>
+									<span [ngClass]="{'button-success button-circle' : qualityGuard.violation==null}"></span>
+									<span [ngClass]="{'button-warning button-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='WARNING'}"></span>
+									<span [ngClass]="{'button-danger button-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='ERROR'}"></span>
 									<span>{{qualityGuard.qualityGuardName}}</span>
 								</div>
 							</td>
@@ -18,6 +18,6 @@
 					</tbody>
 				</table>
 			</div>
-		</div>			
+		</div>
 	</div>
 </div>

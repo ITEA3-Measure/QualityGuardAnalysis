@@ -1,6 +1,7 @@
 import { BaseEntity } from './../../shared';
 import { GuardCondition } from './guard-condition.model';
 import { Violation } from './violation.model';
+import { IncidentStatus } from './incident-status.model';
 
 export const enum CombinationMode {
     'OR',
@@ -16,7 +17,8 @@ export class QualityGuard implements BaseEntity {
         public measureProjectId?: number,
         public isSchedule?: boolean,
         public guardConditions?: GuardCondition[],
-        public violations?: Violation[]
+        public violations?: Violation[],
+        public incidentsHistory?: Array<IncidentStatus>[],
     ) {
     }
 }

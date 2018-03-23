@@ -901,23 +901,35 @@
 	max-width: 56%;
 }
 
-.btn-circle {
+.button-circle {
+    display: inline-block;
     width: 25px;
     height: 25px;
-    padding: 6px 0px;
+    vertical-align: middle;
     border-radius: 15px;
-    text-align: center;
-    font-size: 12px;
-    line-height: 1.42857;
 }
 
-.btn-rounded {
-	width: 30px!important;
-    height: 30px!important;
+.button-success {
+    background-color: #5cb85c;
+    border-color: #5cb85c;
+}
+
+.button-warning {
+    background-color: #f0ad4e;
+    border-color: #f0ad4e;
+}
+
+.button-danger {
+    background-color: #d9534f;
+    border-color: #d9534f;
 }
 
 table tbody tr td div span.dateStatus {
-	position: relative; 
+	position: relative;
 	top: 30px;
 	left: -35px;
+}
+
+.content {
+	padding-right: 30%;
 }

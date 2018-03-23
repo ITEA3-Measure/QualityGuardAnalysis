@@ -8,8 +8,8 @@
 						<tbody *ngFor='let qualityGuard of qualityGuardsByProject; let i = index' [attr.data-index]='i'>
 							<tr *ngFor='let violation of qualityGuard.violations'>
 								<td>
-									<span [ngClass]="{'btn btn-warning btn-circle' : violation.violationStatus=='WARNING'}"></span>
-									<span [ngClass]="{'btn btn-danger btn-circle' : violation.violationStatus=='ERROR'}"></span>
+									<span [ngClass]="{'button-warning button-circle' : violation.violationStatus=='WARNING'}"></span>
+									<span [ngClass]="{'button-danger button-circle' : violation.violationStatus=='ERROR'}"></span>
 									<span>{{violation.incidentStartDate}}</span>
 								</td>
 								<td>{{qualityGuard.qualityGuardName}}</td>

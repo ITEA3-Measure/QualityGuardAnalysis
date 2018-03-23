@@ -76,7 +76,7 @@ public class QualityGuardHistoryService implements IQualityGuardHistoryService {
 		case "MOY_MIN":
 			return new SimpleDateFormat("HH:mm").format(dateStatus);
 		case "MOY_HH":
-			return new SimpleDateFormat("dd-MM HH:mm").format(dateStatus);
+			return new SimpleDateFormat("HH:mm").format(dateStatus);
 		case "MOY_DD":
 			return new SimpleDateFormat("dd-MM").format(dateStatus);
 		case "MOY_WW":

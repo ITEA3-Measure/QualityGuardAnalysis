@@ -54,7 +54,7 @@ public class QualityGuardResource {
     @PostMapping("/quality-guards")
     @Timed
     public ResponseEntity<QualityGuard> createQualityGuard(@RequestBody QualityGuard qualityGuard) throws URISyntaxException {
-        log.debug("REST request to save QualityGuard : {}", qualityGuard);
+
         if (qualityGuard.getId() != null) {
             throw new BadRequestAlertException("A new qualityGuard cannot already have an ID", ENTITY_NAME, "idexists");
         }
@@ -92,7 +92,7 @@ public class QualityGuardResource {
         for(GuardCondition guardCondition : qualityGuard.getGuardConditions()) {
         	for (MeasureInstanceType measureInstanceType : getMeasureInstanceType(qualityGuard.getMeasureProjectId())) {
 				if (measureInstanceType.getMeasureInstance().equals(guardCondition.getMeasureInstance())) {
-					guardCondition.setMeasureName(measureInstanceType.getMeasureName());
+					guardCondition.setMeasureName(measureInstanceType.getMeasureName().toLowerCase());
 				}
 			}
         	guardCondition.setQualityGuard(qualityGuard);

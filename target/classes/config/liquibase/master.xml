@@ -31,4 +31,9 @@
     <changeSet author="aboudeffa (generated)" id="1519905976469-4">
         <dropColumn columnName="guard_condition_id" tableName="condition_violation"/>
     </changeSet>
+    <changeSet author="aboudeffa (generated)" id="1520332025483-1">
+        <addColumn tableName="guard_condition">
+            <column name="measure_name" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

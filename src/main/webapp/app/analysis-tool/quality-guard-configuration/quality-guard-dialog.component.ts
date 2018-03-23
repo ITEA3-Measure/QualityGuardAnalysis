@@ -81,7 +81,7 @@ export class QualityGuardDialogComponent implements OnInit {
   }
 
   getFieldsMeasure(i: number) {
-    return this.allMeasureInstanceType[i].fields;
+      return this.allMeasureInstanceType[i].fields;
   }
 
   /**

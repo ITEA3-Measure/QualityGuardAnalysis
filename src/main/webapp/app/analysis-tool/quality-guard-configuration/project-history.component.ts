@@ -35,19 +35,21 @@ export class ProjectHistoryComponent implements OnInit {
   loadAll() {
     this.qualityGuardService.getQualityGuardsByProjectId(this.projectId).subscribe(
       (resQG: ResponseWrapper) => {
-        this.qualityGuardsByProject = resQG.json
+        this.qualityGuardsByProject = resQG.json.filter((qualityGuard) => qualityGuard.isSchedule === true);
       },
       (resQG: ResponseWrapper) => this.onError(resQG.json)
     );
   }
 
-  getIncidentStatus(qualityGuard: QualityGuard, interval: string) {
-    this.qualityGuardIncidentHistoryService.retrieveIncidentsHistory(qualityGuard.id, interval).subscribe(
-      (resGS: ResponseWrapper) => {
-        this.incidentsHistory = resGS.json;
-      },
-      (resGS: ResponseWrapper) => this.onError(resGS.json)
-    );
+  getIncidentStatus(interval: string) {
+    this.qualityGuardsByProject.forEach((qualityGuard) => {
+        this.qualityGuardIncidentHistoryService.retrieveIncidentsHistory(qualityGuard.id, interval).subscribe(
+            (resGS: ResponseWrapper) => {
+              qualityGuard.incidentsHistory = resGS.json;
+            },
+            (resGS: ResponseWrapper) => this.onError(resGS.json)
+          );
+    })
   }
 
   public toggleRowDetails(rowId: number): void {

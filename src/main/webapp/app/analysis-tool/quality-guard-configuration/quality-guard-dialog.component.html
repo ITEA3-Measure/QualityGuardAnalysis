@@ -26,7 +26,7 @@
 				            </select>
 				            <select class="form-control-customize" name="measureField" id="field_measureField" formControlName="measureField" >
 				            	<option *ngFor="let field of allFieldNames" value="{{field}}">{{field}}</option>
-				            </select>
+                            </select>
 					        <select class="form-control-customize" name="operator" id="field_operator" formControlName="operator" >
 				                <option value="SUPERIOR">SUPERIOR</option>
 				                <option value="INFERIOR">INFERIOR</option>
@@ -35,11 +35,11 @@
 				        	<input class="form-control-customize" type="number" name="errorValue" id="field_errorValue" placeholder="Error Value" formControlName="errorValue" />
 		                    <select class="form-control-customize" name="intervalAgregation" id="field_intervalAgregation" formControlName="intervalAgregation" >
 					        	<option value="STRICT">STRICT</option>
-					            <option value="MOY_MIN">MOY_MIN</option>
-					            <option value="MOY_HH">MOY_HH</option>
-					            <option value="MOY_DD">MOY_DD</option>
-					            <option value="MOY_WW">MOY_WW</option>
-					            <option value="MOY_MM">MOY_MM</option>
+					            <option value="MOY_MIN">BY MINUTE</option>
+					            <option value="MOY_HH">BY HOUR</option>
+					            <option value="MOY_DD">BY DAY</option>
+					            <option value="MOY_WW">BY WEEK</option>
+					            <option value="MOY_MM">BY MONTH</option>
 					        </select>
 					        <span *ngIf="form.controls.rules.controls.length > 1" (click)="removeRule(i)">
 	        				  <i class="fa fa-trash" style="font-size:2em;" aria-hidden="true" ></i>

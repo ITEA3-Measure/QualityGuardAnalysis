@@ -8,11 +8,11 @@ public class EvaluatedGuardCondition {
 
 	private GuardCondition guardCondition;
 
-	private int value;
+	private double value;
 
 	private GuardStatus guardStatus;
 
-	public EvaluatedGuardCondition(GuardCondition condition, int value) {
+	public EvaluatedGuardCondition(GuardCondition condition, double value) {
 		this.guardCondition = condition;
 		this.value = value;
 		this.guardStatus = evaluateStatus();
@@ -44,7 +44,7 @@ public class EvaluatedGuardCondition {
 		return guardCondition;
 	}
 
-	public int getValue() {
+	public double getValue() {
 		return value;
 	}
 
