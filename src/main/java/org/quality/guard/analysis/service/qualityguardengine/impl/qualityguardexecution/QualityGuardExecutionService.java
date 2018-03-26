@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,8 +42,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class QualityGuardExecutionService implements IQualityGuardExecutionService{
 
-	@Value("${analysis-tool.interval-agregation.strict}")
-	private Long strictTime;
+	private final static Long strictTime= new Long(60000);
 	
 	@Inject
 	private IQualityGuardService qualityGuardService;
@@ -57,16 +57,15 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 	public void executeQualityGuard(QualityGuard qualityGuard) throws UnknownHostException {
 		System.out.println("Execution : " + qualityGuard.getQualityGuardName());
 		
-		List<EvaluatedGuardCondition> conditions = new ArrayList<>();
-		
-		if (!isGuardConditionsWithStrictTime(qualityGuard.getGuardConditions())) {
-			conditions = executeQualityGuardWithOutStrictTime(qualityGuard.getGuardConditions());
+		if (isGuardConditionsWithStrictTime(qualityGuard.getGuardConditions())) {
+			executeQualityGuardWithStrictTime(qualityGuard);
 		} else {
-			// conditions = executeQualityGuardWithStrictTime(qualityGuard.getGuardConditions());
+			List<EvaluatedGuardCondition>  conditions = evaluateQualityGuardWithOutStrictTime(qualityGuard.getGuardConditions());
+			GuardStatus newStatus = evaluateQualityGuard(qualityGuard, conditions);
+			manageViolations(qualityGuard, newStatus, conditions);
+		
 		}
 
- 		GuardStatus newStatus = evaluateQualityGuard(qualityGuard, conditions);
-		manageViolations(qualityGuard, newStatus, conditions);
 	}
 	
 	public boolean isGuardConditionsWithStrictTime(Set<GuardCondition> guardConditions) {
@@ -78,7 +77,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 		return false;
 	}
 	
-	public List<EvaluatedGuardCondition> executeQualityGuardWithOutStrictTime(Set<GuardCondition> guardConditions) throws UnknownHostException {
+	public List<EvaluatedGuardCondition> evaluateQualityGuardWithOutStrictTime(Set<GuardCondition> guardConditions) throws UnknownHostException {
 		List<EvaluatedGuardCondition> conditions = new ArrayList<>();
 		for(GuardCondition guardCondition : guardConditions) {
 			List<MeasureValue> values = getMeasureValues(guardCondition.getMeasureName(), guardCondition.getMeasureInstance(), guardCondition.getMeasureField(), guardCondition.getIntervalAgregation().name());
@@ -88,9 +87,32 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 		return conditions;
 	}
 	
-	public void executeQualityGuardWithStrictTime(List<MeasureValue> values) {
+	public void executeQualityGuardWithStrictTime(QualityGuard qualityGuard)throws UnknownHostException {
+		List<MeasureValue> values = new ArrayList<>();
+		for(GuardCondition guardCondition : qualityGuard.getGuardConditions()) {
+			values.addAll(getMeasureValues(guardCondition.getMeasureName(), guardCondition.getMeasureInstance(), guardCondition.getMeasureField(), guardCondition.getIntervalAgregation().name()));
+		}
 		Collections.sort(values);
-		System.out.println(values);
+		
+		Map<String,String> conditionValues = new HashMap<>();
+		for(MeasureValue mValue : values) {
+			conditionValues.put(mValue.getMeasureInstance() +":" + mValue.getMeasurefield(), mValue.getValue());
+			
+			List<EvaluatedGuardCondition> evaluatedCondition = new ArrayList<>();
+			
+			for(GuardCondition guardCondition : qualityGuard.getGuardConditions()) {
+				String conditionValue = conditionValues.get(guardCondition.getMeasureInstance() +":" +guardCondition.getMeasureField());		
+				if(conditionValue != null) {
+					evaluatedCondition.add(new EvaluatedGuardCondition(guardCondition, Double.valueOf(conditionValue)));	
+				}
+			}
+			
+			if(evaluatedCondition.size() == qualityGuard.getGuardConditions().size()) {
+				GuardStatus newStatus = evaluateQualityGuard(qualityGuard, evaluatedCondition);
+				manageViolations(qualityGuard, newStatus, evaluatedCondition);
+			}
+		}
+		
 	}
 	
 	@Override
@@ -225,7 +247,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 		        .setSearchType(SearchType.QUERY_AND_FETCH)
 		        .addSort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)
 		        .setScroll(new TimeValue(60000))
-		        .setFetchSource(new String[]{field}, null)
+		        .setFetchSource(new String[]{field,"postDate"}, null)
 		        .setQuery(QueryBuilders.rangeQuery("postDate")
 		        .from(new Date().getTime() - getTimeAgo(intervalAgregation)).to(new Date().getTime()))
 		        .setSize(100)
@@ -234,7 +256,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 		do {
 		    for (SearchHit hit : response.getHits().getHits()) {
 		    	Map map = hit.getSource();
-		    	measureValues.add(new MeasureValue(String.valueOf(map.get("postDate")), String.valueOf(map.get(field)), type));
+		    	measureValues.add(new MeasureValue(String.valueOf(map.get("postDate")), String.valueOf(map.get(field)), type,field));
 		    }
 		    response = client.prepareSearchScroll(response.getScrollId()).setScroll(new TimeValue(60000)).execute().actionGet();
 		} while(response.getHits().getHits().length != 0);
@@ -249,7 +271,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 			timeAgo = strictTime;
 			break;
 		case "MOY_MIN":
-			timeAgo = TimeUnit.SECONDS.toMillis(10);
+			timeAgo = TimeUnit.MINUTES.toMillis(1);
 			break;
 		case "MOY_HH":
 			timeAgo = TimeUnit.HOURS.toMillis(1);
