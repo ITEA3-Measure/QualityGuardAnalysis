@@ -1,23 +1,19 @@
 <div style="width: 20rem;">
 	<h5>Project Quality Guard</h5>
-	<div class="">
-		<div class="">
-			<div class="table-responsive" *ngIf="qualityGuardsByProject">
-				<table class="table">
-					<tbody *ngFor='let qualityGuard of qualityGuardsByProject; let i = index' [attr.data-index]='i'>
-						<tr>
-							<td>
-								<div>
-									<span [ngClass]="{'button-success button-circle' : qualityGuard.violation==null}"></span>
-									<span [ngClass]="{'button-warning button-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='WARNING'}"></span>
-									<span [ngClass]="{'button-danger button-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='ERROR'}"></span>
-									<span>{{qualityGuard.qualityGuardName}}</span>
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
+	<div class="table-responsive" *ngIf="qualityGuardsByProject">
+        <table class="table">
+            <tbody *ngFor='let qualityGuard of qualityGuardsByProject?.reverse() | slice:0:10;'>
+                <tr>
+                    <td>
+                        <div>
+                            <span [ngClass]="{'button-success button-circle' : qualityGuard.violation==null}"></span>
+                            <span [ngClass]="{'button-warning button-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='WARNING'}"></span>
+                            <span [ngClass]="{'button-danger button-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='ERROR'}"></span>
+                            <span>{{qualityGuard.qualityGuardName}}</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

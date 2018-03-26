@@ -1,26 +1,21 @@
-
-	<div class="">
-		<h5>Project Quality Issues</h5>
-		<div class="">
-			<div class="">
-				<div class="table-responsive" *ngIf="qualityGuardsByProject">
-					<table class="table">
-						<tbody *ngFor='let qualityGuard of qualityGuardsByProject; let i = index' [attr.data-index]='i'>
-							<tr *ngFor='let violation of qualityGuard.violations'>
-								<td>
-									<span [ngClass]="{'button-warning button-circle' : violation.violationStatus=='WARNING'}"></span>
-									<span [ngClass]="{'button-danger button-circle' : violation.violationStatus=='ERROR'}"></span>
-									<span>{{violation.incidentStartDate}}</span>
-								</td>
-								<td>{{qualityGuard.qualityGuardName}}</td>
-								<td *ngFor='let conditionViolation of violation.conditionViolations'>
-									<span>{{conditionViolation.measureInstance}} : </span>
-									<span>{{conditionViolation.conditionValue}}</span>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>			
-		</div>
-	</div>
+<div>
+    <h5>Project Quality Issues</h5>
+    <div class="table-responsive" *ngIf="qualityGuardsByProject">
+        <table class="table">
+            <tbody *ngFor='let qualityGuard of qualityGuardsByProject'>
+                <tr *ngFor='let violation of qualityGuard.violations?.reverse() | slice:0:10;'>
+                    <td>
+                        <span [ngClass]="{'button-warning button-circle' : violation.violationStatus=='WARNING'}"></span>
+                        <span [ngClass]="{'button-danger button-circle' : violation.violationStatus=='ERROR'}"></span>
+                        <span>{{violation.incidentStartDate}}</span>
+                    </td>
+                    <td>{{qualityGuard.qualityGuardName}}</td>
+                    <td *ngFor='let conditionViolation of violation.conditionViolations'>
+                        <span>{{conditionViolation.measureInstance}} : </span>
+                        <span>{{conditionViolation.conditionValue}}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
