@@ -160,7 +160,7 @@ public class QualityGuardResource {
     public List<MeasureInstanceType> getMeasureInstanceType(Long projectId) {
     	List<MeasureInstanceType> measureInstancesType = new ArrayList<MeasureInstanceType>();
 		RestTemplate restTemplate = new RestTemplate();
-		MeasureInstanceType[] measureInstances = restTemplate.getForObject(serverURL +"/api/guard-conditions/measure-instance-type/by-project/"+projectId, MeasureInstanceType[].class);
+		MeasureInstanceType[] measureInstances = restTemplate.getForObject(serverURL +"/api/guard-conditions/measure-instance-type/by-project/" + projectId, MeasureInstanceType[].class);
 		measureInstancesType.addAll(Arrays.asList(measureInstances));
 		return measureInstancesType;
     }

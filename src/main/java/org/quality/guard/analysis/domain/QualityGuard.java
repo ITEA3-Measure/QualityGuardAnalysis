@@ -17,11 +17,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.quality.guard.analysis.domain.enumeration.CombinationMode;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * A QualityGuard.
@@ -57,8 +61,9 @@ public class QualityGuard implements Serializable {
     @JoinColumn(name="violation_id", unique = true)
     private Violation violation;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "qualityGuard", cascade = CascadeType.ALL)
-    @Cache(usage = CacheConcurrencyStrategy.NONE)
+    @OneToMany(mappedBy = "qualityGuard")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Violation> violations = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "qualityGuard", cascade = CascadeType.ALL)
