@@ -124,10 +124,27 @@ public class ViolationResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
     
+    /*
+     * To review
+     */
     @GetMapping("/violations/by-project/{idProject}/by-quality-guard/{idQualityGuard}")
     @Timed
     public List<Violation> getViolationByProjectIdAndQualityGuardId(@PathVariable Long idProject,@PathVariable Long idQualityGuard){
     	log.debug("REST request to get GuardConditions by project : {} "+ idProject + " {} "+ idQualityGuard);
     	return violationRepository.getViolationByProjectIdAndQualityGuardId(idProject, idQualityGuard);
+    }
+    
+    @GetMapping("/violations/last-violations/by-quality-guard/{idQualityGuard}")
+    @Timed
+    public List<Violation> getLastViolationByQualityGuardId(@PathVariable Long idQualityGuard){
+    	log.debug("REST request to get last Violations by qualityGuard id : {} "+ idQualityGuard);
+    	return violationRepository.getLastViolationByQualityGuardId(idQualityGuard);
+    }
+    
+    @GetMapping("/violations/last-violations")
+    @Timed
+    public List<Violation> getLastViolation(){
+    	log.debug("REST request to get last Violations ");
+    	return violationRepository.getLastViolation();
     }
 }
