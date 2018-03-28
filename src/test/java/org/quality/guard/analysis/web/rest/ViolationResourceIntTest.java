@@ -21,6 +21,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+
+import java.util.Date;
 import java.util.List;
 
 import static org.quality.guard.analysis.web.rest.TestUtil.createFormattingConversionService;
@@ -39,11 +41,11 @@ import org.quality.guard.analysis.domain.enumeration.GuardStatus;
 @SpringBootTest(classes = QualityGuardAnalysisApp.class)
 public class ViolationResourceIntTest {
 
-    private static final String DEFAULT_INCIDENT_START_DATE = "AAAAAAAAAA";
-    private static final String UPDATED_INCIDENT_START_DATE = "BBBBBBBBBB";
+    private static final Date DEFAULT_INCIDENT_START_DATE = new Date();
+    private static final Date UPDATED_INCIDENT_START_DATE = new Date();
 
-    private static final String DEFAULT_INCIDENT_END_DATE = "AAAAAAAAAA";
-    private static final String UPDATED_INCIDENT_END_DATE = "BBBBBBBBBB";
+    private static final Date DEFAULT_INCIDENT_END_DATE = new Date();
+    private static final Date UPDATED_INCIDENT_END_DATE = new Date();
 
     private static final GuardStatus DEFAULT_VIOLATION_STATUS = GuardStatus.SUCCESS;
     private static final GuardStatus UPDATED_VIOLATION_STATUS = GuardStatus.WARNING;

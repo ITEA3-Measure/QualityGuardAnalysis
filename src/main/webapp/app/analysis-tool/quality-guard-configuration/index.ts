@@ -1,3 +1,4 @@
+export * from './quality-issues.model';
 export * from './quality-guard.model';
 export * from './guard-condition.model';
 export * from './measure-instance-type.model';

@@ -5,8 +5,12 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
+import javax.inject.Inject;
+
 import org.quality.guard.analysis.domain.Violation;
 import org.quality.guard.analysis.repository.ViolationRepository;
+import org.quality.guard.analysis.service.qualityissues.api.IQualityIssues;
+import org.quality.guard.analysis.service.qualityissues.impl.QualityIssues;
 import org.quality.guard.analysis.web.rest.errors.BadRequestAlertException;
 import org.quality.guard.analysis.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
@@ -37,6 +41,9 @@ public class ViolationResource {
     private static final String ENTITY_NAME = "violation";
 
     private final ViolationRepository violationRepository;
+    
+    @Inject
+    private IQualityIssues qualityIssues;
 
     public ViolationResource(ViolationRepository violationRepository) {
         this.violationRepository = violationRepository;
@@ -124,27 +131,18 @@ public class ViolationResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
     
-    /*
-     * To review
-     */
-    @GetMapping("/violations/by-project/{idProject}/by-quality-guard/{idQualityGuard}")
-    @Timed
-    public List<Violation> getViolationByProjectIdAndQualityGuardId(@PathVariable Long idProject,@PathVariable Long idQualityGuard){
-    	log.debug("REST request to get GuardConditions by project : {} "+ idProject + " {} "+ idQualityGuard);
-    	return violationRepository.getViolationByProjectIdAndQualityGuardId(idProject, idQualityGuard);
-    }
-    
     @GetMapping("/violations/last-violations/by-quality-guard/{idQualityGuard}")
     @Timed
-    public List<Violation> getLastViolationByQualityGuardId(@PathVariable Long idQualityGuard){
+    public List<Violation> getLastViolationsByQualityGuardId(@PathVariable Long idQualityGuard){
     	log.debug("REST request to get last Violations by qualityGuard id : {} "+ idQualityGuard);
-    	return violationRepository.getLastViolationByQualityGuardId(idQualityGuard);
+    	return violationRepository.getLastViolationsByQualityGuardId(idQualityGuard);
     }
     
-    @GetMapping("/violations/last-violations")
+    @GetMapping("/violations/quality-issues/last-violations")
     @Timed
-    public List<Violation> getLastViolation(){
-    	log.debug("REST request to get last Violations ");
-    	return violationRepository.getLastViolation();
+    public List<QualityIssues> getLastViolationsWithQualityGuard() {
+    	log.debug("REST request to get last Violations with quality guard");
+    	List<QualityIssues> listQualityIssues = qualityIssues.getQualityIssues();
+    	return listQualityIssues;
     }
 }

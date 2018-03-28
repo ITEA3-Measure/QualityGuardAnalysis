@@ -7,6 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -28,10 +29,12 @@ public class Violation implements Serializable {
     private Long id;
 
     @Column(name = "incident_start_date")
-    private String incidentStartDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date incidentStartDate;
 
     @Column(name = "incident_end_date")
-    private String incidentEndDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date incidentEndDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "violation_status")
@@ -58,29 +61,29 @@ public class Violation implements Serializable {
         this.id = id;
     }
 
-    public String getIncidentStartDate() {
+    public Date getIncidentStartDate() {
         return incidentStartDate;
     }
 
-    public Violation incidentStartDate(String incidentStartDate) {
+    public Violation incidentStartDate(Date incidentStartDate) {
         this.incidentStartDate = incidentStartDate;
         return this;
     }
 
-    public void setIncidentStartDate(String incidentStartDate) {
+    public void setIncidentStartDate(Date incidentStartDate) {
         this.incidentStartDate = incidentStartDate;
     }
 
-    public String getIncidentEndDate() {
+    public Date getIncidentEndDate() {
         return incidentEndDate;
     }
 
-    public Violation incidentEndDate(String incidentEndDate) {
+    public Violation incidentEndDate(Date incidentEndDate) {
         this.incidentEndDate = incidentEndDate;
         return this;
     }
 
-    public void setIncidentEndDate(String incidentEndDate) {
+    public void setIncidentEndDate(Date incidentEndDate) {
         this.incidentEndDate = incidentEndDate;
     }
 

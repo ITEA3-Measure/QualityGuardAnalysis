@@ -25,7 +25,6 @@ export class QualityGuardDashboardComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private cdRef: ChangeDetectorRef,
   ) {
-    // this.route.params.subscribe((res) => console.log(res.id));
     this.projectId = +router.parseUrl(router.url).root.children['primary'].segments[1].path;
   }
 

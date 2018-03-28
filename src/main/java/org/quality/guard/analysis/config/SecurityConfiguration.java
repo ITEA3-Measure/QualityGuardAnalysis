@@ -68,6 +68,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
             .antMatchers(HttpMethod.OPTIONS, "/**")
+            .antMatchers("/api/violations/quality-issues/last-violations")
+            .antMatchers("/api/violations/by-quality-guard/*")
             .antMatchers("/api/violations/last-violations")
             .antMatchers("/api/violations/last-violations/by-quality-guard/*")
             .antMatchers("/api/quality-guard/incident-history/**")

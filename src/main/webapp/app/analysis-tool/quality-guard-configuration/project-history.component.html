@@ -8,11 +8,11 @@
                         <span>
                             <select class="dropDownPosition" name="intervalAgregation" id="field_intervalAgregation" [(ngModel)]="intervalAgregation" (change)="getIncidentStatus($event.target.value)">
                                 <option *ngIf='intervalAgregation == undefined' value=""></option>
-                                <option value="MOY_MIN">MOY_MIN</option>
-                                <option value="MOY_HH">MOY_HH</option>
-                                <option value="MOY_DD">MOY_DD</option>
-                                <option value="MOY_WW">MOY_WW</option>
-                                <option value="MOY_MM">MOY_MM</option>
+                                <option value="MOY_MIN">BY MINUTE</option>
+                                <option value="MOY_HH">BY HOUR</option>
+                                <option value="MOY_DD">BY DAY</option>
+                                <option value="MOY_WW">BY WEEK</option>
+                                <option value="MOY_MM">BY MONTH</option>
                             </select>
                         </span>
                     </td>
@@ -28,7 +28,7 @@
                     </td>
                     <td>
                         <div><small>Last incident date</small></div>
-                        <div *ngIf="qualityGuard.violations.length > 0"><small>{{qualityGuard.violations[qualityGuard.violations.length-1].incidentStartDate}}</small></div>
+                        <div *ngIf="qualityGuard.violations?.length > 0"><small>{{qualityGuard.violations[0].incidentStartDate | date: 'dd-MM-yyyy HH:mm:ss'}}</small></div>
                     </td>
                     <td>
                         <div>
@@ -75,18 +75,18 @@
                                     <th *ngFor='let guardCondition of qualityGuard.guardConditions'>{{guardCondition.measureInstance}}</th>
                                 </tr>
                             </thead>
-                            <tbody *ngIf="qualityGuard.violations.length > 0">
-                                <tr *ngFor='let violation of qualityGuard.violations?.reverse() | slice:0:20;'>
+                            <tbody>
+                                <tr *ngFor='let violation of qualityGuard.violations'>
                                     <td>
                                         <span [ngClass]="{'button-success button-circle' : violation.violationStatus=='SUCCESS'}"></span>
                                         <span [ngClass]="{'button-warning button-circle' : violation.violationStatus=='WARNING'}"></span>
                                         <span [ngClass]="{'button-danger button-circle' : violation.violationStatus=='ERROR'}"></span>
                                     </td>
                                     <td>
-                                        <span>{{violation.incidentStartDate}}</span>
+                                        <span>{{violation.incidentStartDate | date: 'dd-MM-yyyy HH:mm:ss'}}</span>
                                     </td>
                                     <td>
-                                        <span>{{violation.incidentEndDate}}</span>
+                                        <span>{{violation.incidentEndDate | date: 'dd-MM-yyyy HH:mm:ss'}}</span>
                                     </td>
                                     <td *ngFor='let conditionViolation of violation.conditionViolations'>
                                         <span *ngIf="conditionViolation.conditionStatus">{{conditionViolation.conditionValue}}</span>

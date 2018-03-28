@@ -1,26 +1,30 @@
 package org.quality.guard.analysis.service.qualityguardhistory.impl;
 
+import static java.time.ZoneOffset.UTC;
+import static java.time.temporal.ChronoUnit.DAYS;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.inject.Inject;
 
 import org.quality.guard.analysis.domain.QualityGuard;
 import org.quality.guard.analysis.domain.Violation;
 import org.quality.guard.analysis.domain.enumeration.GuardStatus;
+import org.quality.guard.analysis.repository.ViolationRepository;
 import org.quality.guard.analysis.service.qualityguardhistory.api.IQualityGuardHistoryService;
 import org.springframework.stereotype.Service;
 
-import static java.time.ZoneOffset.UTC;
-import static java.time.temporal.ChronoUnit.DAYS;
-
 @Service
 public class QualityGuardHistoryService implements IQualityGuardHistoryService {
+	
+	@Inject
+	private ViolationRepository violationRepository;
 	
 	@Override
 	public List<IncidentStatus> retrieveIncidentsHistory(QualityGuard qualityGuard, String intervalAgregation) throws ParseException {
@@ -50,20 +54,14 @@ public class QualityGuardHistoryService implements IQualityGuardHistoryService {
 			}
 			
   			GuardStatus status = GuardStatus.SUCCESS;
-			for (Violation violation : qualityGuard.getViolations()) {
-				try {
-					Date incidentStartDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(violation.getIncidentStartDate());
-					Date incidentEndDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(violation.getIncidentStartDate());
-					if(incidentStartDate.getTime() < to.getTime() && incidentEndDate .getTime() > from.getTime() ) {
-						if(violation.getViolationStatus().equals(GuardStatus.ERROR)) {
-							status = GuardStatus.ERROR;
-							break;
-						}else if(violation.getViolationStatus().equals(GuardStatus.WARNING)) {
-							status = GuardStatus.WARNING;
-						}
-					}
-				} catch (ParseException e) {
-					e.printStackTrace();
+  			List<Violation> violations =  violationRepository.getViolationsByQualityGuardIdBetweenIntervals(qualityGuard.getId(), from, to);
+
+  			for (Violation violation : violations) {
+				if (violation.getViolationStatus().equals(GuardStatus.ERROR)) {
+					status = GuardStatus.ERROR;
+					break;
+				} else if (violation.getViolationStatus().equals(GuardStatus.WARNING)) {
+					status = GuardStatus.WARNING;
 				}
 			}
 			incidentHistory.add(new IncidentStatus(status, getFormatDateStatus(from, intervalAgregation)));
@@ -86,5 +84,5 @@ public class QualityGuardHistoryService implements IQualityGuardHistoryService {
 		}
 		return "";
 	}
-	
+
 }

@@ -4,13 +4,15 @@ import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
 import { Violation } from './violation.model';
 import { ResponseWrapper, createRequestOption } from '../../shared';
+import { QualityIssues } from './quality-issues.model';
 
 @Injectable()
 export class ViolationService {
 
     private resourceUrl =  SERVER_API_URL + 'api/violations';
-    private byProject = 'by-project';
+    private qualityIssues = 'quality-issues';
     private byQualityGuard = 'by-quality-guard';
+    private lastViolations = 'last-violations';
 
     constructor(private http: Http) { }
 
@@ -44,11 +46,19 @@ export class ViolationService {
     }
 
     /**
-     * Get Violations by projectID and qualityGuardId
+     * Get Last Violations by qualityGuardId
      */
-    getViolationsByProjectIdAndQualityGuardId(idProject: number, idQualityGuard: number): Observable<ResponseWrapper> {
-        return this.http.get(`${this.resourceUrl}/${this.byProject}/${idProject}/${this.byQualityGuard}/${idQualityGuard}`)
+    getLastViolationsByQualityGuardId(idQualityGuard: number): Observable<ResponseWrapper> {
+        return this.http.get(`${this.resourceUrl}/${this.lastViolations}/${this.byQualityGuard}/${idQualityGuard}`)
             .map((res: Response) => this.convertResponse(res));
+    }
+
+    /**
+     * Get Last Violations With qualityGuards
+     */
+    getLastViolationsWithQualityGuards(): Observable<ResponseWrapper> {
+        return this.http.get(`${this.resourceUrl}/${this.qualityIssues}/${this.lastViolations}`)
+            .map((res: Response) => this.convertQualityIssuesResponse(res));
     }
 
     delete(id: number): Observable<Response> {
@@ -64,11 +74,28 @@ export class ViolationService {
         return new ResponseWrapper(res.headers, result, res.status);
     }
 
+    private convertQualityIssuesResponse(res: Response): ResponseWrapper {
+        const jsonResponse = res.json();
+        const result = [];
+        for (let i = 0; i < jsonResponse.length; i++) {
+            result.push(this.convertQualityIssuesFromServer(jsonResponse[i]));
+        }
+        return new ResponseWrapper(res.headers, result, res.status);
+    }
+
     /**
      * Convert a returned JSON object to Violation.
      */
     private convertItemFromServer(json: any): Violation {
         const entity: Violation = Object.assign(new Violation(), json);
+        return entity;
+    }
+
+    /**
+     * Convert a returned JSON object to QualityIssues.
+     */
+    private convertQualityIssuesFromServer(json: any): QualityIssues {
+        const entity: QualityIssues = Object.assign(new QualityIssues(), json);
         return entity;
     }
 

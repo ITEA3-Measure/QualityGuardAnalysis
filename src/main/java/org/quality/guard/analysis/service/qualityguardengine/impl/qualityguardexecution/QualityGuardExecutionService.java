@@ -184,7 +184,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 	
 	@Override
 	public Violation openViolationIssue(QualityGuard qualityGuard, GuardStatus newStatus, List<EvaluatedGuardCondition> conditions) {
-		Violation violation = violationService.save(getViolationObject(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()), null, newStatus, qualityGuard));
+		Violation violation = violationService.save(getViolationObject(new Date(), null, newStatus, qualityGuard));
 		if(violation != null) {
 			qualityGuard.setViolation(violation);
 			qualityGuardService.update(qualityGuard);
@@ -202,7 +202,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 	public void closeViolationIssue(QualityGuard qualityGuard) {
 		Violation currentViolation = qualityGuard.getViolation();
 		if (currentViolation != null) {
-			currentViolation.setIncidentEndDate(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()));
+			currentViolation.setIncidentEndDate(new Date());
 			violationService.update(currentViolation);
 		}
 		qualityGuard.setViolation(null);
@@ -210,7 +210,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 		System.out.println("Close Violation : " + qualityGuard.getQualityGuardName());
 	}
 	
-	public Violation getViolationObject(String incidentStartDate, String incidentEndDate, GuardStatus violationStatus, QualityGuard qualityGuard) {
+	public Violation getViolationObject(Date incidentStartDate, Date incidentEndDate, GuardStatus violationStatus, QualityGuard qualityGuard) {
 		Violation violation = new Violation();
 		violation.setIncidentStartDate(incidentStartDate);
 		violation.setIncidentEndDate(incidentEndDate);
@@ -271,7 +271,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 			timeAgo = strictTime;
 			break;
 		case "MOY_MIN":
-			timeAgo = TimeUnit.MINUTES.toMillis(1);
+			timeAgo = TimeUnit.SECONDS.toMillis(5);
 			break;
 		case "MOY_HH":
 			timeAgo = TimeUnit.HOURS.toMillis(1);

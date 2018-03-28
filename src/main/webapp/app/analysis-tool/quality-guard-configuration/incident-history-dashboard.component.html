@@ -1,19 +1,17 @@
 <div>
     <h5>Project Quality Issues</h5>
-    <div class="table-responsive" *ngIf="qualityGuardsByProject">
+    <div class="table-responsive" *ngIf="qualityIssues">
         <table class="table">
-            <tbody *ngFor='let qualityGuard of qualityGuardsByProject'>
-                <tr *ngFor='let violation of qualityGuard.violations?.reverse() | slice:0:10;'>
+            <tbody>
+                <tr *ngFor='let issue of qualityIssues'>
                     <td>
-                        <span [ngClass]="{'button-warning button-circle' : violation.violationStatus=='WARNING'}"></span>
-                        <span [ngClass]="{'button-danger button-circle' : violation.violationStatus=='ERROR'}"></span>
-                        <span>{{violation.incidentStartDate}}</span>
+                        <span [ngClass]="{'button-warning button-circle' : issue.violationStatus=='WARNING'}"></span>
+                        <span [ngClass]="{'button-danger button-circle' : issue.violationStatus=='ERROR'}"></span>
+                        <span>{{issue.incidentStartDate}}</span>
                     </td>
-                    <td>{{qualityGuard.qualityGuardName}}</td>
-                    <td *ngFor='let conditionViolation of violation.conditionViolations'>
-                        <span>{{conditionViolation.measureInstance}} : </span>
-                        <span>{{conditionViolation.conditionValue}}</span>
-                    </td>
+                    <td>{{issue.qualityGuardName}}</td>
+                    <td>{{issue.measureInstance}}</td>
+                    <td>{{issue.conditionValue}}</td>
                 </tr>
             </tbody>
         </table>
