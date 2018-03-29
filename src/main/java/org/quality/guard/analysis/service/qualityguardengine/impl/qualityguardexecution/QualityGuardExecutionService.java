@@ -2,7 +2,6 @@ package org.quality.guard.analysis.service.qualityguardengine.impl.qualityguarde
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -36,7 +35,6 @@ import org.quality.guard.analysis.domain.enumeration.AnalysisAgregation;
 import org.quality.guard.analysis.domain.enumeration.CombinationMode;
 import org.quality.guard.analysis.domain.enumeration.GuardStatus;
 import org.quality.guard.analysis.service.qualityguardengine.api.IQualityGuardExecutionService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
