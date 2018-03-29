@@ -28,6 +28,7 @@ export class QualityGuardDialogComponent implements OnInit {
   allFieldNames: Array<any> = [];
   isSaving: boolean;
   projectId: number;
+  measures: Array<any>= [];
 
   constructor(
     private router: Router,
@@ -46,26 +47,17 @@ export class QualityGuardDialogComponent implements OnInit {
     this.retrieveMeasureInstanceType();
     this.buildForm();
     this.isSaving = false;
-    this.guardConditionService
-      .query({filter: 'qualityguard-is-null'})
-      .subscribe((res: ResponseWrapper) => {
-        //                if (!this.qualityGuard.violation || !this.qualityGuard.violation.id) {
-        //                    this.violations = res.json;
-        //                } else {
-        //                    this.violationService
-        //                        .find(this.qualityGuard.violation.id)
-        //                        .subscribe((subRes: Violation) => {
-        //                            this.violations = [subRes].concat(res.json);
-        //                        }, (subRes: ResponseWrapper) => this.onError(subRes.json));
-        //                }
-      }, (res: ResponseWrapper) => this.onError(res.json));
   }
 
   loadAllData() {
     this.guardConditionService.getGuardConditionsByProjectId(this.projectId).subscribe(
       (res: ResponseWrapper) => {
         this.guardConditionsbyProject = res.json;
-        this.editRuleData();
+        if (this.qualityGuard.id !== undefined) {
+          this.editRuleData();
+        } else {
+          this.addRule();
+        }
       },
       (res: ResponseWrapper) => this.onError(res.json)
     );
@@ -75,20 +67,27 @@ export class QualityGuardDialogComponent implements OnInit {
     this.guardConditionService.getMeasureInstanceType(this.projectId).subscribe(
       (res: ResponseWrapper) => {
         this.allMeasureInstanceType = res.json;
+        this.measures = this.formatMeasuresStructure();
       },
       (res: ResponseWrapper) => this.onError(res.json)
     )
   }
 
-  getFieldsMeasure(i: number) {
-      return this.allMeasureInstanceType[i].fields;
+  formatMeasuresStructure() {
+    const measures: Array<any> = [];
+    this.allMeasureInstanceType.forEach((measure) => {
+      measure.fields.forEach((field) => {
+        const measureObject = {
+            'measureInstance': measure.measureInstance,
+            'field': field
+        };
+        measures.push(measureObject);
+      })
+    });
+    return measures;
   }
 
-  /**
-   * build the initial form
-   */
   buildForm() {
-    // build our form
     this.form = this.fb.group({
       rules: this.fb.array([
         // this.createRule(),
@@ -120,37 +119,12 @@ export class QualityGuardDialogComponent implements OnInit {
     control.removeAt(i);
   }
 
-  //  addRuleData(result: QualityGuard) {
-  //    const formArray = this.form.controls.rules as FormArray;
-  //    let guardConditionsData: Array<GuardCondition>;
-  //    guardConditionsData = formArray.value;
-  //    this.qualityGuard.guardConditions = guardConditionsData;
-  //    for (const item of guardConditionsData) {
-  //      item.qualityGuard = result;
-  //      this.subscribeToSaveResponseGuardCondition(
-  //      this.guardConditionService.create(item));
-  //    }
-  //  }
-
-  //  updateRuleData(result: QualityGuard) {
-  //    const formArray = this.form.controls.rules as FormArray;
-  //    let guardConditionsData: Array<GuardCondition>;
-  //    guardConditionsData = formArray.value;
-  //    // this.qualityGuard.guardConditions = guardConditionsData;
-  //    for (const item of guardConditionsData) {
-  //      item.qualityGuard = result;
-  //      this.subscribeToSaveResponseGuardCondition(
-  //      this.guardConditionService.update(item));
-  //    }
-  //  }
-
   editRuleData() {
     const formArray = this.form.controls.rules as FormArray;
     this.guardConditionsbyQualityGuard.forEach((x) => {
       formArray.push(this.fb.group({
         id: x.id,
-        measureInstance: x.measureInstance,
-        measureField: x.measureField,
+        measureInstance: x.measureInstance + '-' + x.measureField,
         operator: x.operator,
         warningValue: x.warningValue,
         errorValue: x.errorValue,
@@ -159,37 +133,30 @@ export class QualityGuardDialogComponent implements OnInit {
     });
   }
 
-  dropDownChanged(val: any) {
-    for (const obj of this.allMeasureInstanceType) {
-      if (val === obj.measureInstance) {
-        this.allFieldNames = obj.fields;
-        break;
-      } else {
-        this.allFieldNames = [];
-      }
-    }
+  saveRulesData() {
+    const formArray = this.form.controls.rules as FormArray;
+    formArray.value.forEach((guard) => {
+      formArray.push(this.fb.group({
+        id: guard.id,
+        measureInstance: guard.measureInstance.split('-', 2)[0],
+        measureField: guard.measureInstance.split('-', 2)[1],
+        operator: guard.operator,
+        warningValue: guard.warningValue,
+        errorValue: guard.errorValue,
+        intervalAgregation: guard.intervalAgregation
+      }));
+      formArray.removeAt(0);
+    });
   }
-
-//  measureInstanceChanged(i) {
-//    const control = <FormArray>this.form.get('rules');
-//    const instanceName = control.value[i].measureInstance;
-//    debugger
-//    this.allFieldNames = this.allMeasureInstanceType.filter((m) => m.instanceName === instanceName);
-//  }
-
-//  measureInstanceChanged(i) {
-//    return this.allMeasureInstanceType[i].fields;
-//  }
 
   clear() {
     this.activeModal.dismiss('cancel');
   }
-  /**
-   * CRUD methods
-   */
+
   save() {
     this.isSaving = true;
     const formArray = this.form.controls.rules as FormArray;
+    this.saveRulesData();
     this.qualityGuard.guardConditions = formArray.value;
     if (this.qualityGuard.id !== undefined) {
       this.subscribeToSaveResponseQualityGuard(
@@ -222,27 +189,11 @@ export class QualityGuardDialogComponent implements OnInit {
       this.onSaveSuccessQualityGuard(res), (res: Response) => this.onSaveError());
   }
 
-//  private subscribeToSaveResponseGuardCondition(result: Observable<GuardCondition>) {
-//    result.subscribe((res: GuardCondition) =>
-//      this.onSaveSuccessGuardCondition(res), (res: Response) => this.onSaveError());
-//  }
-
   private onSaveSuccessQualityGuard(result: QualityGuard) {
     this.eventManager.broadcast({name: 'qualityGuardListModification', content: 'OK'});
     this.isSaving = false;
     this.activeModal.dismiss(result);
-    //    if (this.qualityGuard.id !== undefined) {
-    //      this.updateRuleData(result);
-    //    } else {
-    //      this.addRuleData(result);
-    //    }
   }
-
-//  private onSaveSuccessGuardCondition(result: GuardCondition) {
-//    this.eventManager.broadcast({name: 'guardConditionListModification', content: 'OK'});
-//    this.isSaving = false;
-//    this.activeModal.dismiss(result);
-//  }
 
   private onSaveError() {
     this.isSaving = false;
