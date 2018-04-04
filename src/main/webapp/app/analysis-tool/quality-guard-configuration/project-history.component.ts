@@ -18,6 +18,7 @@ export class ProjectHistoryComponent implements OnInit {
   errorMessage: any;
   projectId: number;
   rowSelected: number;
+  selectedIntervalAgregation: string;
 
   constructor(
         private router: Router,
@@ -44,7 +45,9 @@ export class ProjectHistoryComponent implements OnInit {
                     },
                     (resV: ResponseWrapper) => this.onError(resV.json)
                 )
-            })
+            });
+            this.selectedIntervalAgregation = 'MOY_MIN';
+            this.getIncidentStatus('MOY_MIN');
         },
         (resQG: ResponseWrapper) => this.onError(resQG.json)
     );

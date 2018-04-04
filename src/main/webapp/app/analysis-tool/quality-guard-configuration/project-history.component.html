@@ -6,8 +6,7 @@
                 <tr *ngIf="i == 0">
                     <td colspan="4">
                         <span>
-                            <select class="dropDownPosition" name="intervalAgregation" id="field_intervalAgregation" [(ngModel)]="intervalAgregation" (change)="getIncidentStatus($event.target.value)">
-                                <option *ngIf='intervalAgregation == undefined' value=""></option>
+                            <select class="dropDownPosition" name="intervalAgregation" id="field_intervalAgregation" [(ngModel)]="selectedIntervalAgregation" (change)="getIncidentStatus($event.target.value)">
                                 <option value="MOY_MIN">BY MINUTE</option>
                                 <option value="MOY_HH">BY HOUR</option>
                                 <option value="MOY_DD">BY DAY</option>
