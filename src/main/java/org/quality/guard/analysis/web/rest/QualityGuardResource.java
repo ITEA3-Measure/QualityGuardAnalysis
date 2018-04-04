@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 
 import org.quality.guard.analysis.domain.GuardCondition;
 import org.quality.guard.analysis.domain.QualityGuard;
+import org.quality.guard.analysis.integration.api.IMeasuresAccessService;
 import org.quality.guard.analysis.integration.impl.data.MeasureInstance;
 import org.quality.guard.analysis.integration.impl.data.MeasureInstanceType;
 import org.quality.guard.analysis.repository.QualityGuardRepository;
@@ -24,15 +25,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import javax.inject.Inject;
+
 /**
  * REST controller for managing QualityGuard.
  */
 @RestController
 @RequestMapping("/api")
 public class QualityGuardResource {
-
-	@Value("${analysis-tool.ws.url}")
-	private String serverURL;
+	
+	@Inject
+	private IMeasuresAccessService measurAccessService;
 	
     private final Logger log = LoggerFactory.getLogger(QualityGuardResource.class);
 
@@ -59,7 +62,7 @@ public class QualityGuardResource {
             throw new BadRequestAlertException("A new qualityGuard cannot already have an ID", ENTITY_NAME, "idexists");
         }
         for(GuardCondition guardCondition : qualityGuard.getGuardConditions()) {
-        	for (MeasureInstanceType measureInstanceType : this.getMeasureInstanceType(qualityGuard.getMeasureProjectId())) {
+        	for (MeasureInstanceType measureInstanceType : measurAccessService.getPlatformeMeasures(qualityGuard.getMeasureProjectId())) {
 				if (measureInstanceType.getMeasureInstance().equals(guardCondition.getMeasureInstance())) {
 					guardCondition.setMeasureName(measureInstanceType.getMeasureName().toLowerCase());
 				}
@@ -90,7 +93,7 @@ public class QualityGuardResource {
             return createQualityGuard(qualityGuard);
         }
         for(GuardCondition guardCondition : qualityGuard.getGuardConditions()) {
-        	for (MeasureInstanceType measureInstanceType : getMeasureInstanceType(qualityGuard.getMeasureProjectId())) {
+        	for (MeasureInstanceType measureInstanceType : measurAccessService.getPlatformeMeasures(qualityGuard.getMeasureProjectId())) {
 				if (measureInstanceType.getMeasureInstance().equals(guardCondition.getMeasureInstance())) {
 					guardCondition.setMeasureName(measureInstanceType.getMeasureName().toLowerCase());
 				}
@@ -156,13 +159,5 @@ public class QualityGuardResource {
     	System.out.println(qualityGuardRepository.getQualityGuardsByProjectId(id).toString());
 		return qualityGuardRepository.getQualityGuardsByProjectId(id);
 	}
-    
-    public List<MeasureInstanceType> getMeasureInstanceType(Long projectId) {
-    	List<MeasureInstanceType> measureInstancesType = new ArrayList<MeasureInstanceType>();
-		RestTemplate restTemplate = new RestTemplate();
-		MeasureInstanceType[] measureInstances = restTemplate.getForObject(serverURL +"/api/guard-conditions/measure-instance-type/by-project/" + projectId, MeasureInstanceType[].class);
-		measureInstancesType.addAll(Arrays.asList(measureInstances));
-		return measureInstancesType;
-    }
     
 }

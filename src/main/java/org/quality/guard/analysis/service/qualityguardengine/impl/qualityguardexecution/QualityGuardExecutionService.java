@@ -56,7 +56,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 		System.out.println("Execution : " + qualityGuard.getQualityGuardName());
 		
 		if (isGuardConditionsWithStrictTime(qualityGuard.getGuardConditions())) {
-			executeQualityGuardWithStrictTime(qualityGuard);
+			evaluateQualityGuardWithStrictTime(qualityGuard);
 		} else {
 			List<EvaluatedGuardCondition>  conditions = evaluateQualityGuardWithOutStrictTime(qualityGuard.getGuardConditions());
 			GuardStatus newStatus = evaluateQualityGuard(qualityGuard, conditions);
@@ -85,7 +85,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 		return conditions;
 	}
 	
-	public void executeQualityGuardWithStrictTime(QualityGuard qualityGuard)throws UnknownHostException {
+	public void evaluateQualityGuardWithStrictTime(QualityGuard qualityGuard)throws UnknownHostException {
 		List<MeasureValue> values = new ArrayList<>();
 		for(GuardCondition guardCondition : qualityGuard.getGuardConditions()) {
 			values.addAll(getMeasureValues(guardCondition.getMeasureName(), guardCondition.getMeasureInstance(), guardCondition.getMeasureField(), guardCondition.getIntervalAgregation().name()));
@@ -269,7 +269,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 			timeAgo = strictTime;
 			break;
 		case "MOY_MIN":
-			timeAgo = TimeUnit.SECONDS.toMillis(5);
+			timeAgo = TimeUnit.MINUTES.toMillis(1);
 			break;
 		case "MOY_HH":
 			timeAgo = TimeUnit.HOURS.toMillis(1);
