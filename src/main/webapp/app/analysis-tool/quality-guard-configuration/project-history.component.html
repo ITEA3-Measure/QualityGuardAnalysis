@@ -18,7 +18,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <div style="margin-top: 4%;">
+                        <div style="margin-top: 4%; padding-bottom: 0.75rem;">
                             <span [ngClass]="{'button-success button-circle' : qualityGuard.violation==null}"></span>
                             <span [ngClass]="{'button-warning button-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='WARNING'}"></span>
                             <span [ngClass]="{'button-danger button-circle': qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='ERROR'}"></span>

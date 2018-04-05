@@ -1,5 +1,7 @@
 package org.quality.guard.analysis.service.qualityguardengine.impl.qualityguardexecution;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import org.decimal4j.util.DoubleRounder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.transport.TransportClient;
@@ -148,7 +151,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 			som += Double.valueOf(value.getValue());
 		}
 		if (values.size() != 0) {
-			average = som / values.size();
+			average = DoubleRounder.round(som / values.size(),2);
 			return  average;
 		}
 		return 0;
