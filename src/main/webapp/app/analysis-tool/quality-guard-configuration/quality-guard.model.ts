@@ -17,6 +17,7 @@ export class QualityGuard implements BaseEntity {
         public measureProjectId?: number,
         public isSchedule?: boolean,
         public guardConditions?: GuardCondition[],
+        public violation?: Violation,
         public violations?: Violation[],
         public incidentsHistory?: IncidentStatus[],
     ) {

@@ -46,6 +46,14 @@ export class ViolationService {
     }
 
     /**
+     * Get Violations by qualityGuardId
+     */
+    getViolationsByQualityGuardId(idQualityGuard: number): Observable<ResponseWrapper> {
+        return this.http.get(`${this.resourceUrl}/${this.byQualityGuard}/${idQualityGuard}`)
+            .map((res: Response) => this.convertResponse(res));
+    }
+
+    /**
      * Get Last Violations by qualityGuardId
      */
     getLastViolationsByQualityGuardId(idQualityGuard: number): Observable<ResponseWrapper> {

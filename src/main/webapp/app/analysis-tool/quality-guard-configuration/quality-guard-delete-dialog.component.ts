@@ -8,6 +8,8 @@ import { QualityGuard } from './quality-guard.model';
 import { QualityGuardService } from './quality-guard.service';
 import { Violation } from './violation.model';
 import { ConditionViolation } from './condition-violation.model';
+import { ViolationService } from './violation.service';
+import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-quality-guard-configuration-delete-dialog',
@@ -24,6 +26,7 @@ export class QualityGuardDeleteDialogComponent {
     constructor(
         private router: Router,
         private qualityGuardService: QualityGuardService,
+        private violationService: ViolationService,
         public activeModal: NgbActiveModal,
         private eventManager: JhiEventManager,
         private jhiAlertService: JhiAlertService
@@ -37,18 +40,35 @@ export class QualityGuardDeleteDialogComponent {
 
     confirmDelete(id: number) {
       this.qualityGuardService.find(id).subscribe((qualityGuard) => {
-        this.deleteQualityGuard(qualityGuard);
+        this.violationService.getViolationsByQualityGuardId(qualityGuard.id).subscribe(
+            (resV: ResponseWrapper) => {
+              resV.json.forEach((violation) => {
+                this.deleteViolation(violation.id);
+              });
+              this.deleteQualityGuard(qualityGuard.id);
+            },
+            (resV: ResponseWrapper) => this.onError(resV.json)
+        );
       });
     }
 
-    deleteQualityGuard(qualityGuard: QualityGuard) {
-      this.qualityGuardService.delete(qualityGuard.id).subscribe((response) => {
+    deleteQualityGuard(id: number) {
+      this.qualityGuardService.delete(id).subscribe((response) => {
         this.eventManager.broadcast({
           name: 'qualityGuardListModification',
           content: 'Deleted an qualityGuard'
         });
         this.activeModal.dismiss(true);
       });
+    }
+
+    deleteViolation(id: number) {
+        this.violationService.delete(id).subscribe((response) => {
+            this.eventManager.broadcast({
+                name: 'violationListModification',
+                content: 'Deleted an violation'
+            });
+        });
     }
 
     private onError(error) {

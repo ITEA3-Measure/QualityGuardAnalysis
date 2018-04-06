@@ -1,7 +1,5 @@
 package org.quality.guard.analysis.service.qualityguardengine.impl.qualityguardexecution;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;

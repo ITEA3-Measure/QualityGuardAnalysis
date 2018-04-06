@@ -15,7 +15,6 @@ import { JhiAlertService } from 'ng-jhipster';
 export class QualityGuardComponent implements OnInit {
 
   qualityGuardsByProject: Array<QualityGuard> = [];
-  guardConditionsByProject: Array<GuardCondition> = [];
   qualityGuard: QualityGuard = {};
   errorMessage: any;
   projectId: number;
@@ -28,7 +27,6 @@ export class QualityGuardComponent implements OnInit {
         private qualityGuardSchedulingService: QualityGuardSchedulingService,
         private jhiAlertService: JhiAlertService,
   ) {
-    // this.route.params.subscribe((res) => console.log(res.id));
     this.projectId = +router.parseUrl(router.url).root.children['primary'].segments[1].path;
     router.events.subscribe((event) => this.loadAll());
   }
@@ -43,13 +41,7 @@ export class QualityGuardComponent implements OnInit {
         this.qualityGuardsByProject = resQG.json
       },
       (resQG: ResponseWrapper) => this.onError(resQG.json)
-    );
-    this.guardConditionService.getGuardConditionsByProjectId(this.projectId).subscribe(
-      (resGC: ResponseWrapper) => {
-        this.guardConditionsByProject = resGC.json;
-      },
-      (resGC: ResponseWrapper) => this.onError(resGC.json)
-    );
+    )
   }
 
   startScheduling(id: number) {

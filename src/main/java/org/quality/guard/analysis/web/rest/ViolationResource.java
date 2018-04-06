@@ -131,6 +131,13 @@ public class ViolationResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
     
+    @GetMapping("/violations/by-quality-guard/{idQualityGuard}")
+    @Timed
+    public List<Violation> getViolationsByQualityGuardId(@PathVariable Long idQualityGuard){
+    	log.debug("REST request to get Violations by qualityGuard id : {} "+ idQualityGuard);
+    	return violationRepository.getViolationsByQualityGuardId(idQualityGuard);
+    }
+    
     @GetMapping("/violations/last-violations/by-quality-guard/{idQualityGuard}")
     @Timed
     public List<Violation> getLastViolationsByQualityGuardId(@PathVariable Long idQualityGuard){
