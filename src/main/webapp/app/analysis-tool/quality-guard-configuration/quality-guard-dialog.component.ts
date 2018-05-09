@@ -179,7 +179,6 @@ export class QualityGuardDialogComponent implements OnInit {
           name: 'guardConditionListModification',
           content: 'Deleted a guardCondition'
         });
-        // this.activeModal.dismiss(false);
       })
     });
   }
