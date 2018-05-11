@@ -18,7 +18,7 @@
         <div class="form-group">
         	<label class="form-control-label">Rules</label>
         	<div formArrayName="rules">
-        		<div *ngFor="let rule of form.controls.rules.controls;let i=index;">
+        		<div *ngFor="let rule of form.get('rules')['controls'];let i=index;">
         			<div [formGroupName]="i">
 				        <div *ngIf="!qualityGuard.id;else other_case">
 				        	<select class="form-control-customize" name="measureInstance" id="field_measureInstance" formControlName="measureInstance">
@@ -38,7 +38,7 @@
 					            <option value="MOY_WW">BY WEEK</option>
 					            <option value="MOY_MM">BY MONTH</option>
 					        </select>
-					        <span *ngIf="form.controls.rules.controls.length > 1" (click)="removeRule(i)">
+					        <span *ngIf="form.get('rules')['controls'].length > 1" (click)="removeRule(i)">
 	        				  <i class="fa fa-trash" style="font-size:2em;" aria-hidden="true" ></i>
 		                    </span>
 				        </div>
@@ -61,7 +61,7 @@
 					                <option value="MOY_WW">MOY_WW</option>
 					                <option value="MOY_MM">MOY_MM</option>
 					            </select>
-					            <span *ngIf="form.controls.rules.controls.length > 1" (click)="removeRule(i)">
+					            <span *ngIf="form.get('rules')['controls'].length > 1" (click)="removeRule(i)">
 		        				  <i class="fa fa-trash" style="font-size:2em;" aria-hidden="true" ></i>
 			                    </span>
 				        </ng-template>
@@ -73,7 +73,7 @@
 			    	<span class="fa fa-primary"></span>&nbsp;<span>New Rule</span>
 			    </button>
         	</div>
-        	<div [hidden]="form.controls.rules.controls.length == 1">
+        	<div [hidden]="form.get('rules')['controls'].length == 1">
 	            <label class="form-control-label" for="field_combinationMode">Combination Mode</label>
 	            <select class="form-control" name="combinationMode" id="field_combinationMode" [(ngModel)]="qualityGuard.combinationMode" [ngModelOptions]="{standalone: true}">
 	                <option value="OR">OR</option>
