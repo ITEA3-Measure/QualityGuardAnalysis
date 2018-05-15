@@ -44,16 +44,16 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 
 	private final static Long strictTime= new Long(60000);
 	
-	@Value("${elasticsearch.url}")
+	@Value("${analysis-tool.elasticsearch.url}")
 	private String elasticsearchUrl;
 	
-	@Value("${elasticsearch.port}")
+	@Value("${analysis-tool.elasticsearch.port}")
 	private Integer elasticsearchPort;
 	
-	@Value("${elasticsearch.cluster-key}")
+	@Value("${analysis-tool.elasticsearch.cluster-key}")
 	private String elasticsearchClusterKey;
 	
-	@Value("${elasticsearch.cluster-name}")
+	@Value("${analysis-tool.elasticsearch.cluster-name}")
 	private String elasticsearchClusterName;
 	
 	@Inject
