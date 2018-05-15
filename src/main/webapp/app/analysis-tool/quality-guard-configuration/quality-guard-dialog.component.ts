@@ -124,7 +124,7 @@ export class QualityGuardDialogComponent implements OnInit {
     this.guardConditionsbyQualityGuard.forEach((x) => {
       formArray.push(this.fb.group({
         id: x.id,
-        measureInstance: x.measureInstance + '-' + x.measureField,
+        measureInstance: x.measureInstance + '::' + x.measureField,
         operator: x.operator,
         warningValue: x.warningValue,
         errorValue: x.errorValue,
@@ -138,8 +138,8 @@ export class QualityGuardDialogComponent implements OnInit {
     formArray.value.forEach((guard) => {
       formArray.push(this.fb.group({
         id: guard.id,
-        measureInstance: guard.measureInstance.split('-', 2)[0],
-        measureField: guard.measureInstance.split('-', 2)[1],
+        measureInstance: guard.measureInstance.split('::', 2)[0],
+        measureField: guard.measureInstance.split('::', 2)[1],
         operator: guard.operator,
         warningValue: guard.warningValue,
         errorValue: guard.errorValue,

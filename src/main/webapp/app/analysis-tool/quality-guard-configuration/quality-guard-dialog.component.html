@@ -22,7 +22,7 @@
         			<div [formGroupName]="i">
 				        <div *ngIf="!qualityGuard.id;else other_case">
 				        	<select class="form-control-customize" name="measureInstance" id="field_measureInstance" formControlName="measureInstance">
-                                <option *ngFor="let measure of measures" value="{{measure.measureInstance +'-'+ measure.field}}">{{measure.measureInstance +'-'+ measure.field}}</option>
+                                <option *ngFor="let measure of measures" value="{{measure.measureInstance +'::'+ measure.field}}">{{measure.measureInstance +'::'+ measure.field}}</option>
                             </select>
 					        <select class="form-control-customize" name="operator" id="field_operator" formControlName="operator" >
 				                <option value="SUPERIOR">SUPERIOR</option>
@@ -45,7 +45,7 @@
 				        <ng-template #other_case>
 				        		<input type="hidden" name="id" id="field_id" formControlName ="id"/>
 				        		<select class="form-control-customize" name="measureInstance" id="field_measureInstance" formControlName="measureInstance">
-					              <option *ngFor="let measure of measures" value="{{measure.measureInstance +'-'+ measure.field}}">{{measure.measureInstance +'-'+ measure.field}}</option>
+					              <option *ngFor="let measure of measures" value="{{measure.measureInstance +'::'+ measure.field}}">{{measure.measureInstance +'::'+ measure.field}}</option>
 					            </select>
 					            <select class="form-control-customize" name="operator" id="field_operator" formControlName="operator" >
 					              <option value="SUPERIOR">SUPERIOR</option>
