@@ -36,12 +36,25 @@ import org.quality.guard.analysis.domain.enumeration.AnalysisAgregation;
 import org.quality.guard.analysis.domain.enumeration.CombinationMode;
 import org.quality.guard.analysis.domain.enumeration.GuardStatus;
 import org.quality.guard.analysis.service.qualityguardengine.api.IQualityGuardExecutionService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class QualityGuardExecutionService implements IQualityGuardExecutionService{
 
 	private final static Long strictTime= new Long(60000);
+	
+	@Value("${elasticsearch.url}")
+	private String elasticsearchUrl;
+	
+	@Value("${elasticsearch.port}")
+	private Integer elasticsearchPort;
+	
+	@Value("${elasticsearch.cluster-key}")
+	private String elasticsearchClusterKey;
+	
+	@Value("${elasticsearch.cluster-name}")
+	private String elasticsearchClusterName;
 	
 	@Inject
 	private IQualityGuardService qualityGuardService;
@@ -232,8 +245,8 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 	 * ElasticSearch connection
 	 */
 	public TransportClient getConnection() throws UnknownHostException {
-		Settings settings = Settings.builder() .put("cluster.name", "elasticsearch").build();
-		TransportClient client = new PreBuiltTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("127.0.0.1"), 9300));
+		Settings settings = Settings.builder() .put(elasticsearchClusterKey, elasticsearchClusterName).build();
+		TransportClient client = new PreBuiltTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(elasticsearchUrl), elasticsearchPort));
 		return client;
 	}
 	
