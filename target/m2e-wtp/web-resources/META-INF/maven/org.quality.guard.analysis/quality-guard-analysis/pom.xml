@@ -4,7 +4,7 @@
 
     <groupId>org.quality.guard.analysis</groupId>
     <artifactId>quality-guard-analysis</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2</version>
     <name>Quality Guard Analysis</name>
 
     <properties>
@@ -349,6 +349,11 @@
             <artifactId>log4j-core</artifactId>
             <version>2.7</version>
         </dependency>
+        <dependency>
+		    <groupId>org.decimal4j</groupId>
+		    <artifactId>decimal4j</artifactId>
+		    <version>1.0.3</version>
+		</dependency>
     </dependencies>
 
     <build>
