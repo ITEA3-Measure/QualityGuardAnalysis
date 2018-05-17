@@ -67,15 +67,18 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 	
 	@Override
 	public void executeQualityGuard(QualityGuard qualityGuard) throws UnknownHostException {
-		System.out.println("Execution : " + qualityGuard.getQualityGuardName());
 		
-		if (isGuardConditionsWithStrictTime(qualityGuard.getGuardConditions())) {
-			evaluateQualityGuardWithStrictTime(qualityGuard);
-		} else {
-			List<EvaluatedGuardCondition>  conditions = evaluateQualityGuardWithOutStrictTime(qualityGuard.getGuardConditions());
-			GuardStatus newStatus = evaluateQualityGuard(qualityGuard, conditions);
-			manageViolations(qualityGuard, newStatus, conditions);
-		
+		if (qualityGuardService.findOne(qualityGuard.getId()) != null) {
+			System.out.println("Execution : " + qualityGuard.getQualityGuardName());
+			
+			if (isGuardConditionsWithStrictTime(qualityGuard.getGuardConditions())) {
+				evaluateQualityGuardWithStrictTime(qualityGuard);
+			} else {
+				List<EvaluatedGuardCondition>  conditions = evaluateQualityGuardWithOutStrictTime(qualityGuard.getGuardConditions());
+				GuardStatus newStatus = evaluateQualityGuard(qualityGuard, conditions);
+				manageViolations(qualityGuard, newStatus, conditions);
+			
+			}
 		}
 
 	}

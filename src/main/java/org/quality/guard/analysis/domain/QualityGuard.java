@@ -57,7 +57,7 @@ public class QualityGuard implements Serializable {
     @Column(name = "is_schedule")
     private Boolean isSchedule;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name="violation_id", unique = true)
     private Violation violation;
 

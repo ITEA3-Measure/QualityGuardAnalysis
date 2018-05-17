@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 
+import org.quality.guard.analysis.core.api.entities.IViolationService;
 import org.quality.guard.analysis.domain.Violation;
 import org.quality.guard.analysis.repository.ViolationRepository;
 import org.quality.guard.analysis.service.qualityissues.api.IQualityIssues;
@@ -44,6 +45,9 @@ public class ViolationResource {
     
     @Inject
     private IQualityIssues qualityIssues;
+    
+    @Inject 
+    private IViolationService violationService;
 
     public ViolationResource(ViolationRepository violationRepository) {
         this.violationRepository = violationRepository;
@@ -127,7 +131,7 @@ public class ViolationResource {
     @Timed
     public ResponseEntity<Void> deleteViolation(@PathVariable Long id) {
         log.debug("REST request to delete Violation : {}", id);
-        violationRepository.delete(id);
+        violationService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
     

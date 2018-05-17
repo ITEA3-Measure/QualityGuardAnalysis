@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.quality.guard.analysis.core.api.entities.IViolationService;
 import org.quality.guard.analysis.domain.QualityGuard;
 import org.quality.guard.analysis.domain.Violation;
+import org.quality.guard.analysis.repository.QualityGuardRepository;
 import org.quality.guard.analysis.repository.ViolationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,9 @@ public class ViolationServiceImpl implements IViolationService {
 	
 	@Inject
 	private ViolationRepository violationRepository;
+	
+	@Inject
+	private QualityGuardRepository qualityRepository;
 	
 	/**
      * Save a violation.
@@ -73,6 +77,12 @@ public class ViolationServiceImpl implements IViolationService {
      */
 	public void delete(Long id) {
 		log.debug("Request to delete ConditionViolation : {}", id);
+		Violation violation = violationRepository.findOne(id);
+		QualityGuard  qualityGuard = violation.getActualQualityGuard();
+		if(qualityGuard != null) {
+			qualityGuard.setViolation(null);
+			qualityRepository.save(qualityGuard);
+		}
 		violationRepository.delete(id);
 	}
 }

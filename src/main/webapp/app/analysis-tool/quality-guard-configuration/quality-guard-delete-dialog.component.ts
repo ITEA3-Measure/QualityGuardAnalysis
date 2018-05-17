@@ -31,7 +31,7 @@ export class QualityGuardDeleteDialogComponent {
         private eventManager: JhiEventManager,
         private jhiAlertService: JhiAlertService
     ) {
-      this.projectId = +router.parseUrl(router.url).root.children['primary'].segments[1].path;
+        this.projectId = +router.parseUrl(router.url).root.children['primary'].segments[1].path;
     }
 
     clear() {
@@ -39,27 +39,27 @@ export class QualityGuardDeleteDialogComponent {
     }
 
     confirmDelete(id: number) {
-      this.qualityGuardService.find(id).subscribe((qualityGuard) => {
-        this.violationService.getViolationsByQualityGuardId(qualityGuard.id).subscribe(
-            (resV: ResponseWrapper) => {
-              resV.json.forEach((violation) => {
-                this.deleteViolation(violation.id);
-              });
-              this.deleteQualityGuard(qualityGuard.id);
-            },
-            (resV: ResponseWrapper) => this.onError(resV.json)
-        );
-      });
+        this.qualityGuardService.find(id).subscribe((qualityGuard) => {
+            this.violationService.getViolationsByQualityGuardId(qualityGuard.id).subscribe(
+                (resV: ResponseWrapper) => {
+                    resV.json.forEach((violation) => {
+                        this.deleteViolation(violation.id);
+                    });
+                },
+                (resV: ResponseWrapper) => this.onError(resV.json)
+            );
+            this.deleteQualityGuard(qualityGuard.id);
+            this.activeModal.dismiss(true);
+        });
     }
 
     deleteQualityGuard(id: number) {
-      this.qualityGuardService.delete(id).subscribe((response) => {
-        this.eventManager.broadcast({
-          name: 'qualityGuardListModification',
-          content: 'Deleted an qualityGuard'
+        this.qualityGuardService.delete(id).subscribe((response) => {
+            this.eventManager.broadcast({
+                name: 'qualityGuardListModification',
+                content: 'Deleted an qualityGuard'
+            });
         });
-        this.activeModal.dismiss(true);
-      });
     }
 
     deleteViolation(id: number) {
@@ -87,7 +87,7 @@ export class QualityGuardDeletePopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private qualityGuardPopupService: QualityGuardPopupService
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
