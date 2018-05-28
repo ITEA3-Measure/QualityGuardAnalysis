@@ -1,6 +1,5 @@
 package org.quality.guard.analysis.service.qualityguardengine.impl.qualityguardexecution;
 
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,14 +16,11 @@ import org.decimal4j.util.DoubleRounder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.quality.guard.analysis.core.api.entities.IConditionViolationService;
 import org.quality.guard.analysis.core.api.entities.IQualityGuardService;
 import org.quality.guard.analysis.core.api.entities.IViolationService;
@@ -36,25 +32,15 @@ import org.quality.guard.analysis.domain.enumeration.AnalysisAgregation;
 import org.quality.guard.analysis.domain.enumeration.CombinationMode;
 import org.quality.guard.analysis.domain.enumeration.GuardStatus;
 import org.quality.guard.analysis.service.qualityguardengine.api.IQualityGuardExecutionService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class QualityGuardExecutionService implements IQualityGuardExecutionService{
 
-	private final static Long strictTime= new Long(60000);
+	private final static Long strictTime= new Long(1000);
 	
-	@Value("${analysis-tool.elasticsearch.url}")
-	private String elasticsearchUrl;
-	
-	@Value("${analysis-tool.elasticsearch.port}")
-	private Integer elasticsearchPort;
-	
-	@Value("${analysis-tool.elasticsearch.cluster-key}")
-	private String elasticsearchClusterKey;
-	
-	@Value("${analysis-tool.elasticsearch.cluster-name}")
-	private String elasticsearchClusterName;
+	@Inject
+	private ElasticsearchConnection connection;
 	
 	@Inject
 	private IQualityGuardService qualityGuardService;
@@ -244,18 +230,9 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 		return conditionViolation;		
 	}
 	
-	/*
-	 * ElasticSearch connection
-	 */
-	public TransportClient getConnection() throws UnknownHostException {
-		Settings settings = Settings.builder() .put(elasticsearchClusterKey, elasticsearchClusterName).build();
-		TransportClient client = new PreBuiltTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(elasticsearchUrl), elasticsearchPort));
-		return client;
-	}
-	
 	public List<MeasureValue> getMeasureValues(String index, String type, String field, String intervalAgregation) throws UnknownHostException {
 		List<MeasureValue> measureValues = new ArrayList<>();
-		TransportClient client = getConnection();
+		TransportClient client = connection.getClient();
 		index += "-alias";
 		SearchResponse response = client.prepareSearch(index)
 		        .setTypes(type)
