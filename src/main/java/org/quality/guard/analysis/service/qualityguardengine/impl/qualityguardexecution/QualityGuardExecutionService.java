@@ -37,7 +37,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class QualityGuardExecutionService implements IQualityGuardExecutionService{
 
-	private final static Long strictTime= new Long(1000);
+	private final static Long strictTime= new Long(60000);
 	
 	@Inject
 	private ElasticsearchConnection connection;
