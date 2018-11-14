@@ -4,7 +4,7 @@
 
     <groupId>org.quality.guard.analysis</groupId>
     <artifactId>quality-guard-analysis</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5-SNAPSHOT</version>
     <name>Quality Guard Analysis</name>
 
     <properties>
