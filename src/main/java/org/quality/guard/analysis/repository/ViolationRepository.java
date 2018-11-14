@@ -21,8 +21,14 @@ import org.springframework.data.repository.query.Param;
 public interface ViolationRepository extends JpaRepository<Violation, Long> {
 	@Query(value="select i from Violation i where qualityGuard.id = :qualityGuardId")
 	public List<Violation> getViolationsByQualityGuardId(@Param("qualityGuardId") Long qualityGuardId);
-	@Query(value="select * from violation v where v.quality_guard_id = ?1 and ( v.incident_start_date between ?2 and ?3 )", nativeQuery = true)
+	
+	@Query(value="select * from violation v where v.quality_guard_id = ?1 and "
+			+ "( ( v.incident_start_date < ?2 and  v.incident_end_date > ?3 ) OR  "
+			+ "( ?3 BETWEEN v.incident_start_date and v.incident_end_date ) OR  "
+			+ "( ?2 BETWEEN v.incident_start_date and v.incident_end_date )  OR "
+			+ "(v.incident_start_date < ?2 and v.incident_end_date IS NULL ))", nativeQuery = true)
 	public List<Violation> getViolationsByQualityGuardIdBetweenIntervals(@Param("qualityGuardId") Long qualityGuardId, @Param("from") Date from, @Param("to") Date to);
+	
 	@Query(value = "select * from violation v where v.quality_guard_id = ?1 order by v.incident_start_date desc limit 20", nativeQuery = true)
 	public List<Violation> getLastViolationsByQualityGuardId(@Param("qualityGuardId") Long qualityGuardId);
 	
