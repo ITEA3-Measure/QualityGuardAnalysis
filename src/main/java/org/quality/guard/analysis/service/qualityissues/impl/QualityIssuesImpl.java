@@ -18,7 +18,7 @@ public class QualityIssuesImpl implements IQualityIssues{
 	
 	@Override
 	public List<QualityIssues> getQualityIssues() {
-		Query q = em.createNativeQuery("select v.incident_start_date, v.violation_status,qg.quality_guard_name, cv.measure_instance, cv.condition_value from qualityguardanalysis.violation as v left outer join qualityguardanalysis.quality_guard as qg on v.quality_guard_id = qg.id left outer join qualityguardanalysis.condition_violation as cv on v.id = cv.violation_id order by v.incident_start_date desc limit 20");
+		Query q = em.createNativeQuery("select v.incident_start_date, v.violation_status,qg.quality_guard_name, cv.measure_instance, cv.condition_value from violation as v left outer join quality_guard as qg on v.quality_guard_id = qg.id left outer join condition_violation as cv on v.id = cv.violation_id order by v.incident_start_date desc limit 20");
 		List<Object[]> results = q.getResultList();
 		List<QualityIssues> issues = new ArrayList<>();
 		for(Object[] result : results) {
