@@ -30,6 +30,7 @@ import org.quality.guard.analysis.domain.QualityGuard;
 import org.quality.guard.analysis.domain.Violation;
 import org.quality.guard.analysis.domain.enumeration.AnalysisAgregation;
 import org.quality.guard.analysis.domain.enumeration.CombinationMode;
+import org.quality.guard.analysis.domain.enumeration.GuardOperator;
 import org.quality.guard.analysis.domain.enumeration.GuardStatus;
 import org.quality.guard.analysis.service.qualityguardengine.api.IQualityGuardExecutionService;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class QualityGuardExecutionService implements IQualityGuardExecutionService{
 
-	private final static Long strictTime= new Long(60000);
+	private final static Long strictTime = new Long(10000);
 	
 	@Inject
 	private ElasticsearchConnection connection;
@@ -63,7 +64,6 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 				List<EvaluatedGuardCondition>  conditions = evaluateQualityGuardWithOutStrictTime(qualityGuard.getGuardConditions());
 				GuardStatus newStatus = evaluateQualityGuard(qualityGuard, conditions);
 				manageViolations(qualityGuard, newStatus, conditions);
-			
 			}
 		}
 
@@ -89,31 +89,26 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 	}
 	
 	public void evaluateQualityGuardWithStrictTime(QualityGuard qualityGuard)throws UnknownHostException {
-		List<MeasureValue> values = new ArrayList<>();
+		List<EvaluatedGuardCondition> evaluatedCondition = new ArrayList<>();
 		for(GuardCondition guardCondition : qualityGuard.getGuardConditions()) {
-			values.addAll(getMeasureValues(guardCondition.getMeasureName(), guardCondition.getMeasureInstance(), guardCondition.getMeasureField(), guardCondition.getIntervalAgregation().name()));
-		}
-		Collections.sort(values);
-		
-		Map<String,String> conditionValues = new HashMap<>();
-		for(MeasureValue mValue : values) {
-			conditionValues.put(mValue.getMeasureInstance() +":" + mValue.getMeasurefield(), mValue.getValue());
-			
-			List<EvaluatedGuardCondition> evaluatedCondition = new ArrayList<>();
-			
-			for(GuardCondition guardCondition : qualityGuard.getGuardConditions()) {
-				String conditionValue = conditionValues.get(guardCondition.getMeasureInstance() +":" +guardCondition.getMeasureField());		
-				if(conditionValue != null) {
-					evaluatedCondition.add(new EvaluatedGuardCondition(guardCondition, Double.valueOf(conditionValue)));	
+			Double baderValue = null;
+			for(MeasureValue measurement : getMeasureValues(guardCondition.getMeasureName(), guardCondition.getMeasureInstance(), guardCondition.getMeasureField(), guardCondition.getIntervalAgregation().name())) {
+				if(baderValue == null) {
+					baderValue = Double.valueOf(measurement.getValue());
+				}else {
+					if(guardCondition.getOperator().equals(GuardOperator.SUPERIOR) && baderValue > Double.valueOf(measurement.getValue())) {
+						baderValue = Double.valueOf(measurement.getValue());
+					}else if(guardCondition.getOperator().equals(GuardOperator.INFERIOR) && baderValue < Double.valueOf(measurement.getValue())) {
+						baderValue = Double.valueOf(measurement.getValue());
+					}
 				}
-			}
-			
-			if(evaluatedCondition.size() == qualityGuard.getGuardConditions().size()) {
-				GuardStatus newStatus = evaluateQualityGuard(qualityGuard, evaluatedCondition);
-				manageViolations(qualityGuard, newStatus, evaluatedCondition);
-			}
+			}		
+			evaluatedCondition.add(new EvaluatedGuardCondition(guardCondition, baderValue));
 		}
-		
+	
+		GuardStatus newStatus = evaluateQualityGuard(qualityGuard, evaluatedCondition);
+		manageViolations(qualityGuard, newStatus, evaluatedCondition);
+				
 	}
 	
 	@Override
@@ -237,7 +232,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 		SearchResponse response = client.prepareSearch(index)
 		        .setTypes(type)
 		        .setSearchType(SearchType.QUERY_AND_FETCH)
-		        .addSort(FieldSortBuilder.DOC_FIELD_NAME, SortOrder.ASC)
+		        .addSort("postDate", SortOrder.ASC)
 		        .setScroll(new TimeValue(60000))
 		        .setFetchSource(new String[]{field,"postDate"}, null)
 		        .setQuery(QueryBuilders.rangeQuery("postDate")
@@ -245,13 +240,30 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 		        .setSize(100)
 		        .get();
 		
-		do {
+		if (response.getHits().getHits().length >0) {
+			do {
+			    for (SearchHit hit : response.getHits().getHits()) {
+			    	Map map = hit.getSource();
+			    	measureValues.add(new MeasureValue(String.valueOf(map.get("postDate")), String.valueOf(map.get(field)), type,field));
+			    }
+			    response = client.prepareSearchScroll(response.getScrollId()).setScroll(new TimeValue(60000)).execute().actionGet();
+			} while(response.getHits().getHits().length != 0);	
+		}
+		else {
+			response = client.prepareSearch(index)
+			        .setTypes(type)
+			        .setSearchType(SearchType.QUERY_AND_FETCH)
+			        .addSort("postDate", SortOrder.DESC)
+			        .setScroll(new TimeValue(60000))
+			        .setFetchSource(new String[]{field,"postDate"}, null)
+			        .setSize(1)
+			        .get();
+			
 		    for (SearchHit hit : response.getHits().getHits()) {
 		    	Map map = hit.getSource();
 		    	measureValues.add(new MeasureValue(String.valueOf(map.get("postDate")), String.valueOf(map.get(field)), type,field));
-		    }
-		    response = client.prepareSearchScroll(response.getScrollId()).setScroll(new TimeValue(60000)).execute().actionGet();
-		} while(response.getHits().getHits().length != 0);
+		    }		
+		}	
 		
 		return measureValues;
 	}
