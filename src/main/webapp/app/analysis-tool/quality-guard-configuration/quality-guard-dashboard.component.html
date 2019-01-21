@@ -1,16 +1,14 @@
 <div style="width: 20rem;">
-	<h5>Project Quality Guard</h5>
+	<h5>Quality Status</h5>
 	<div class="table-responsive" *ngIf="qualityGuardsByProject">
         <table class="table">
             <tbody *ngFor='let qualityGuard of qualityGuardsByProject?.reverse()'>
                 <tr>
-                    <td>
-                        <div>
-                            <span [ngClass]="{'button-success button-circle' : qualityGuard.violation==null}"></span>
-                            <span [ngClass]="{'button-warning button-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='WARNING'}"></span>
-                            <span [ngClass]="{'button-danger button-circle' : qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='ERROR'}"></span>
-                            <span>{{qualityGuard.qualityGuardName}}</span>
-                        </div>
+                    <td>{{qualityGuard.qualityGuardName}}</td>
+                    <td>   
+                        <div *ngIf="qualityGuard.violation==null" class="guard-success-sm"><span class="guard-date">Success</span></div>
+                        <div *ngIf="qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='WARNING'"  class="guard-warning-sm"><span class="guard-date">Warning</span></div>
+                        <div *ngIf="qualityGuard.violation!==null && qualityGuard.violation.violationStatus=='ERROR'"   class="guard-error-sm"><span class="guard-date">Error</span></div>        
                     </td>
                 </tr>
             </tbody>

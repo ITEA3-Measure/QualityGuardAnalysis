@@ -3,22 +3,22 @@
   "short_name": "QualityGuardAnalysis",
   "icons": [
     {
-      "src": "content/a30deb26b4eb1521433021e326cbcc2c.png",
+      "src": "content/bb4a77bc143c80669a076788d1047200.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "content/a30deb26b4eb1521433021e326cbcc2c.png",
+      "src": "content/bb4a77bc143c80669a076788d1047200.png",
       "sizes": "256x256",
       "type": "image/png"
     },
     {
-      "src": "content/a30deb26b4eb1521433021e326cbcc2c.png",
+      "src": "content/bb4a77bc143c80669a076788d1047200.png",
       "sizes": "384x384",
       "type": "image/png"
     },
     {
-      "src": "content/a30deb26b4eb1521433021e326cbcc2c.png",
+      "src": "content/bb4a77bc143c80669a076788d1047200.png",
       "sizes": "512x512",
       "type": "image/png"
     }

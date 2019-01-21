@@ -1,15 +1,15 @@
 <div>
-    <h5>Project Quality Issues</h5>
+    <h5>Quality Issues</h5>
     <div class="table-responsive" *ngIf="qualityIssues">
         <table class="table">
             <tbody>
                 <tr *ngFor='let issue of qualityIssues'>
-                    <td>
-                        <span [ngClass]="{'button-warning button-circle' : issue.violationStatus=='WARNING'}"></span>
-                        <span [ngClass]="{'button-danger button-circle' : issue.violationStatus=='ERROR'}"></span>
-                        <span>{{issue.incidentStartDate}}</span>
-                    </td>
                     <td>{{issue.qualityGuardName}}</td>
+                    <td>
+                        <div *ngIf="issue.violationStatus=='WARNING'"  class="guard-warning-sm"><span class="guard-date">Warning</span></div>
+                        <div *ngIf="issue.violationStatus=='ERROR'"   class="guard-error-sm"><span class="guard-date">Error</span></div>
+                    </td>
+                    <td>{{issue.incidentStartDate}}</td>
                     <td>{{issue.measureInstance}}</td>
                     <td>{{issue.conditionValue}}</td>
                 </tr>
