@@ -13,12 +13,16 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import org.decimal4j.util.DoubleRounder;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.quality.guard.analysis.core.api.entities.IConditionViolationService;
@@ -81,7 +85,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 	public List<EvaluatedGuardCondition> evaluateQualityGuardWithOutStrictTime(Set<GuardCondition> guardConditions) throws UnknownHostException {
 		List<EvaluatedGuardCondition> conditions = new ArrayList<>();
 		for(GuardCondition guardCondition : guardConditions) {
-			List<MeasureValue> values = getMeasureValues(guardCondition.getMeasureName(), guardCondition.getMeasureInstance(), guardCondition.getMeasureField(), guardCondition.getIntervalAgregation().name());
+			List<MeasureValue> values = getMeasureValue(guardCondition.getMeasureInstance(), guardCondition.getMeasureField(), guardCondition.getIntervalAgregation().name());
 			double average = calculateAverage(values);
 			conditions.add(new EvaluatedGuardCondition(guardCondition, average));
 		}
@@ -92,7 +96,7 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 		List<EvaluatedGuardCondition> evaluatedCondition = new ArrayList<>();
 		for(GuardCondition guardCondition : qualityGuard.getGuardConditions()) {
 			Double baderValue = null;
-			for(MeasureValue measurement : getMeasureValues(guardCondition.getMeasureName(), guardCondition.getMeasureInstance(), guardCondition.getMeasureField(), guardCondition.getIntervalAgregation().name())) {
+			for(MeasureValue measurement : getMeasureValue(guardCondition.getMeasureInstance(), guardCondition.getMeasureField(), guardCondition.getIntervalAgregation().name())) {
 				if(baderValue == null) {
 					baderValue = Double.valueOf(measurement.getValue());
 				}else {
@@ -225,46 +229,42 @@ public class QualityGuardExecutionService implements IQualityGuardExecutionServi
 		return conditionViolation;		
 	}
 	
-	public List<MeasureValue> getMeasureValues(String index, String type, String field, String intervalAgregation) throws UnknownHostException {
+	public List<MeasureValue> getMeasureValue(String indexName, String field, String intervalAgregation) {
 		List<MeasureValue> measureValues = new ArrayList<>();
 		TransportClient client = connection.getClient();
-		index += "-alias";
-		SearchResponse response = client.prepareSearch(index)
-		        .setTypes(type)
-		        .setSearchType(SearchType.QUERY_AND_FETCH)
+		
+		SearchResponse response = client.prepareSearch(IndexFormat.getMeasureInstanceIndex(indexName))
+		        .setQuery(QueryBuilders.matchAllQuery())
 		        .addSort("postDate", SortOrder.ASC)
 		        .setScroll(new TimeValue(60000))
 		        .setFetchSource(new String[]{field,"postDate"}, null)
-		        .setQuery(QueryBuilders.rangeQuery("postDate")
+		        .setPostFilter(QueryBuilders.rangeQuery("postDate")
 		        .from(new Date().getTime() - getTimeAgo(intervalAgregation)).to(new Date().getTime()))
-		        .setSize(100)
+		        .setFrom(0).setSize(100).setExplain(true)
 		        .get();
 		
 		if (response.getHits().getHits().length >0) {
 			do {
 			    for (SearchHit hit : response.getHits().getHits()) {
-			    	Map map = hit.getSource();
-			    	measureValues.add(new MeasureValue(String.valueOf(map.get("postDate")), String.valueOf(map.get(field)), type,field));
+			    	Map map = hit.getSourceAsMap();
+			    	measureValues.add(new MeasureValue(String.valueOf(map.get("postDate")), String.valueOf(map.get(field)), IndexFormat.getMeasureInstanceIndex(indexName),field));
 			    }
 			    response = client.prepareSearchScroll(response.getScrollId()).setScroll(new TimeValue(60000)).execute().actionGet();
 			} while(response.getHits().getHits().length != 0);	
 		}
 		else {
-			response = client.prepareSearch(index)
-			        .setTypes(type)
-			        .setSearchType(SearchType.QUERY_AND_FETCH)
-			        .addSort("postDate", SortOrder.DESC)
-			        .setScroll(new TimeValue(60000))
-			        .setFetchSource(new String[]{field,"postDate"}, null)
-			        .setSize(1)
-			        .get();
-			
-		    for (SearchHit hit : response.getHits().getHits()) {
-		    	Map map = hit.getSource();
-		    	measureValues.add(new MeasureValue(String.valueOf(map.get("postDate")), String.valueOf(map.get(field)), type,field));
-		    }		
-		}	
+			response = client.prepareSearch(IndexFormat.getMeasureInstanceIndex(indexName))
+		        .addSort("postDate", SortOrder.DESC)
+		        .setScroll(new TimeValue(60000))
+		        .setFetchSource(new String[]{field,"postDate"}, null)
+		        .setSize(1)
+		        .get();
 		
+			for (SearchHit hit : response.getHits().getHits()) {
+				Map map = hit.getSourceAsMap();
+		    	measureValues.add(new MeasureValue(String.valueOf(map.get("postDate")), String.valueOf(map.get(field)), IndexFormat.getMeasureInstanceIndex(indexName),field));
+			}
+		}
 		return measureValues;
 	}
 	

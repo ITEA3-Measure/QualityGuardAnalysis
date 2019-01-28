@@ -8,7 +8,7 @@ import javax.annotation.PreDestroy;
 
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.transport.TransportAddress;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +33,7 @@ public class ElasticsearchConnection {
 	@PostConstruct
 	public void initIt() throws UnknownHostException {
 		Settings settings = Settings.builder() .put(elasticsearchClusterKey, elasticsearchClusterName).build();
-		this.client = new PreBuiltTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(elasticsearchUrl), elasticsearchPort));
+		this.client = new PreBuiltTransportClient(settings).addTransportAddress(new TransportAddress(InetAddress.getByName(elasticsearchUrl), elasticsearchPort));
 	}
 	
 	@PreDestroy
