@@ -39,10 +39,10 @@ public class GuardCondition implements Serializable {
     private GuardOperator operator;
 
     @Column(name = "error_value")
-    private Integer errorValue;
+    private Float errorValue;
 
     @Column(name = "warning_value")
-    private Integer warningValue;
+    private Float warningValue;
 
     @Column(name = "measure_field")
     private String measureField;
@@ -103,29 +103,29 @@ public class GuardCondition implements Serializable {
         this.operator = operator;
     }
 
-    public Integer getErrorValue() {
+    public Float getErrorValue() {
         return errorValue;
     }
 
-    public GuardCondition errorValue(Integer errorValue) {
+    public GuardCondition errorValue(Float errorValue) {
         this.errorValue = errorValue;
         return this;
     }
 
-    public void setErrorValue(Integer errorValue) {
+    public void setErrorValue(Float errorValue) {
         this.errorValue = errorValue;
     }
 
-    public Integer getWarningValue() {
+    public Float getWarningValue() {
         return warningValue;
     }
 
-    public GuardCondition warningValue(Integer warningValue) {
+    public GuardCondition warningValue(Float warningValue) {
         this.warningValue = warningValue;
         return this;
     }
 
-    public void setWarningValue(Integer warningValue) {
+    public void setWarningValue(Float warningValue) {
         this.warningValue = warningValue;
     }
 
