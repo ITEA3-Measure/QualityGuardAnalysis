@@ -46,11 +46,11 @@ public class GuardConditionResourceIntTest {
     private static final GuardOperator DEFAULT_OPERATOR = GuardOperator.SUPERIOR;
     private static final GuardOperator UPDATED_OPERATOR = GuardOperator.INFERIOR;
 
-    private static final Integer DEFAULT_ERROR_VALUE = 1;
-    private static final Integer UPDATED_ERROR_VALUE = 2;
+    private static final Float DEFAULT_ERROR_VALUE = 1F;
+    private static final Float UPDATED_ERROR_VALUE = 2F;
 
-    private static final Integer DEFAULT_WARNING_VALUE = 1;
-    private static final Integer UPDATED_WARNING_VALUE = 2;
+    private static final Float DEFAULT_WARNING_VALUE = 1F;
+    private static final Float UPDATED_WARNING_VALUE = 2F;
 
     private static final String DEFAULT_MEASURE_FIELD = "AAAAAAAAAA";
     private static final String UPDATED_MEASURE_FIELD = "BBBBBBBBBB";

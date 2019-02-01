@@ -30,11 +30,11 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="error_value" type="integer">
+            <column name="error_value" type="float">
                 <constraints nullable="true" />
             </column>
 
-            <column name="warning_value" type="integer">
+            <column name="warning_value" type="float">
                 <constraints nullable="true" />
             </column>
 
