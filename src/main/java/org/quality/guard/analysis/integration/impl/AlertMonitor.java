@@ -1,3 +1,19 @@
+/*******************************************************************************
+ * Copyright (C) 2019 Softeam
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
 package org.quality.guard.analysis.integration.impl;
 
 import java.util.Locale;
@@ -24,6 +40,12 @@ public class AlertMonitor {
 
 	@Value("${measure-platform.url}")
 	private String serverURL;
+	
+	@Value("${measure-platform.login}")
+	private String login;
+
+	@Value("${measure-platform.password}")
+	private String password;
 
 	@Value("${analysis-tool.url}")
 	private String toolURL;
@@ -40,9 +62,12 @@ public class AlertMonitor {
 	@Scheduled(fixedRate = 5000)
 	public void monitorAlerts() {
 		String analysisToolId = getLabel("analysis-tool.name");
-		RestTemplate restTemplate = new RestTemplate();
+		//RestTemplate restTemplate = new RestTemplate();
 		try {
-			AlertReport alerts = restTemplate.getForObject(serverURL + "api/analysis/alert/list/?id=" + analysisToolId,AlertReport.class);
+//			AlertReport alerts = restTemplate.getForObject(serverURL + "api/analysis/alert/list/?id=" + analysisToolId,AlertReport.class);
+			
+			PlatformServiceProxy proxy = new PlatformServiceProxy(serverURL,login,password);
+			AlertReport alerts = proxy.getAlertReport(analysisToolId);
 
 			for (AlertData alert : alerts.getAlerts()) {
 				if (ALERT_TYPE.equals(alert.getAlertType())) {
@@ -71,8 +96,8 @@ public class AlertMonitor {
 					cardIssues.setPreferedHeight(300);
 					configuration.getCards().add(cardIssues);
 					
-					
-					restTemplate.put(serverURL +"/api/analysis/configure", configuration);
+					proxy.configureAnalysisTool(configuration);
+				//	restTemplate.put(serverURL +"/api/analysis/configure", configuration);
 				}
 			}
 		} catch (Exception e) {
